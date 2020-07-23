@@ -25,12 +25,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pid;
 
-    @JsonIgnore
+    //@JsonIgnore
     private String title;
 
     private String content;
     private String author;
-
+    private int count;
     @Column(insertable = false, updatable = false)
     private LocalDateTime createDate;
 
@@ -64,5 +64,13 @@ public class Post {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

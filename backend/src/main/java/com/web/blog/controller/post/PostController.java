@@ -32,38 +32,57 @@ public class PostController {
     PostDao postDao;
 
     @GetMapping("/post/{author}")
-    @ApiOperation(value = "조회")
+    @ApiOperation(value = "전체 글 조회")
     public ResponseEntity<List<Post>> retrievePost(@PathVariable String author) throws Exception{
         return new ResponseEntity<List<Post>>(postDao.getPostByAuthor(author),HttpStatus.OK);
     }
-    @GetMapping("/post/create")
+
+    @GetMapping("/post/{author}/{pid}")
+    @ApiOperation(value = "글 조회")
+    public ResponseEntity<Post> ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
+        Post post = postDao.getPostByAuthorAndPid(author,pid);
+        post.setCount(post.getCount()+1);
+        postDao.save(post);
+
+        return new ResponseEntity<Post>(post,HttpStatus.OK);
+    }
+
+    @PostMapping("/post/{author}/create")
     @ApiOperation(value = "글쓰기")
     public Object create(@RequestBody Post post) {
+
         BasicResponse result = new BasicResponse();
+        System.out.printf(post.toString());
+        if(post.getTitle()==null)
+            System.out.printf("??");
+        else
+            System.out.printf(post.getTitle());
+        //System.out.printf(post.getTitle());
         postDao.save(post);
         result.status = true;
         result.data = SUCCESS;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping("/post/update/{pid}")
+    @PutMapping("/post/{author}/update/{pid}")
     @ApiOperation(value = "글 수정")
-    public Object update(@RequestBody Post post, @PathVariable String pid){
+    public Object update(@RequestBody Post post, @PathVariable int pid){
         BasicResponse result = new BasicResponse();
+        post.setPid(pid);
         postDao.save(post);
         result.status = true;
         result.data = SUCCESS;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/post/delete")
+    @DeleteMapping("/post/{author}/delete/{pid}")
     @ApiOperation(value = "글 삭제")
 
-    public Object delete(@Valid @RequestBody Post post, @PathVariable String pid, @RequestParam String author) {
-        Post findPost = postDao.getPostByAuthorAndPid(post.get, pid);
+    public Object delete(@Valid @PathVariable int pid, @PathVariable String author) {
+        Post findPost = postDao.getPostByAuthorAndPid(author, pid);
         BasicResponse result = new BasicResponse();
-        if(post != null){
-            postDao.delete(post);
+        if(findPost != null){
+            postDao.delete(findPost);
             result.data = SUCCESS;
             result.status = true;
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -71,7 +90,6 @@ public class PostController {
         result.data = "fail";
         result.status = false;
         return new ResponseEntity<>(result, HttpStatus.CONFLICT);
-        //return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
