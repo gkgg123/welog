@@ -24,6 +24,7 @@ import io.swagger.annotations.ApiOperation;
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @CrossOrigin(origins = { "http://localhost:3000" })
+@RequestMapping("/post")
 @RestController
 public class PostController {
     String SUCCESS = "success";
@@ -31,13 +32,13 @@ public class PostController {
     @Autowired
     PostDao postDao;
 
-    @GetMapping("/post/{author}")
+    @GetMapping("/{author}")
     @ApiOperation(value = "전체 글 조회")
     public ResponseEntity<List<Post>> retrievePost(@PathVariable String author) throws Exception{
         return new ResponseEntity<List<Post>>(postDao.getPostByAuthor(author),HttpStatus.OK);
     }
 
-    @GetMapping("/post/{author}/{pid}")
+    @GetMapping("/{author}/{pid}")
     @ApiOperation(value = "글 조회")
     public ResponseEntity<Post> ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
         Post post = postDao.getPostByAuthorAndPid(author,pid);
@@ -47,24 +48,23 @@ public class PostController {
         return new ResponseEntity<Post>(post,HttpStatus.OK);
     }
 
-    @PostMapping("/post/{author}/create")
+    @PostMapping("/{author}/create")
     @ApiOperation(value = "글쓰기")
     public Object create(@RequestBody Post post) {
 
         BasicResponse result = new BasicResponse();
-        System.out.printf(post.toString());
         if(post.getTitle()==null)
             System.out.printf("??");
         else
             System.out.printf(post.getTitle());
-        //System.out.printf(post.getTitle());
+        post.setPostno(post.getPostno()+1);
         postDao.save(post);
         result.status = true;
         result.data = SUCCESS;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/post/{author}/update/{pid}")
+    @PutMapping("/{author}/update/{pid}")
     @ApiOperation(value = "글 수정")
     public Object update(@RequestBody Post post, @PathVariable int pid){
         BasicResponse result = new BasicResponse();
@@ -75,7 +75,7 @@ public class PostController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @DeleteMapping("/post/{author}/delete/{pid}")
+    @DeleteMapping("/{author}/delete/{pid}")
     @ApiOperation(value = "글 삭제")
 
     public Object delete(@Valid @PathVariable int pid, @PathVariable String author) {

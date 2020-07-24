@@ -25,7 +25,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pid;
 
-    //@JsonIgnore
+    private int postno;
     private String title;
 
     private String content;
@@ -40,6 +40,14 @@ public class Post {
 
     public void setPid(int pid) {
         this.pid = pid;
+    }
+
+    public int getPostno() {
+        return postno;
+    }
+
+    public void setPostno(int postno) {
+        this.postno = postno;
     }
 
     public String getTitle() {
