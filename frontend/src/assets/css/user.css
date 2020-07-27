@@ -34,7 +34,7 @@
   border: 1px solid #000;
   padding: 7px 15px;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .user .input-wrap.password-wrap input {
@@ -45,7 +45,7 @@
   position: absolute;
   right: 9px;
   top: 11px;
-  opacity: .3;
+  opacity: 0.3;
 }
 
 .user .input-wrap span.active {
@@ -104,7 +104,7 @@
 
 #join .go-term {
   float: right;
-  opacity: .9;
+  opacity: 0.9;
   cursor: pointer;
 }
 
@@ -177,15 +177,18 @@
   margin-bottom: 10px;
 }
 
-#setting > div .setting-form .right .email, #setting > div .setting-form .right input, #setting > div .setting-form .right textarea {
+#setting > div .setting-form .right .email,
+#setting > div .setting-form .right input,
+#setting > div .setting-form .right textarea {
   width: 100%;
   float: left;
   margin-bottom: 20px;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-#setting > div .setting-form .right input, #setting > div .setting-form .right textarea {
+#setting > div .setting-form .right input,
+#setting > div .setting-form .right textarea {
   border: 1px solid #ccc;
   padding: 15px 20px;
 }
