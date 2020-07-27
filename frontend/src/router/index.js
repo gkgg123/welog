@@ -11,6 +11,7 @@ import Logout from '../page/user/Logout.vue'
 // 포스트
 import List from '../page/post/List.vue'
 import CreateView from '../page/post/CreateView.vue'
+import userPersonalPage from '../page/post/userPersonalPage.vue'
  
 Vue.use(Router) 
  
@@ -43,6 +44,11 @@ export default new Router({
       name : constants.URL_TYPE.USER.LOGOUT,
       component : Logout,
       
+    },
+    {
+      path : '/@:id',
+      name : 'userPersonalPage',
+      component : userPersonalPage,
     }
   ]
 })

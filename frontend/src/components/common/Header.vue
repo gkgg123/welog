@@ -2,7 +2,7 @@
     <div id="header" v-if="isHeader">
         <h1>
             <router-link v-bind:to="{name:constants.URL_TYPE.POST.MAIN}">
-                SS_log
+                {{headerTitle}}
             </router-link>
         </h1>
         <div class="right">
@@ -25,7 +25,7 @@
 
 <script> 
     import constants from '../../lib/constants'
-
+    import { mapState } from 'vuex'
     export default {
         name: 'Header',
         components: { 
@@ -33,6 +33,9 @@
         },
         props: ['isHeader'],
         computed:{
+            ...mapState([
+                'headerTitle'
+            ])
         },
         watch: {
         },
