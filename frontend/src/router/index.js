@@ -10,6 +10,7 @@ import Logout from '../page/user/Logout.vue'
 
 // 포스트
 import List from '../page/post/List.vue'
+import CreateView from '../page/post/CreateView.vue'
  
 Vue.use(Router) 
  
@@ -31,6 +32,11 @@ export default new Router({
       path: '/',
       name: constants.URL_TYPE.POST.MAIN,
       component: List,
+    },
+    {
+      path : '/create',
+      name : 'CreateView',
+      component : CreateView,
     },
     {
       path: '/user/logout',

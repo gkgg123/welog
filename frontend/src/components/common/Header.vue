@@ -17,6 +17,7 @@
             <router-link v-else v-bind:to="{name:constants.URL_TYPE.USER.LOGOUT}" class="login-btn">
                 로그아웃
             </router-link>
+            <router-link to="/create"  class="login-btn">새글쓰기</router-link>
         </div>  
         
     </div>

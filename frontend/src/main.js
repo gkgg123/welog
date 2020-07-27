@@ -2,6 +2,17 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueCookies from 'vue-cookies'
+import VueMarkdownEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
+import enUS from '@kangc/v-md-editor/lib/lang/en-US';
+
+VueMarkdownEditor.lang.use('en-US', enUS);
+VueMarkdownEditor.use(vuepressTheme);
+VueMarkdownEditor.use(createCopyCodePlugin());
+Vue.use(VueMarkdownEditor);
+
 Vue.use(VueCookies)
 /* eslint-disable no-new */
 new Vue({
