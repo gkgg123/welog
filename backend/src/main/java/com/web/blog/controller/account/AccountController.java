@@ -1,27 +1,15 @@
 package com.web.blog.controller.account;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import com.web.blog.dao.user.UserDao;
 import com.web.blog.model.BasicResponse;
-import com.web.blog.model.user.SignupRequest;
-import com.web.blog.model.user.User;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import com.web.blog.model.account.Account;
+import com.web.blog.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
         @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
@@ -31,43 +19,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 public class AccountController {
-
     @Autowired
-    UserDao userDao;
+    AccountService accountService;
 
-    @GetMapping("/account/login")
-    @ApiOperation(value = "로그인")
-    public Object login(@RequestParam(required = true) final String email,
-            @RequestParam(required = true) final String password) {
-
-        Optional<User> userOpt = userDao.findUserByEmailAndPassword(email, password);
-
-        ResponseEntity response = null;
-
-        if (userOpt.isPresent()) {
-            final BasicResponse result = new BasicResponse();
-            result.status = true;
-            result.data = "success";
-            response = new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-
-        return response;
+    @GetMapping("/account")
+    public String signupForm(Model model){
+        model.addAttribute("account", new Account());
+        return "signup";
     }
 
-    @PostMapping("/account/signup")
-    @ApiOperation(value = "가입하기")
-
-    public Object signup(@Valid @RequestBody SignupRequest request) {
-        // 이메일, 닉네임 중복처리 필수
-        // 회원가입단을 생성해 보세요.
-
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
-        result.data = "success";
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    @PostMapping("/account")
+    public String processingSignUp(@ModelAttribute Account account){
+        account.setGrade("USER");
+        accountService.createNew(account);
+        return "redirect:/";
     }
 
+    @GetMapping("/login")
+    public String loginForm() {return "login";}
+    @GetMapping("/logout")
+    public String logoutForm() {return "logout";}
 }
