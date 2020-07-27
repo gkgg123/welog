@@ -7,6 +7,7 @@ import '@kangc/v-md-editor/lib/style/base-editor.css';
 import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
 import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
 import enUS from '@kangc/v-md-editor/lib/lang/en-US';
+import store from './store'
 
 VueMarkdownEditor.lang.use('en-US', enUS);
 VueMarkdownEditor.use(vuepressTheme);
@@ -17,8 +18,9 @@ Vue.use(VueCookies)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router, 
-  components: { App }, 
+  router,
+  components: { App },
+  store,
   template: '<App/>'
 })
  
