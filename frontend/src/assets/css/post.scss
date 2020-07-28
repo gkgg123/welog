@@ -64,6 +64,7 @@
             height:70px;
             ul {
                 float:left;
+                list-style: none;
                 li {
                     float:left;
                     margin-right:5px;
@@ -134,12 +135,13 @@
         @include wrap;
         > div {
             float:left;
-            margin-right:30px;
-            margin-bottom:30px;
+            // margin-right:30px;
+            // margin-bottom:30px;
+            padding: 15px;
             width:285px;
-            &:nth-child(3n) {
-                margin-right:0;
-            }
+            // &:nth-child(3n) {
+            //     margin-right:0;
+            // }
             .post-card {
                 @include wrap;
                 text-align: left;
@@ -333,7 +335,8 @@
     position: fixed;
     left:calc(50% + 380px);
     top:230px; 
-    width:230px;
+    // width:230px;
+    width: 15%;
     h4 {
         font-size:1em;
         padding-bottom:5px;

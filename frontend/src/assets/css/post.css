@@ -48,6 +48,7 @@
 
 #post-write .contents .tag-list ul {
   float: left;
+  list-style: none;
 }
 
 #post-write .contents .tag-list ul li {
@@ -129,9 +130,9 @@
   width: 285px;
 }
 
-.post .post-list > div:nth-child(3n) {
+/* .post .post-list > div:nth-child(3n) {
   margin-right: 0;
-}
+} */
 
 .post .post-list > div .post-card {
   width: 100%;
