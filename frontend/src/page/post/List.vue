@@ -5,7 +5,7 @@
             <div>
 
                 <section class="post-list col-12">
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -109,7 +109,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -209,7 +209,6 @@ ul{
         watch: {
         },
         created() {
-            this.$store.commit('SET_header','환상의 6조')
         },
         methods: {
         },
