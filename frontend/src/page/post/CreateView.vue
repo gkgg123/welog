@@ -1,9 +1,17 @@
 <template>
   <div id="create" class="container">
     <div class="row">
-      <div class="col-12 p-0" style="text-align:left; margin:5vh 0px;">
-        <p id="title">새 글 쓰기</p>
+      <div class="col-12 p-0" style="text-align:left; margin:5vh 0px 3vh 0px;">
+        <p id="newPost">새 글 쓰기</p>
       </div>
+
+      <input
+        placeholder="제목을 입력하세요"
+        class="titleInput"
+        v-model="title"
+        type="text"
+      />
+
       <div id="tag" class="flex-column"></div>
       <input
         placeholder="Tag를 입력하고 Enter를 누르세요"
@@ -76,6 +84,7 @@ export default {
   name: "CreateView",
   data() {
     return {
+      title: "",
       text: "",
       inputTag: null,
       taglist: [],
@@ -153,10 +162,21 @@ export default {
 </script>
 
 <style scoped>
+#newPost {
+  font-size: 40px;
+  border-bottom: #ddd solid 4px;
+  display: inline;
+}
+.titleInput {
+  font-size: 30px;
+  width: 100%;
+  margin-bottom: 17px;
+}
 .taginput {
   font-size: 17px;
   padding-bottom: 4px;
-  width: 17vw;
+  padding-left: 6px;
+  width: 30%;
   border-bottom: 1px solid;
   margin: 1vh 5px;
 }
@@ -189,14 +209,5 @@ export default {
 #context-menu hr {
   margin: 2px 0px;
   border-color: #555;
-}
-#title {
-  font-size: 40px;
-  border-bottom: #ddd solid 4px;
-  display: inline;
-}
-#tag-box {
-  display: flex;
-  align-content: center;
 }
 </style>
