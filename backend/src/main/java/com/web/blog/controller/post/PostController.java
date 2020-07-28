@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 
 import com.web.blog.dao.post.PostDao;
 import com.web.blog.model.BasicResponse;
@@ -32,11 +33,24 @@ public class PostController {
     @Autowired
     PostDao postDao;
 
-    @GetMapping("/{author}")
-    @ApiOperation(value = "전체 글 조회")
+//    @GetMapping("/latest")
+//    @ApiOperation(value = "최신 글 조회")
+//    public ResponseEntity<List<Post>> retrievePostbyLatest(){
+//        return new ResponseEntity<List<Post>>(postDao.findAllByCreateDate(), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/popularity")
+//    @ApiOperation(value = "인기 글 조회")
+//    public ResponseEntity<List<Post>> retrievePostbyPopularity(){
+//        return new ResponseEntity<List<Post>>(postDao.findAllOrderByCount(), HttpStatus.OK);
+//    }
+
+    @GetMapping("/{author}/")
+    @ApiOperation(value = "해당 유저 전체 글 조회")
     public ResponseEntity<List<Post>> retrievePost(@PathVariable String author) throws Exception{
         return new ResponseEntity<List<Post>>(postDao.getPostByAuthor(author),HttpStatus.OK);
     }
+
 
     @GetMapping("/{author}/{pid}")
     @ApiOperation(value = "글 조회")

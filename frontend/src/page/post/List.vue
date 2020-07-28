@@ -1,11 +1,11 @@
 <template>
     <div class="post">
-        <div class="wrapB">
+        <div class="">
             <h2>전체글</h2>
             <div>
 
-                <section class="post-list col-12">
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                <section class="post-list col-12 col-md-9">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -31,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -109,7 +109,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -135,7 +135,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-100 col-xl-3 col-lg-4 col-md-6 col-12">
+                    <div class="w-100 col-xl-4 col-sm-6 col-12">
                         <div class="post-card">
                             <a>
                                 <div :style="{backgroundImage:'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)'}" class="post-img"/>
@@ -164,7 +164,7 @@
                     
                 </section>
 
-                <div class="tag-list-wrap">
+                <div class="tag-list-wrap col-sm-3 col-0">
                     <h4>공지사항</h4>
                     <ul class="tag-list mb-5">
                         <li>공지사항1</li>

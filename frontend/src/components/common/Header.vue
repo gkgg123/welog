@@ -1,7 +1,7 @@
 <template>
     <div id="header" v-if="isHeader">
         <h1>
-            <router-link v-bind:to="{name:constants.URL_TYPE.POST.MAIN}">
+            <router-link :to="headerPath">
                 {{headerTitle}}
             </router-link>
         </h1>
@@ -34,7 +34,8 @@
         props: ['isHeader'],
         computed:{
             ...mapState([
-                'headerTitle'
+                'headerTitle',
+                'headerPath'
             ])
         },
         watch: {
