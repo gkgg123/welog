@@ -3,13 +3,14 @@ package com.web.blog.controller.post;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 
 import com.web.blog.dao.post.PostDao;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.post.Post;
 
+import com.web.blog.model.user.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,8 +65,8 @@ public class PostController {
 
     @PostMapping("/{author}/create")
     @ApiOperation(value = "글쓰기")
-    public Object create(@RequestBody Post post) {
-
+    public Object create(@RequestBody Post post, HttpSession session) {
+        User user = (User) session.getAttribute("User");
         BasicResponse result = new BasicResponse();
         if(post.getTitle()==null)
             System.out.printf("??");
@@ -80,7 +81,8 @@ public class PostController {
 
     @PutMapping("/{author}/update/{pid}")
     @ApiOperation(value = "글 수정")
-    public Object update(@RequestBody Post post, @PathVariable int pid){
+    public Object update(@RequestBody Post post, @PathVariable int pid, HttpSession session){
+        Object o = session.getAttribute("User");
         BasicResponse result = new BasicResponse();
         post.setPid(pid);
         postDao.save(post);
