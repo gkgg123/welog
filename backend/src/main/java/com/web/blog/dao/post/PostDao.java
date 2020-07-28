@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostDao extends JpaRepository<Post, String> {
     List<Post> getPostByAuthor(String author);
+//    List<Post> findAllOrderByCount();
+//    List<Post> findAllByCreateDate();
     Post getPostByAuthorAndPid(String author, int pid);
     //Optional<Post> findPostByEmailAndPassword(String email, String password);
 
