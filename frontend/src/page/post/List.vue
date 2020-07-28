@@ -209,6 +209,7 @@ ul{
         watch: {
         },
         created() {
+            this.$store.commit('SET_header','환상의 6조')
         },
         methods: {
         },

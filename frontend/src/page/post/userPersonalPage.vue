@@ -12,6 +12,7 @@ export default {
       headerChange(){
         const urlname = this.$route.params.id
         this.$store.commit('SET_header',urlname)
+        this.$store.commit('SET_headerPath',urlname)
 
       }
     },
