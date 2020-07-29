@@ -1,52 +1,74 @@
 <template>
-  <div>
-      {{$route.params.id}}
-      <div class="container">
-        <div class="row">
-          <div class="col-6 offset-3 mt-5" style="min-height: 30vh;">
-            <div class="row h-100 border-bottom">
-              <div class="col-4">
-                유저 사진
-              </div>
-              <div class="col-8">
-                <div class="col-12 h-50">
-                  유저 아이디
-                </div>
-                <div class="col-12 h-50">
-                  유저 한줄 소개
-                </div>
-              </div>
-            </div>
+  <div id="personal">
+    <div id="personalUser">
+      <div class="userInfo">
+        <div class="userBar">
+          <img
+            class="userImage"
+            src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png"
+            alt="profileImage"
+          />
+          <div class="userIntro">
+            <h2 class="box">유저 아이디</h2>
+            <p class="box">유저 한줄 소개</p>
           </div>
-          <div class="col-12 my-5">
-            <div class="row">
-                <router-link  class="col-6" :to="{name:'userPersonalPosts',params:{id:$route.params.id}}" >글</router-link>
-                <router-link  class="col-6" :to="{name:'userPersonalIntro',params:{id:$route.params.id}}">소개글</router-link>
-            </div>
-          </div>
-          <router-view></router-view>
         </div>
       </div>
+    </div>
+    <div>
+      <div id="personalPost">
+        <div class="tagbar">
+          <h2>태그목록</h2>
+          <ul class="tagItem">
+            <li>tag1</li>
+            <li>tag2</li>
+            <li>tag3</li>
+          </ul>
+        </div>
+        <div class="postBox">
+          <div class="postBar">
+            <router-link
+              class="postLink"
+              :to="{name:'userPersonalPosts',params:{id:$route.params.id}}"
+            >글</router-link>
+            <router-link
+              class="postLink"
+              :to="{name:'userPersonalIntro',params:{id:$route.params.id}}"
+            >소개글</router-link>
+          </div>
+          <div class="postView">
+            <router-view></router-view>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
-    name: 'userPersonalPage',
-    methods : {
-      headerChange(){
-        const urlname = this.$route.params.id
-        this.$store.commit('SET_header',urlname)
-        this.$store.commit('SET_headerPath','@'+urlname)
-      }
-    },
-    created(){
-      this.headerChange()
-    }
+import "../../assets/css/personal.scss";
 
-}
+const whiteboardUrl = "@/assets/img/whiteboard.png";
+
+export default {
+  name: "userPersonalPage",
+  methods: {
+    headerChange() {
+      const urlname = this.$route.params.id;
+      this.$store.commit("SET_header", urlname);
+      this.$store.commit("SET_headerPath", "@" + urlname);
+    },
+  },
+  data() {
+    return {
+      postImg: whiteboardUrl,
+    };
+  },
+  created() {
+    this.headerChange();
+  },
+};
 </script>
 
 <style>
-
 </style>
