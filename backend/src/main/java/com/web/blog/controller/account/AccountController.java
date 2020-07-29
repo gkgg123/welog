@@ -11,32 +11,24 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.security.Principal;
+
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
         @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
         @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://127.0.0.1:3000" })
 @RestController
 public class AccountController {
     @Autowired
     AccountService accountService;
 
-    @GetMapping("/account")
-    public String signupForm(Model model){
-        model.addAttribute("account", new Account());
-        return "signup";
-    }
-
-    @PostMapping("/account")
+    @PostMapping("/signup")
     public String processingSignUp(@ModelAttribute Account account){
         account.setGrade("USER");
         accountService.createNew(account);
         return "redirect:/";
     }
 
-    @GetMapping("/login")
-    public String loginForm() {return "login";}
-    @GetMapping("/logout")
-    public String logoutForm() {return "logout";}
 }

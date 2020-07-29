@@ -21,7 +21,7 @@ public class LoggingFilter extends GenericFilterBean {
     stopWatch.start(((HttpServletRequest)request).getRequestURI());
 
     chain.doFilter(request, response);
-
+    System.out.println(((HttpServletRequest) request).getMethod());
     stopWatch.stop();
     logger.info(stopWatch.prettyPrint());
   }
