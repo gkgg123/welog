@@ -11,6 +11,7 @@ import com.web.blog.model.BasicResponse;
 import com.web.blog.model.post.Post;
 
 import com.web.blog.model.user.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,17 +35,17 @@ public class PostController {
     @Autowired
     PostDao postDao;
 
-//    @GetMapping("/latest")
-//    @ApiOperation(value = "최신 글 조회")
-//    public ResponseEntity<List<Post>> retrievePostbyLatest(){
-//        return new ResponseEntity<List<Post>>(postDao.findAllByCreateDate(), HttpStatus.OK);
-//    }
+    @GetMapping("/latest")
+    @ApiOperation(value = "최신 글 조회")
+    public ResponseEntity<List<Post>> retrievePostbyLatest(){
+        return new ResponseEntity<List<Post>>(postDao.findAll(Sort.by("createDate").descending()), HttpStatus.OK);
+    }
 //
-//    @GetMapping("/popularity")
-//    @ApiOperation(value = "인기 글 조회")
-//    public ResponseEntity<List<Post>> retrievePostbyPopularity(){
-//        return new ResponseEntity<List<Post>>(postDao.findAllOrderByCount(), HttpStatus.OK);
-//    }
+    @GetMapping("/popularity")
+    @ApiOperation(value = "인기 글 조회")
+    public ResponseEntity<List<Post>> retrievePostbyPopularity(){
+        return new ResponseEntity<List<Post>>(postDao.findAll(Sort.by("count").descending()), HttpStatus.OK);
+    }
 
     @GetMapping("/{author}/")
     @ApiOperation(value = "해당 유저 전체 글 조회")
