@@ -342,10 +342,11 @@
 }
 
 .tag-list-wrap {
-  position: fixed;
+  // position: fixed;
   text-align: center;
-  left: calc(50% + 380px);
-  top: 230px;
+  // left: 75%;
+  // top: 230px;
+  float: left;
   justify-content: center;
   width: 10%;
   h4 {
