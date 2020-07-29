@@ -28,7 +28,7 @@
         v-model="text"
         @copy-code-success="handleCopyCodeSuccess"
       />
-
+      <button @click="createPost">제출</button>
       <div id="context-menu" class="context-menu">
         <div class="item" data-toggle="modal" data-target="#exampleModal">
           수정요청
@@ -80,6 +80,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "CreateView",
   data() {
@@ -153,6 +154,19 @@ export default {
       const mainMarkdownEditor = document.querySelector(".v-md-editor__main");
       mainMarkdownEditor.style.minHeight = "55vh";
     },
+    createPost(){
+      const postData = {
+        'title': 'testtitle',
+        'content': this.text
+      }
+      axios.post('http://localhost:8080'+'/post/test/create/',postData)
+      .then((res)=>{
+        console.log(res)
+      })
+      .catch((err)=>{
+        console.log(err.response)
+      })
+    }
   },
   mounted() {
     this.contextmenu();

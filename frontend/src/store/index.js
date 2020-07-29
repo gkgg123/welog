@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    headerTitle : '환상의 6조',
+    headerTitle : 'develoger',
     headerPath : '/'
   },
   mutations: {
@@ -14,7 +14,7 @@ export default new Vuex.Store({
       
     },
     SET_headerPath(state,urlname){
-      state.headerPath = '@'+urlname
+      state.headerPath = urlname
     }
   },
   actions: {

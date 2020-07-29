@@ -231,7 +231,10 @@ export default {
   name: "Post",
   components: {},
   watch: {},
-  created() {},
+  created() {
+    this.$store.commit('SET_header','develoger'),
+    this.$store.commit('SET_headerPath','/')
+  },
   methods: {},
   data: () => {
     return {};

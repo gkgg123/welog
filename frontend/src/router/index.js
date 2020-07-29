@@ -11,8 +11,12 @@ import Logout from '../page/user/Logout.vue'
 // 포스트
 import List from '../page/post/List.vue'
 import CreateView from '../page/post/CreateView.vue'
+
 import userPersonalPage from '../page/post/userPersonalPage.vue'
- 
+import userPersonalPosts from '../page/post/userPersonalPosts.vue'
+import userPersonalPost from '../page/post/userPersonalPost.vue'
+import userPersonalIntro from '../page/post/userPersonalIntro.vue'
+// import { compile, component } from 'vue/types/umd'
 Vue.use(Router) 
  
 export default new Router({
@@ -49,6 +53,23 @@ export default new Router({
       path : '/@:id',
       name : 'userPersonalPage',
       component : userPersonalPage,
+      children : [
+        {
+          path : '',
+          name : 'userPersonalPosts',
+          component : userPersonalPosts
+        },
+        {
+          path : 'intro',
+          name : 'userPersonalIntro',
+          component : userPersonalIntro
+        },
+      ]
+    },
+    {
+        path : '/@:id/:pid',
+        name : 'userPersonalPost',
+        component : userPersonalPost,
     }
   ]
 })

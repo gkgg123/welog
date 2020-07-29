@@ -25,7 +25,7 @@
       >
         로그아웃
       </router-link>
-      <router-link to="/create" class="login-btn">새 글쓰기</router-link>
+      <router-link v-if="constants.LS_KEY.USER_TOKEN != 'userToken'" to="/create" class="login-btn">새 글쓰기</router-link>
     </div>
   </div>
 </template>

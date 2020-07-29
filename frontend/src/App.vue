@@ -33,6 +33,7 @@ export default {
           let array = [
               constants.URL_TYPE.USER.LOGIN,
               constants.URL_TYPE.USER.JOIN,
+              'CreateView',
           ];
 
           let isHeader = true;
