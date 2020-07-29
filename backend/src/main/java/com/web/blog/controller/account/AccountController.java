@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.security.Principal;
+
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
         @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
         @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://127.0.0.1:3000" })
 @RestController
 public class AccountController {
     @Autowired
@@ -28,4 +30,5 @@ public class AccountController {
         accountService.createNew(account);
         return "redirect:/";
     }
+
 }
