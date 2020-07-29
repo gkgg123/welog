@@ -66,7 +66,7 @@ public class PostController {
 
     @PostMapping("/{author}/create")
     @ApiOperation(value = "글쓰기")
-    public Object create(@RequestBody Post post, HttpSession session) {
+    public Object create(@RequestBody Post post, @PathVariable String author, HttpSession session) {
         User user = (User) session.getAttribute("User");
         BasicResponse result = new BasicResponse();
         if(post.getTitle()==null)
@@ -74,6 +74,7 @@ public class PostController {
         else
             System.out.printf(post.getTitle());
         post.setPostno(post.getPostno()+1);
+        post.setAuthor(author);
         postDao.save(post);
         result.status = true;
         result.data = SUCCESS;
