@@ -10,7 +10,6 @@ import com.web.blog.dao.post.PostDao;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.post.Post;
 
-import com.web.blog.model.user.User;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -67,7 +66,6 @@ public class PostController {
     @PostMapping("/{author}/create")
     @ApiOperation(value = "글쓰기")
     public Object create(@RequestBody Post post, @PathVariable String author, HttpSession session) {
-        User user = (User) session.getAttribute("User");
         BasicResponse result = new BasicResponse();
         if(post.getTitle()==null)
             System.out.printf("??");
