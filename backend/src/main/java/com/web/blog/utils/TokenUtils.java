@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Calendar;
@@ -106,7 +107,9 @@ public class TokenUtils {
     return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
             .parseClaimsJws(token).getBody();
   }
-
+  private String getTokenFromRequest(HttpServletRequest request){
+    return request.getHeader("Authorization");
+  }
   private String getUserEmailFromToken(String token) {
     Claims claims = getClaimsFormToken(token);
     return (String) claims.get("useremail");

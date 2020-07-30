@@ -16,9 +16,9 @@ import io.swagger.annotations.ApiResponses;
 import javax.servlet.http.HttpServletRequest;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
-  @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
-  @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
-  @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
+        @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
+        @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
+        @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 @RequestMapping("/user")
 @RestController
@@ -27,7 +27,6 @@ public class AccountController {
   TokenUtils tokenUtils;
   @Autowired
   AccountService accountService;
-
   @GetMapping("/signup")
   @ApiOperation(value = "회원 가입")
   public String signup(HttpServletRequest httpServletRequest){
