@@ -44,8 +44,8 @@ public class TokenUtils {
       Claims claims = getClaimsFormToken(token);
 
       log.info("expireTime :" + claims.getExpiration());
-      log.info("name :" + claims.get("name"));
-      log.info("Id :" + claims.get("id"));
+      log.info("username :" + claims.get("username"));
+      log.info("useremail :" + claims.get("useremail"));
       return true;
 
     } catch (ExpiredJwtException exception) {
