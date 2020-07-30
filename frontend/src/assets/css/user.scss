@@ -4,11 +4,7 @@
 .user {
   height: 100vh;
   h1 {
-    text-align: center;
-    font-weight: $f600;
-    margin-bottom: 20px;
-  }
-  h2 {
+    font-size: $font-size__2;
     text-align: center;
     font-weight: $f600;
     margin-bottom: 20px;
@@ -23,9 +19,8 @@
     position: relative;
     input {
       @include wrap;
-      margin: 0;
       border: 1px solid #000;
-      padding: 10px 15px;
+      padding: 7px 15px;
       box-sizing: border-box;
     }
     &.password-wrap {
@@ -54,16 +49,6 @@
     background-color: #000;
     color: #fff;
   }
-  .modal-btn-secondary {
-    background-color: #17a2b8;
-    color: #fff;
-    padding: 7px;
-  }
-  .modal-btn-primary {
-    background-color: #6c757d;
-    color: #fff;
-    padding: 7px;
-  }
 }
 
 // 로그인 페이지
@@ -90,45 +75,6 @@
     a {
       float: right;
       margin-top: 4px;
-    }
-  }
-  .btn--text {
-    color: #36cb45;
-  }
-  .btn--login {
-    height: 45px;
-  }
-  .btn--facebook-login {
-    height: 45px;
-    background-color: #3b5998;
-    border-color: #3b5998;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    span {
-      margin: auto;
-    }
-  }
-  .btn--naver-login {
-    height: 45px;
-    background-color: #1ec800;
-    border-color: #1ec800;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    span {
-      margin: auto;
-    }
-  }
-  .btn--google-login {
-    height: 45px;
-    background-color: #db4a39;
-    border-color: #db4a39;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    span {
-      margin: auto;
     }
   }
 }

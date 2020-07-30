@@ -33,6 +33,7 @@ export default {
           let array = [
               constants.URL_TYPE.USER.LOGIN,
               constants.URL_TYPE.USER.JOIN,
+              'CreateView',
           ];
 
           let isHeader = true;
@@ -54,12 +55,5 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; 
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>

@@ -1,0 +1,118 @@
+@charset "utf-8";
+
+#personal {
+  margin: 40px 30px 0px 30px;
+  height: 80vh;
+}
+@media only screen and (min-width: 770px) {
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: center;
+  }
+  .userInfo {
+    width: 40vw;
+  }
+}
+@media only screen and (max-width: 770px) {
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: left;
+  }
+  .userInfo {
+    width: 100%;
+  }
+}
+
+.userBar {
+  padding-bottom: 20px;
+  display: flex;
+  border-bottom: solid thin #aaaa;
+}
+.userImage {
+  width: 100px;
+  height: 100px;
+  background-color: #aaaa;
+  margin: 0px 30px 0px 20px;
+}
+.userIntro {
+  flex-direction: row;
+  .box {
+    padding: 5px;
+  }
+}
+
+#personalPost {
+  .tagbar {
+    margin-top: 60px;
+    margin-left: 40px;
+    width: 150px;
+    justify-content: center;
+    float: left;
+    h2 {
+      padding: 5px 10px 5px 10px;
+      border-bottom: solid;
+      text-align: center;
+    }
+    ul {
+      list-style-type: square;
+      margin: 30px;
+      li {
+        margin: 0px 0px 10px 20px;
+      }
+    }
+  }
+  .postBox {
+    float: left;
+    width: 80%;
+    .postBar {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      .postLink {
+        font-size: 32px;
+        margin: 0px 15px;
+        padding: 15px;
+        color: #00796b;
+        border-bottom: solid #00796b;
+      }
+    }
+    .postView {
+      margin: 30px;
+      padding: 30px 100px;
+      height: 50vh;
+      text-align: center;
+    }
+  }
+}
+@media only screen and (max-width: 500px) {
+  #personalPost {
+    width: 100%;
+    .tagbar {
+      display: none;
+    }
+    .postBox {
+      float: left;
+      width: 100%;
+      .postBar {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        .postLink {
+          width: 45%;
+          text-align: center;
+          font-size: 32px;
+          margin: 0px 15px;
+          padding: 15px;
+          color: #00796b;
+          border-bottom: solid #00796b;
+        }
+      }
+    }
+  }
+}
