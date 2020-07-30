@@ -61,7 +61,7 @@ public class TokenUtils {
   }
 
   public Authentication createAuthenticationFromToken(String token) {
-    UserDetails userDetails = accountService.loadUserByUsername(getUserIdFromToken(token));
+    UserDetails userDetails = accountService.loadUserByUsername(getUserEmailFromToken(token));
     // it is rather safe to return Authentication with NULL credentials if you do not require to use user credentials after successful authentication.
     return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
   }
@@ -91,8 +91,8 @@ public class TokenUtils {
     // 비공개 클레임으로 사용자의 이름과 이메일을 설정, 세션 처럼 정보를 넣고 빼서 쓸 수 있다.
     Map<String, Object> claims = new HashMap<>();
 
-    claims.put("id", account.getId());
-    claims.put("name", account.getUseremail());
+    claims.put("username", account.getUsername());
+    claims.put("useremail", account.getUseremail());
 
     return claims;
   }
@@ -107,8 +107,8 @@ public class TokenUtils {
             .parseClaimsJws(token).getBody();
   }
 
-  private String getUserIdFromToken(String token) {
+  private String getUserEmailFromToken(String token) {
     Claims claims = getClaimsFormToken(token);
-    return (String) claims.get("id");
+    return (String) claims.get("useremail");
   }
 }
