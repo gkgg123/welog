@@ -1,4 +1,4 @@
-package com.web.blog.common;
+package com.web.blog.annotation.account;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 

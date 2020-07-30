@@ -1,4 +1,4 @@
-package com.web.blog.config;
+package com.web.blog.config.account;
 
 
 import org.springframework.context.annotation.Configuration;

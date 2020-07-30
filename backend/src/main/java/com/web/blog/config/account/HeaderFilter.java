@@ -1,4 +1,4 @@
-package com.web.blog.common;
+package com.web.blog.config.account;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

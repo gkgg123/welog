@@ -1,10 +1,7 @@
-package com.web.blog.config;
+package com.web.blog.config.account;
 
-import com.web.blog.common.CustomAuthenticationFilter;
-import com.web.blog.common.CustomAuthenticationProvider;
-import com.web.blog.common.CustomLoginSuccessHandler;
-import com.web.blog.common.LoggingFilter;
-import com.web.blog.service.AccountService;
+import com.web.blog.handler.account.CustomLoginSuccessHandler;
+import com.web.blog.service.account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +14,11 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
@@ -62,6 +55,9 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
 
           .formLogin()
             .disable()
+          .logout()
+            .logoutUrl("/user/logout")
+            .and()
 
           .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
   }

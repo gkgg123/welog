@@ -1,9 +1,8 @@
-package com.web.blog.common;
+package com.web.blog.config.account;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.web.blog.exception.account.InputNotFoundException;
 import com.web.blog.model.account.Account;
 import lombok.extern.log4j.Log4j2;
-import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +35,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     while(em.hasMoreElements()){
       String name = em.nextElement();
       String val = request.getHeader(name);
-      System.out.println(val);
     }
 
     try {
@@ -44,7 +42,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println(abc);
 
     try {
       JSONParser jsonParser = new JSONParser();

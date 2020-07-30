@@ -1,11 +1,9 @@
-package com.web.blog.common;
+package com.web.blog.handler.account;
 
-import com.web.blog.model.account.Account;
 import com.web.blog.model.account.AccountDetails;
+import com.web.blog.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;

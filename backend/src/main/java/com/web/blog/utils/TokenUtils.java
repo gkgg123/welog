@@ -1,8 +1,8 @@
-package com.web.blog.common;
+package com.web.blog.utils;
 
 
 import com.web.blog.model.account.Account;
-import com.web.blog.service.AccountService;
+import com.web.blog.service.account.AccountService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

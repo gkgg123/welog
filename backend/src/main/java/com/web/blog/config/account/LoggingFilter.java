@@ -1,4 +1,4 @@
-package com.web.blog.common;
+package com.web.blog.config.account;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

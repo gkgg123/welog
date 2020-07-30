@@ -1,4 +1,4 @@
-package com.web.blog.common;
+package com.web.blog.exception.account;
 
 public class UserNotFoundException extends RuntimeException{
 

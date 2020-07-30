@@ -1,6 +1,6 @@
-package com.web.blog.common;
+package com.web.blog.config.account;
 
-import com.web.blog.service.AccountService;
+import com.web.blog.service.account.AccountService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,9 +31,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     String userEmail = token.getName();
     String userPw = (String) token.getCredentials();
     UserDetails userDetails = accountService.loadUserByUsername(userEmail); //
-    System.out.println(userEmail + " : " + userPw);
-    System.out.println(userDetails.getUsername() + " : " + userDetails.getPassword());
-    System.out.println();
+
     if(!passwordEncoder.matches(userPw, userDetails.getPassword())){
       System.err.println("Invalid password");
       throw new BadCredentialsException(userDetails.getUsername() + "Invaild password");

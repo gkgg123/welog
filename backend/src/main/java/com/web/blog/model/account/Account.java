@@ -1,12 +1,10 @@
 package com.web.blog.model.account;
 
-import com.web.blog.common.AccountGrade;
+import com.web.blog.enums.role.AccountGrade;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.NonNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,14 +16,18 @@ public class Account implements Serializable {
   @Id @GeneratedValue
   private Integer id;
 
+  @NonNull
   @Column(unique = true)
   private String useremail;
 
+  @NonNull
   private String password;
 
+  @NonNull
   @Enumerated(EnumType.STRING)
   private AccountGrade grade;
 
+  @NonNull
   private String username;
 
   private boolean isEnable;
