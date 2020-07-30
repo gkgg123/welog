@@ -4,16 +4,31 @@
   margin: 40px 30px 0px 30px;
   height: 80vh;
 }
-#personalUser {
-  margin-top: 60px;
-  display: flex;
-  width: 100%;
-  height: 15vh;
-  justify-content: center;
+@media only screen and (min-width: 770px) {
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: center;
+  }
+  .userInfo {
+    width: 40vw;
+  }
 }
-.userInfo {
-  width: 40vw;
+@media only screen and (max-width: 770px) {
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: left;
+  }
+  .userInfo {
+    width: 100%;
+  }
 }
+
 .userBar {
   padding-bottom: 20px;
   display: flex;
@@ -72,6 +87,32 @@
       padding: 30px 100px;
       height: 50vh;
       text-align: center;
+    }
+  }
+}
+@media only screen and (max-width: 500px) {
+  #personalPost {
+    width: 100%;
+    .tagbar {
+      display: none;
+    }
+    .postBox {
+      float: left;
+      width: 100%;
+      .postBar {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        .postLink {
+          width: 45%;
+          text-align: center;
+          font-size: 32px;
+          margin: 0px 15px;
+          padding: 15px;
+          color: #00796b;
+          border-bottom: solid #00796b;
+        }
+      }
     }
   }
 }
