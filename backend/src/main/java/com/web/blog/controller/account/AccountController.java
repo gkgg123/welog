@@ -1,5 +1,6 @@
 package com.web.blog.controller.account;
 
+import com.web.blog.common.AccountGrade;
 import com.web.blog.model.BasicResponse;
 
 import com.web.blog.model.account.Account;
@@ -26,9 +27,8 @@ public class AccountController {
 
     @PostMapping("/signup")
     public String processingSignUp(@ModelAttribute Account account){
-        account.setGrade("USER");
+        account.setGrade(AccountGrade.USER);
         accountService.createNew(account);
         return "redirect:/";
     }
-
 }
