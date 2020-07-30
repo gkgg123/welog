@@ -6,7 +6,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     headerTitle : 'develoger',
-    headerPath : '/'
+    headerPath : '/',
+    username : sessionStorage.getItem('username'),
+    articleList : [],
+  },
+  getters : {
+    isLogined : state => !!state.username,
   },
   mutations: {
     SET_header(state,urlname){
@@ -14,8 +19,15 @@ export default new Vuex.Store({
       
     },
     SET_headerPath(state,urlname){
-      state.headerPath = urlname
-    }
+      state.headerPath = '/'+urlname
+    },
+    SET_USERNAME(state,username){
+      state.username = username
+      sessionStorage.setItem('username',username)
+    },
+    SET_Articles(state,articles){
+      state.articles = articles
+    }  
   },
   actions: {
   },

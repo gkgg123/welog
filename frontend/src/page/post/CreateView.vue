@@ -29,52 +29,9 @@
         @copy-code-success="handleCopyCodeSuccess"
       />
       <button @click="createPost">제출</button>
-      <div id="context-menu" class="context-menu">
-        <div class="item" data-toggle="modal" data-target="#exampleModal">
-          수정요청
-        </div>
-        <div class="item">나가기</div>
-      </div>
 
-      <div
-        class="modal fade"
-        id="exampleModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              {{ confirmText }}
-            </div>
-            <div class="modal-footer">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-              <button type="button" class="btn btn-primary">
-                Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      
     </div>
   </div>
 </template>
@@ -128,24 +85,6 @@ export default {
         }
       }
     },
-    //  오른쪽 버튼 Custom
-    contextmenu(event) {
-      const creatediv = document.querySelector("#create");
-      this.confirmText = document.getSelection().toString();
-      creatediv.addEventListener("contextmenu", (event) => {
-        event.preventDefault();
-        var contextElement = document.getElementById("context-menu");
-        contextElement.style.top = event.offsetY + "px";
-        contextElement.style.left = event.offsetX + "px";
-        this.confirmText = document.getSelection().toString();
-
-        contextElement.classList.add("active");
-      });
-      creatediv.addEventListener("click", function() {
-        var contextElement = document.getElementById("context-menu");
-        contextElement.classList.remove("active");
-      });
-    },
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
       console.log(code);
@@ -156,12 +95,14 @@ export default {
     },
     createPost(){
       const postData = {
-        'title': 'testtitle',
+        'title': this.title,
         'content': this.text
       }
-      axios.post('http://localhost:8080'+'/post/test/create/',postData)
+      console.log(this.text)
+      axios.post('http://localhost:8080'+`/post/${this.$store.state.username}/create/`,postData)
       .then((res)=>{
         console.log(res)
+        this.$router.push({name:'userPersonalPosts',params:{id:this.$store.state.username}})
       })
       .catch((err)=>{
         console.log(err.response)
@@ -169,7 +110,6 @@ export default {
     }
   },
   mounted() {
-    this.contextmenu();
     this.changeHeight();
   },
 };
@@ -193,35 +133,5 @@ export default {
   width: 30%;
   border-bottom: 1px solid;
   margin: 1vh 5px;
-}
-
-#context-menu {
-  position: absolute;
-  z-index: 10000;
-  width: 150px;
-  background: #1b1a1a;
-  border-radius: 5px;
-  transform: scale(0);
-  transform-origin: top left;
-}
-#context-menu.active {
-  transform: scale(1);
-  transition: transform 300ms ease-in-out;
-}
-#context-menu .item {
-  padding: 8px 10px;
-  font-size: 15px;
-  color: #eee;
-}
-#context-menu .item:hover {
-  background: #555;
-}
-#context-menu .item i {
-  display: inline-block;
-  margin-right: 5px;
-}
-#context-menu hr {
-  margin: 2px 0px;
-  border-color: #555;
 }
 </style>
