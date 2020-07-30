@@ -78,6 +78,7 @@ public class PostController {
         postDao.save(post);
         result.status = true;
         result.data = SUCCESS;
+        result.object = post;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
