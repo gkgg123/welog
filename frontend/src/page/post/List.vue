@@ -3,7 +3,7 @@
     <div class>
       <h2>전체글</h2>
       <div>
-        <section class="w-75 post-list col-12 col-md-9">
+        <section class="post-list col-12 col-md-9">
           <div class="w-100 col-xl-4 col-sm-6 col-12">
             <div class="post-card">
               <a>
