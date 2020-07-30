@@ -13,7 +13,7 @@
 
       <router-link
         v-if="!isLogined"
-        v-bind:to="{ name: constants.URL_TYPE.USER.LOGIN }"
+        :to="{ name: constants.URL_TYPE.USER.LOGIN }"
         class="login-btn"
       >
         로그인

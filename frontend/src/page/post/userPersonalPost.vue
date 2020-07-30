@@ -1,8 +1,6 @@
 <template>
   <div class="mt-5">
-    <h1>{{$route.params.id}}</h1>
-    <h2>{{$route.params.pid}}</h2>
-    <h3>{{title}}</h3>
+    <h3>제목: {{title}}</h3>
     <aside class="aside-left">왼쪽입니다.</aside>
     <div class="aside-right">오른쪽입니다.</div>
     <v-md-editor
@@ -72,6 +70,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name : 'userPersonalPost',
     data() {
@@ -106,6 +105,18 @@ export default {
           contextElement.classList.remove("active");
         });
       },
+      /// 가져오기 ///
+      carryText(){
+        const author = this.$route.params.id
+        const pid = this.$route.params.pid
+        console.log(author,pid)
+        axios.get('http://localhost:8080/'+`post/${author}/${pid}/`)
+        .then((res)=>{
+          console.log(res.title)
+          this.title = res.data.title
+          this.content = res.data.content
+        })
+      }
       
     },
     created(){
@@ -113,6 +124,7 @@ export default {
     },
     mounted(){
       this.contextmenu();
+      this.carryText();
     }
 
 }

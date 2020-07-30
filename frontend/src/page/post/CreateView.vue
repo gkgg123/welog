@@ -101,8 +101,8 @@ export default {
       console.log(this.text)
       axios.post('http://localhost:8080'+`/post/${this.$store.state.username}/create/`,postData)
       .then((res)=>{
-        console.log(res)
-        this.$router.push({name:'userPersonalPosts',params:{id:this.$store.state.username}})
+        console.log(res.data.object.pid)
+        this.$router.push({name:'userPersonalPost',params:{id:this.$store.state.username,pid:res.data.object.pid}})
       })
       .catch((err)=>{
         console.log(err.response)
