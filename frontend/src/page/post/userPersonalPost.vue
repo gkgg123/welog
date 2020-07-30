@@ -2,13 +2,24 @@
   <div class="mt-5">
     <h3>제목: {{title}}</h3>
     <aside class="aside-left">왼쪽입니다.</aside>
-    <div class="aside-right">오른쪽입니다.</div>
+    <div class="aside-right">오른쪽입니다.
+
+          <div
+      v-for="anchor in titles"
+      :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
+      @click="handleAnchorClick(anchor)"
+      :key="anchor.lineIndex"
+    >
+      <a style="cursor: pointer">{{ anchor.title }}</a>
+    </div>
+    </div>
     <v-md-editor
         class="border border-primary col-8 mx-auto"
         style="margin:5vh 0px; height:300vh;"
         id="detail"
         mode="preview"
-        v-model="content"
+        v-model="text"
+        ref="editor"
       />
       
       <div id="context-menu" class="context-menu">
@@ -23,8 +34,7 @@
     </textarea>
 
 
-
-          <div
+      <div
         class="modal fade"
         id="exampleModal"
         tabindex="-1"
@@ -75,10 +85,11 @@ export default {
     name : 'userPersonalPost',
     data() {
         return {
-            title : 'text 중입니다.',
-            content : '### 안의 내용입니다.',
+            title : '',
+            text : '',
             tagList : [],
             confirmText : '',
+            titles : [],
 
         }
     },
@@ -106,26 +117,66 @@ export default {
         });
       },
       /// 가져오기 ///
-      carryText(){
+       carryText(){
         const author = this.$route.params.id
         const pid = this.$route.params.pid
         console.log(author,pid)
-        axios.get('http://localhost:8080/'+`post/${author}/${pid}/`)
+         axios.get('http://localhost:8080/'+`post/${author}/${pid}/`)
         .then((res)=>{
-          console.log(res.title)
+          console.log(res.data,'안녕하세요')
           this.title = res.data.title
-          this.content = res.data.content
+          this.text = res.data.content
         })
+        .finally(()=>{
+          console.log('여기는 finally')
+          const anchors = this.$refs.editor.$el.querySelectorAll(
+                '.v-md-editor-preview h1,h2,h3,h4,h5,h6'
+              );
+          const titles = Array.from(anchors).filter((title) => !!title.innerText.trim());
+
+              if (!titles.length) {
+                this.titles = [];
+                return;
+              }
+
+              const hTags = Array.from(new Set(titles.map((title) => title.tagName))).sort();
+
+              this.titles = titles.map((el) => ({
+                title: el.innerText,
+                lineIndex: el.getAttribute('data-v-md-line'),
+                indent: hTags.indexOf(el.tagName),
+              }));
+        })
+      },
+
+      handleAnchorClick(anchor) {
+      const { editor } = this.$refs;
+      const { lineIndex } = anchor;
+
+      const heading = editor.$el.querySelector(
+        `.v-md-editor-preview [data-v-md-line="${lineIndex}"]`
+      );
+
+      if (heading) {
+        editor.previewScrollToTarget({
+          target: heading,
+          scrollContainer: window,
+          top: 80,
+        });
       }
-      
+    },
+
     },
     created(){
-      this.headerChange()
+      this.headerChange()      
+      this.carryText()
+
+      
     },
     mounted(){
-      this.contextmenu();
-      this.carryText();
-    }
+      this.contextmenu()
+
+    },
 
 }
 </script>
