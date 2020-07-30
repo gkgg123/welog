@@ -10,7 +10,6 @@ import com.web.blog.dao.post.CommentDao;
 import com.web.blog.model.BasicResponse;
 
 import com.web.blog.model.post.Comment;
-import com.web.blog.model.user.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
