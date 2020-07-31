@@ -4,7 +4,7 @@
       <h2>전체글</h2>
       <div>
         <section class="post-list col-12 col-md-9">
-          <div class="w-100 col-xl-4 col-sm-6 col-12">
+          <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles">
             <div class="post-card">
               <a>
                 <div
@@ -16,140 +16,17 @@
                 />
 
                 <div class="contents">
-                  <h3>제목</h3>
-                  <p class="content">컨텐츠</p>
-                  <span class="date">2020-06-19ㆍ</span>
+                  <h3>{{article.title}}</h3>
+                  <p class="content">{{article.content}}</p>
+                  <span
+                    class="date"
+                  >{{article.createDate[0]}}년 {{article.createDate[1]}}월 {{article.createDate[2]}}일ㆍ</span>
                   <span class="comment">댓글 0개</span>
                 </div>
               </a>
 
               <div class="writer-wrap">
-                <a>닉네임</a>
-                <span>♥ 2</span>
-              </div>
-            </div>
-          </div>
-          <div class="w-100 col-xl-4 col-sm-6 col-12">
-            <div class="post-card">
-              <a>
-                <div
-                  :style="{
-                    backgroundImage:
-                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
-                  }"
-                  class="post-img"
-                />
-
-                <div class="contents">
-                  <h3>제목</h3>
-                  <p class="content">컨텐츠</p>
-                  <span class="date">2020-06-19ㆍ</span>
-                  <span class="comment">댓글 0개</span>
-                </div>
-              </a>
-
-              <div class="writer-wrap">
-                <a>닉네임</a>
-                <span>♥ 2</span>
-              </div>
-            </div>
-          </div>
-          <div class="w-100 col-xl-4 col-sm-6 col-12">
-            <div class="post-card">
-              <a>
-                <div
-                  :style="{
-                    backgroundImage:
-                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
-                  }"
-                  class="post-img"
-                />
-
-                <div class="contents">
-                  <h3>제목</h3>
-                  <p class="content">컨텐츠</p>
-                  <span class="date">2020-06-19ㆍ</span>
-                  <span class="comment">댓글 0개</span>
-                </div>
-              </a>
-
-              <div class="writer-wrap">
-                <a>닉네임</a>
-                <span>♥ 2</span>
-              </div>
-            </div>
-          </div>
-          <div class="w-100 col-xl-4 col-sm-6 col-12">
-            <div class="post-card">
-              <a>
-                <div
-                  :style="{
-                    backgroundImage:
-                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
-                  }"
-                  class="post-img"
-                />
-
-                <div class="contents">
-                  <h3>제목</h3>
-                  <p class="content">컨텐츠</p>
-                  <span class="date">2020-06-19ㆍ</span>
-                  <span class="comment">댓글 0개</span>
-                </div>
-              </a>
-
-              <div class="writer-wrap">
-                <a>닉네임</a>
-                <span>♥ 2</span>
-              </div>
-            </div>
-          </div>
-          <div class="w-100 col-xl-4 col-sm-6 col-12">
-            <div class="post-card">
-              <a>
-                <div
-                  :style="{
-                    backgroundImage:
-                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
-                  }"
-                  class="post-img"
-                />
-
-                <div class="contents">
-                  <h3>제목</h3>
-                  <p class="content">컨텐츠</p>
-                  <span class="date">2020-06-19ㆍ</span>
-                  <span class="comment">댓글 0개</span>
-                </div>
-              </a>
-
-              <div class="writer-wrap">
-                <a>닉네임</a>
-                <span>♥ 2</span>
-              </div>
-            </div>
-          </div>
-          <div class="w-100 col-xl-4 col-sm-6 col-12">
-            <div class="post-card">
-              <a>
-                <div
-                  :style="{
-                    backgroundImage:
-                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
-                  }"
-                  class="post-img"
-                />
-
-                <div class="contents">
-                  <h3>제목</h3>
-                  <p class="content">컨텐츠</p>
-                  <span class="date">2020-06-19ㆍ</span>
-                  <span class="comment">댓글 0개</span>
-                </div>
-              </a>
-
-              <div class="writer-wrap">
-                <a>닉네임</a>
+                <a>{{article.author}}</a>
                 <span>♥ 2</span>
               </div>
             </div>
@@ -186,18 +63,29 @@ ul {
 
 <script>
 import "../../assets/css/post.scss";
+import axios from "axios";
 
 export default {
   name: "Post",
   components: {},
   watch: {},
   created() {
-    this.$store.commit("SET_header", "develoger"),
+    this.$store.commit("SET_header", "welog"),
       this.$store.commit("SET_headerPath", "/");
+    this.getArticles();
   },
-  methods: {},
   data: () => {
-    return {};
+    return {
+      articles: [],
+    };
+  },
+  methods: {
+    getArticles() {
+      axios.get("http://localhost:8080/" + "post/latest/").then((res) => {
+        console.log(res);
+        this.articles = res.data;
+      });
+    },
   },
 };
 </script>
