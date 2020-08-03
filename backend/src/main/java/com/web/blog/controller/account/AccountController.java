@@ -32,7 +32,7 @@ public class AccountController {
   public String signup(HttpServletRequest httpServletRequest){
     try {
       Account account = new Account();
-      account.setUseremail(httpServletRequest.getHeader("email"));
+      account.setUseremail(httpServletRequest.getHeader("useremail"));
       account.setPassword(httpServletRequest.getHeader("password"));
       account.setUsername(httpServletRequest.getHeader("nickname"));
       account.setGrade(AccountGrade.USER);
