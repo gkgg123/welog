@@ -9,19 +9,14 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
-@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/static/", "classpath:/public/", "classpath:/",
             "classpath:/resources/", "classpath:/META-INF/resources/", "classpath:/META-INF/resources/webjars/" };
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        // /에 해당하는 url mapping을 /common/test로 forward한다.
-        registry.addViewController( "/" ).setViewName( "forward:/index" );
-        // 우선순위를 가장 높게 잡는다.
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registry.addViewController("/").setViewName("forward:/index.html");
     }
-
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
@@ -29,6 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST","PUT", "DELETE");
     }
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("swagger-ui.html")
