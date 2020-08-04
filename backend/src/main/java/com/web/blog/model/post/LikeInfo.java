@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Like {
+public class LikeInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pid;
-    @Id
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
 
