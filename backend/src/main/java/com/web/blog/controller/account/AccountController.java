@@ -35,6 +35,7 @@ public class AccountController {
       account.setUseremail(httpServletRequest.getHeader("useremail"));
       account.setPassword(httpServletRequest.getHeader("password"));
       account.setUsername(httpServletRequest.getHeader("nickname"));
+      System.out.println(account.getUsername());
       account.setGrade(AccountGrade.USER);
       accountService.createNew(account);
     }catch (Exception e){

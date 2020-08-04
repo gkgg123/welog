@@ -21,6 +21,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 public class AccontConfig extends WebSecurityConfigurerAdapter {
@@ -44,7 +46,6 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception{
-
     http.csrf().disable().authorizeRequests()
             .anyRequest().permitAll()
             .and()
@@ -52,14 +53,12 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
             .and()
             .cors()
             .and()
-
           .formLogin()
             .disable()
+          .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
           .logout()
-            .logoutUrl("/user/logout")
-            .and()
+            .logoutUrl("/user/logout");
 
-          .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
   }
 
   @Bean
@@ -78,7 +77,7 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
   }
 
   @Bean
-  CustomLoginSuccessHandler customLoginSuccessHandler(){
+  public CustomLoginSuccessHandler customLoginSuccessHandler(){
     return new CustomLoginSuccessHandler();
   }
   @Bean
@@ -97,6 +96,11 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*");
     configuration.setAllowCredentials(true);
+
+    // This allow us to expose the headers
+    configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
+            "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", configuration);

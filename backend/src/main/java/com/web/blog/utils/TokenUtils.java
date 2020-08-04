@@ -25,7 +25,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Log4j2
 public class TokenUtils {
-  private static final String secretKey = "ThisIsA_SecretKeyForJwtExample";
+  private static final String secretKey = "ThisIsA_SecretKeyForJwtExampleaa";
 
   @Resource(name = "accountService")
   private AccountService accountService;

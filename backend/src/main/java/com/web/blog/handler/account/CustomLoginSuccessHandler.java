@@ -2,6 +2,7 @@ package com.web.blog.handler.account;
 
 import com.web.blog.model.account.AccountDetails;
 import com.web.blog.utils.TokenUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Log4j2
 public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
   @Autowired
   private TokenUtils tokenUtils;

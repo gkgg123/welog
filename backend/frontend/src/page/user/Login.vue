@@ -33,21 +33,22 @@ export default {
   methods: {
     login() {
       const loginData = {
-        email: this.email,
+        useremail: this.email,
         password: this.password,
       };
-      this.$store.commit("SET_USERNAME", this.email);
-      this.$router.push({
-        name: "userPersonalPosts",
-        params: { id: this.email },
-      });
-      // axios.post(constants.baseUrl + 'rest-auth/login/', loginData)
-      //     .then((res)=>{
-      //         console.log(res.data.key)
-      //         this.$cookies.set('auth-token',res.data.key)
-      //         constants.LS_KEY.USER_TOKEN = res.data.key
-      //         this.$router.back()
-      //     })
+      // this.$store.commit("SET_USERNAME", this.email);
+      // this.$router.push({
+      //   name: "userPersonalPosts",
+      //   params: { id: this.email },
+      // });
+      axios.post(constants.baseUrl + 'user/login', loginData)
+          .then((res)=>{
+              console.log(res.data.key)
+              console.log(res.headers)
+              this.$cookies.set('auth-token',res.data.key)
+              constants.LS_KEY.USER_TOKEN = res.data.key
+              this.$router.back()
+          })
     },
   },
   data: () => {

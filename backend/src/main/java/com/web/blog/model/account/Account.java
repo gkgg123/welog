@@ -28,6 +28,7 @@ public class Account implements Serializable {
   private AccountGrade grade;
 
   @NonNull
+  @Column(unique = true)
   private String username;
 
   private boolean isEnable;
