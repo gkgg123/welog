@@ -361,7 +361,14 @@
     @include wrap;
     li {
       cursor: pointer;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
+    }
+    .notice {
+      font-size: large;
+      font-weight: bold;
+    }
+    div {
+      // text-align: right;
     }
   }
 }
