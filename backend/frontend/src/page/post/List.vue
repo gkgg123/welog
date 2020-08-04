@@ -38,7 +38,10 @@
           <ul class="tag-list mb-5">
             <li>공지사항1</li>
             <li>공지사항2</li>
-            <li>공지사항3</li>
+            <li>제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</li>
+            <a href="#" class="text-secondary">
+              <u>더보기</u>
+            </a>
           </ul>
           <h4>인기태그</h4>
           <ul class="tag-list">
