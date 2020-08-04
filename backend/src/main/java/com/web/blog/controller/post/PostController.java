@@ -6,10 +6,13 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.web.blog.dao.Account.AccountDao;
+import com.web.blog.dao.post.LikeDao;
 import com.web.blog.dao.post.PostDao;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.post.Post;
 
+import com.web.blog.service.account.AccountService;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +37,10 @@ public class PostController {
 
     @Autowired
     PostDao postDao;
+    @Autowired
+    LikeDao likeDao;
+    @Autowired
+    AccountDao accountDao;
 
     @GetMapping("/latest")
     @ApiOperation(value = "최신 글 조회")
@@ -109,6 +116,13 @@ public class PostController {
     @ApiOperation(value = "태그 검색")
     public ResponseEntity<List<Post>> retrievePostbyTags(@PathVariable String tag){
         return new ResponseEntity<List<Post>>(postDao.findByTagsContaining(","+tag+","), HttpStatus.OK);
+    }
+
+    @PostMapping("/{author}/{pid}/like")
+    @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
+    public int clickLike(@PathVariable String author, @PathVariable int pid){
+        int uid = accountDao.findByUsername(author).getId();
+        return likeDao.findByPidAndUid(pid, uid).getIsLike() == 0 ? 1: 0;
     }
 
 }
