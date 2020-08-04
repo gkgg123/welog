@@ -4,7 +4,11 @@
       <h2>전체글</h2>
       <div>
         <section class="post-list col-12 col-md-9">
-          <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles" :key="article.pid">
+          <div
+            class="w-100 col-xl-4 col-sm-6 col-12"
+            v-for="article in articles"
+            :key="article.pid"
+          >
             <div class="post-card">
               <a :href="'#/@'+article.author+'/'+article.pid">
                 <div
@@ -16,17 +20,29 @@
                 />
 
                 <div class="contents">
+<<<<<<< Updated upstream
                   <h3>{{article.title}}</h3>
                   <p class="content">{{article.content}}</p>
                   <span
                     class="date"
                   >{{article.createDate.slice(0,4)}}년 {{article.createDate.slice(5,7)}}월 {{article.createDate.slice(8,10)}}일ㆍ</span>
+=======
+                  <h3>{{ article.title }}</h3>
+                  <p class="content">{{ article.content }}</p>
+                  <span class="date"
+                    >{{ article.createDate[0] }}{{ article.createDate[1]
+                    }}{{ article.createDate[2] }}{{ article.createDate[3] }}년
+                    {{ article.createDate[5] }}{{ article.createDate[6] }}월
+                    {{ article.createDate[8]
+                    }}{{ article.createDate[9] }}일ㆍ</span
+                  >
+>>>>>>> Stashed changes
                   <span class="comment">댓글 0개</span>
                 </div>
               </a>
 
               <div class="writer-wrap">
-                <a>{{article.author}}</a>
+                <a>{{ article.author }}</a>
                 <span>♥ 2</span>
               </div>
             </div>
@@ -45,7 +61,9 @@
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
             <li class="notice">
-              <a href="#">제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</a>
+              <a href="#"
+                >제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</a
+              >
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
             <a href="#" class="text-secondary">
@@ -83,8 +101,15 @@ export default {
   watch: {},
   created() {
     this.$store.commit("SET_header", "welog"),
+<<<<<<< Updated upstream
       this.$store.commit("SET_headerPath", "/");
     let now = new Date();
+=======
+      this.$store.commit("SET_headerPath", {
+        PathName: "main",
+        PathParams: null,
+      });
+>>>>>>> Stashed changes
     this.getArticles();
     console.log(now.getFullYear());
   },

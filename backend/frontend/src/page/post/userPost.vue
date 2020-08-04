@@ -84,7 +84,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: "userPersonalPost",
+  name: "userPost",
   data() {
     return {
       title: "",
@@ -182,6 +182,7 @@ export default {
   created() {
     this.headerChange();
     this.carryText();
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   },
   mounted() {
     this.contextmenu();

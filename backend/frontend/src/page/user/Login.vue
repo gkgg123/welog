@@ -61,6 +61,7 @@ export default {
         .post(constants.baseUrl + "user/login", loginData)
         .then((res) => {
           console.log(res);
+          console.log(res.headers["content-type"], "11111111111");
           // this.$cookies.set('auth-token',res.data.key)
           // constants.LS_KEY.USER_TOKEN = res.data.key
           // this.$router.back()

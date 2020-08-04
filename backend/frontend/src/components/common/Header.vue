@@ -1,7 +1,9 @@
 <template>
   <div id="header" v-if="isHeader">
     <h1>
-      <router-link :to="headerPath">
+      <router-link
+        :to="{ name: headerPathName, params: { id: headerPathParams } }"
+      >
         {{ headerTitle }}
       </router-link>
     </h1>
@@ -25,21 +27,23 @@
       >
         로그아웃
       </router-link>
-      <router-link v-if="isLogined" to="/create" class="login-btn">새 글쓰기</router-link>
+      <router-link v-if="isLogined" to="/create" class="login-btn"
+        >새 글쓰기</router-link
+      >
     </div>
   </div>
 </template>
 
 <script>
 import constants from "../../lib/constants";
-import { mapState,mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   name: "Header",
   components: {},
   props: ["isHeader"],
   computed: {
-    ...mapState(["headerTitle", "headerPath"]),
-    ...mapGetters(["isLogined"])
+    ...mapState(["headerTitle", "headerPathName", "headerPathParams"]),
+    ...mapGetters(["isLogined"]),
   },
   watch: {},
   created() {},

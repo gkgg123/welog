@@ -29,12 +29,20 @@
           <div class="postBar">
             <router-link
               class="postLink"
-              :to="{name:'userPersonalPosts',params:{id:$route.params.id}}"
-            >글</router-link>
+              :to="{
+                name: 'userPostItems',
+                params: { id: $route.params.id },
+              }"
+              >글</router-link
+            >
             <router-link
               class="postLink"
-              :to="{name:'userPersonalIntro',params:{id:$route.params.id}}"
-            >소개글</router-link>
+              :to="{
+                name: 'userPersonalIntro',
+                params: { id: $route.params.id },
+              }"
+              >소개글</router-link
+            >
           </div>
           <div class="postView">
             <router-view></router-view>
@@ -51,12 +59,16 @@ import "../../assets/css/personal.scss";
 const whiteboardUrl = "@/assets/img/whiteboard.png";
 
 export default {
-  name: "userPersonalPage",
+  name: "userBlog",
   methods: {
     headerChange() {
       const urlname = this.$route.params.id;
+      console.log(urlname, "test");
       this.$store.commit("SET_header", urlname);
-      this.$store.commit("SET_headerPath", "@" + urlname);
+      this.$store.commit("SET_headerPath", {
+        PathName: "userPostItems",
+        PathParams: urlname,
+      });
     },
   },
   data() {
@@ -70,5 +82,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
