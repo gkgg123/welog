@@ -4,7 +4,7 @@
       <h2>전체글</h2>
       <div>
         <section class="post-list col-12 col-md-9">
-          <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles">
+          <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles" :key="article.pid">
             <div class="post-card">
               <a>
                 <div
@@ -78,7 +78,7 @@ import "../../assets/css/post.scss";
 import axios from "axios";
 
 export default {
-  name: "Post",
+  name: "MainList",
   components: {},
   watch: {},
   created() {

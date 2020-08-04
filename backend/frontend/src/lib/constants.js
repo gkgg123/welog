@@ -1,6 +1,6 @@
 export default {
     TITLE: 'SSAFY 개발블로그',
-    baseUrl: 'http://127.0.0.1:8000/',
+    baseUrl: 'http://127.0.0.1:8080/',
     LS_KEY: {
         USER_TOKEN: 'userToken',
     },

@@ -29,15 +29,12 @@
         @copy-code-success="handleCopyCodeSuccess"
       />
       <button @click="createPost">제출</button>
-
-
-      
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
   name: "CreateView",
   data() {
@@ -93,21 +90,34 @@ export default {
       const mainMarkdownEditor = document.querySelector(".v-md-editor__main");
       mainMarkdownEditor.style.minHeight = "55vh";
     },
-    createPost(){
+    createPost() {
+      const configTag = "," + this.taglist.join(",") + ",";
       const postData = {
-        'title': this.title,
-        'content': this.text
-      }
-      console.log(this.text)
-      axios.post('http://localhost:8080'+`/post/${this.$store.state.username}/create/`,postData)
-      .then((res)=>{
-        console.log(res.data.object.pid)
-        this.$router.push({name:'userPersonalPost',params:{id:this.$store.state.username,pid:res.data.object.pid}})
-      })
-      .catch((err)=>{
-        console.log(err.response)
-      })
-    }
+        title: this.title,
+        content: this.text,
+        tags: configTag,
+      };
+      console.log(this.text);
+      axios
+        .post(
+          "http://localhost:8080" +
+            `/post/${this.$store.state.username}/create/`,
+          postData
+        )
+        .then((res) => {
+          console.log(res.data.object.pid);
+          this.$router.push({
+            name: "userPersonalPost",
+            params: {
+              id: this.$store.state.username,
+              pid: res.data.object.pid,
+            },
+          });
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
   },
   mounted() {
     this.changeHeight();

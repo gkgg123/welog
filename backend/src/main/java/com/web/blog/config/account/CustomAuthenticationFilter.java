@@ -46,7 +46,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     try {
       JSONParser jsonParser = new JSONParser();
       JSONObject jsonObject = (JSONObject) jsonParser.parse(abc);
-      String email = (String) jsonObject.get("email");
+      String email = (String) jsonObject.get("useremail");
       String password = (String) jsonObject.get("password");
       Account account = new Account();
       account.setUseremail(email);

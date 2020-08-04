@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5">
-    <h3>제목: {{title}}</h3>
+    <h3>제목: {{ title }}</h3>
     <aside class="aside-left">왼쪽입니다.</aside>
     <div class="aside-right">
       오른쪽입니다.
@@ -23,20 +23,21 @@
     />
 
     <div id="context-menu" class="context-menu">
-      <div class="item" data-toggle="modal" data-target="#exampleModal">수정요청</div>
+      <div class="item" data-toggle="modal" data-target="#exampleModal">
+        수정요청
+      </div>
       <div class="item">나가기</div>
     </div>
 
     <textarea
       class="border border-primary"
       placeholder="댓글을 남겨주세요"
-      name
-      id
+      name=""
+      id=""
       cols="30"
       rows="10"
-      v-model="commentContents"
-    ></textarea>
-    <button @:click="commentSubmit">댓글 작성</button>
+    >
+    </textarea>
 
     <div
       class="modal fade"
@@ -50,14 +51,29 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">{{ confirmText }}</div>
+          <div class="modal-body">
+            {{ confirmText }}
+          </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">
+              Save changes
+            </button>
           </div>
         </div>
       </div>
@@ -97,7 +113,7 @@ export default {
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
-      creatediv.addEventListener("click", function () {
+      creatediv.addEventListener("click", function() {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
@@ -121,8 +137,7 @@ export default {
           this.title = res.data.title;
           this.text = res.data.content;
         })
-        .finally(() => {
-          console.log("여기는 finally");
+        .then(() => {
           const anchors = this.$refs.editor.$el.querySelectorAll(
             ".v-md-editor-preview h1,h2,h3,h4,h5,h6"
           );
@@ -174,7 +189,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .aside-left {
   float: left;
   position: fixed;
