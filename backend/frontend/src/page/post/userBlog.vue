@@ -33,16 +33,14 @@
                 name: 'userPostItems',
                 params: { id: $route.params.id },
               }"
-              >글</router-link
-            >
+            >글</router-link>
             <router-link
               class="postLink"
               :to="{
                 name: 'userPersonalIntro',
                 params: { id: $route.params.id },
               }"
-              >소개글</router-link
-            >
+            >소개글</router-link>
           </div>
           <div class="postView">
             <router-view></router-view>

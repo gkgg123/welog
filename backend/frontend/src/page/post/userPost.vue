@@ -1,7 +1,9 @@
 <template>
   <div id="detail" class="mt-5">
     <div class="post-title">
-      <h2>제목: {{title}}</h2>
+      <div class="title">
+        <h2>제목: {{title}}</h2>
+      </div>
     </div>
 
     <aside class="aside-left">
@@ -16,19 +18,20 @@
       </div>
     </aside>
     <div class="aside-right">
-      오른쪽입니다.
-      <div
-        v-for="anchor in titles"
-        :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
-        @click="handleAnchorClick(anchor)"
-        :key="anchor.lineIndex"
-      >
-        <a style="cursor: pointer">{{ anchor.title }}</a>
+      <div class="title-anchor">
+        <div
+          v-for="anchor in titles"
+          :style="{ padding: `10px 0 10px ${anchor.indent * 20}px` }"
+          @click="handleAnchorClick(anchor)"
+          :key="anchor.lineIndex"
+        >
+          <a style="cursor: pointer">{{ anchor.title }}</a>
+        </div>
       </div>
     </div>
     <v-md-editor
       class="col-8 mx-auto"
-      style="margin:5vh 0px; height:200vh;"
+      style="margin:5vh 0px; height:100vh;"
       id="detail"
       mode="preview"
       v-model="text"
@@ -40,7 +43,8 @@
       <div class="item">나가기</div>
     </div>
     <div class="comment">
-      <textarea class="commentInput" placeholder="댓글을 남겨주세요" name id></textarea>
+      <textarea placeholder="댓글을 남겨주세요" name id></textarea>
+      <button>작성</button>
     </div>
 
     <div
