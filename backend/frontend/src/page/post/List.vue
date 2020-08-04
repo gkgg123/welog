@@ -32,11 +32,9 @@
                   <h3>{{ article.title }}</h3>
                   <p class="content">{{ article.content }}</p>
                   <span class="date">
-                    {{ article.createDate[0] }}{{ article.createDate[1]
-                    }}{{ article.createDate[2] }}{{ article.createDate[3] }}년
-                    {{ article.createDate[5] }}{{ article.createDate[6] }}월
-                    {{ article.createDate[8]
-                    }}{{ article.createDate[9] }}일ㆍ
+                    {{ article.createDate.slice(0,4) }}년
+                    {{ article.createDate.slice(5,7) }}월
+                    {{ article.createDate.slice(8,10) }}일ㆍ
                   </span>
                   <span class="comment">댓글 0개</span>
                 </div>
