@@ -1,12 +1,10 @@
 package com.web.blog.controller.post;
 
 import java.util.List;
-import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import com.web.blog.dao.post.CommentDao;
+import com.web.blog.model.account.repository.CommentRepository;
 import com.web.blog.model.BasicResponse;
 
 import com.web.blog.model.post.Comment;
@@ -31,47 +29,47 @@ public class CommentController {
     String SUCCESS = "success";
 
     @Autowired
-    CommentDao commentDao;
+    CommentRepository commentRepository;
 
     @GetMapping("/")
     @ApiOperation(value = "해당 글 모든 댓글 조회")
     public ResponseEntity<List<Comment>> retrieveComment(@PathVariable int pid) throws Exception{
-        return new ResponseEntity<List<Comment>>(commentDao.getCommentByPid(pid),HttpStatus.OK);
+        return new ResponseEntity<List<Comment>>(commentRepository.getCommentByPid(pid),HttpStatus.OK);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/")
     @ApiOperation(value = "댓글 작성")
     public Object createComment(@PathVariable int pid, @RequestBody Comment comment){
         BasicResponse result = new BasicResponse();
         comment.setPid(pid);
-        commentDao.save(comment);
+        commentRepository.save(comment);
         result.status = true;
         result.data = "SUCCESS";
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 
-    @PutMapping("/update/{cid}")
+    @PutMapping("/{cid}")
     @ApiOperation(value = "댓글 수정")
     public Object update(@RequestBody Comment comment, @PathVariable int cid, @PathVariable int pid){
 
         BasicResponse result = new BasicResponse();
         comment.setPid(pid);
         comment.setCid(cid);
-        commentDao.save(comment);
+        commentRepository.save(comment);
         result.status = true;
         result.data = SUCCESS;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{cid}")
+    @DeleteMapping("/{cid}")
     @ApiOperation(value = "글 삭제")
 
     public Object delete(@Valid @PathVariable int cid) {
-        Comment findComment = commentDao.getCommentByCid(cid);
+        Comment findComment = commentRepository.getCommentByCid(cid);
         BasicResponse result = new BasicResponse();
         if(findComment != null){
-            commentDao.delete(findComment);
+            commentRepository.delete(findComment);
             result.data = SUCCESS;
             result.status = true;
             return new ResponseEntity<>(result, HttpStatus.OK);

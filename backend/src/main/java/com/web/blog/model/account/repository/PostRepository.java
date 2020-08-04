@@ -1,4 +1,4 @@
-package com.web.blog.dao.post;
+package com.web.blog.model.account.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 import com.web.blog.model.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PostDao extends JpaRepository<Post, String> {
+public interface PostRepository extends JpaRepository<Post, String> {
     List<Post> getPostByAuthor(String author);
     Post getPostByAuthorAndPid(String author, int pid);
     List<Post> findByTagsContaining(String tags);
