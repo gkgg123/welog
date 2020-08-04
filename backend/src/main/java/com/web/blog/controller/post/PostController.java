@@ -59,12 +59,17 @@ public class PostController {
 
     @GetMapping("/{author}/{pid}")
     @ApiOperation(value = "글 조회")
-    public ResponseEntity<Post> ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
+    public Object ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
+        BasicResponse result = new BasicResponse();
         Post post = postRepository.getPostByAuthorAndPid(author,pid);
         post.setCount(post.getCount()+1);
         postRepository.save(post);
-        likeRepository.countByPid(pid);
-        return new ResponseEntity<Post>(post,HttpStatus.OK);
+        result.status = true;
+        result.data = SUCCESS;
+        result.object = post;
+        result.count = likeRepository.countByPid(pid);
+
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
     @PostMapping("/{author}")
@@ -89,6 +94,7 @@ public class PostController {
         postRepository.save(post);
         result.status = true;
         result.data = SUCCESS;
+        result.object = post;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
