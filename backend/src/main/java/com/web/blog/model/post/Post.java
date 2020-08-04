@@ -31,6 +31,8 @@ public class Post {
     private String content;
     private String author;
     private int count;
+    private String tags;
+
     @Column(insertable = false, updatable = false)
     private LocalDateTime createDate;
 
@@ -80,5 +82,13 @@ public class Post {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getTag() {
+        return tags;
+    }
+
+    public void setTag(String tags) {
+        this.tags = tags;
     }
 }

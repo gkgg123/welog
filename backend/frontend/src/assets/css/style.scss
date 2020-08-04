@@ -329,9 +329,10 @@ h2 {
   z-index: 9;
   h1 {
     float: left;
-    font-size: 1em;
     font-weight: $f600;
-    margin-top: 5px;
+    a {
+      font-size: 1.5em;
+    }
   }
   .right {
     .search-input {

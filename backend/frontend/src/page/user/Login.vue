@@ -4,16 +4,32 @@
       <div class="middle">
         <h1>SS_log</h1>
         <div class="input-wrap">
-          <input v-model="email" id="email" placeholder="이메일을 입력해주세요" type="text" />
+          <input
+            v-model="email"
+            id="email"
+            placeholder="이메일을 입력해주세요"
+            type="text"
+          />
         </div>
         <div class="input-wrap">
-          <input v-model="password" type="password" id="password" placeholder="영문, 숫자 혼용 8자 이상" />
+          <input
+            v-model="password"
+            type="password"
+            id="password"
+            placeholder="영문, 숫자 혼용 8자 이상"
+          />
         </div>
-        <button class="btn btn--back btn--login" @click="login">로그인 하기</button>
+        <button class="btn btn--back btn--login" @click="login">
+          로그인 하기
+        </button>
         <div class="add-option">
           <div class="wrap">
             <p>아직 회원이 아니신가요?</p>
-            <router-link v-bind:to="{name:constants.URL_TYPE.USER.JOIN}" class="btn--text">회원가입</router-link>
+            <router-link
+              v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
+              class="btn--text"
+              >회원가입</router-link
+            >
           </div>
         </div>
       </div>
@@ -36,19 +52,23 @@ export default {
         useremail: this.email,
         password: this.password,
       };
-      // this.$store.commit("SET_USERNAME", this.email);
+      this.$store.commit("SET_USERNAME", this.email);
       // this.$router.push({
       //   name: "userPersonalPosts",
       //   params: { id: this.email },
       // });
-      axios.post(constants.baseUrl + 'user/login', loginData)
-          .then((res)=>{
-              console.log(res.data.key)
-              console.log(res.headers)
-              this.$cookies.set('auth-token',res.data.key)
-              constants.LS_KEY.USER_TOKEN = res.data.key
-              this.$router.back()
-          })
+      axios
+        .post(constants.baseUrl + "user/login", loginData)
+        .then((res) => {
+          console.log(res);
+          console.log(res.headers["content-type"], "11111111111");
+          // this.$cookies.set('auth-token',res.data.key)
+          // constants.LS_KEY.USER_TOKEN = res.data.key
+          // this.$router.back()
+        })
+        .catch((res) => {
+          console.log(res.response);
+        });
     },
   },
   data: () => {
@@ -60,5 +80,3 @@ export default {
   },
 };
 </script>
-
-

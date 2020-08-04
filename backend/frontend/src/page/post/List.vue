@@ -1,12 +1,25 @@
 <template>
   <div class="post">
     <div class>
-      <h2>전체글</h2>
+      <div class="main-post-bar">
+        <div class="post-bar-item">
+          <i class="fas fa-border-all"></i>
+          <h2>전체 글</h2>
+        </div>
+        <div class="post-bar-item">
+          <i class="fas fa-chart-line"></i>
+          <h2>인기 글</h2>
+        </div>
+      </div>
       <div>
         <section class="post-list col-12 col-md-9">
-          <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles">
+          <div
+            class="w-100 col-xl-4 col-sm-6 col-12"
+            v-for="article in articles"
+            :key="article.pid"
+          >
             <div class="post-card">
-              <a>
+              <a :href="'#/@' + article.author + '/' + article.pid">
                 <div
                   :style="{
                     backgroundImage:
@@ -16,17 +29,19 @@
                 />
 
                 <div class="contents">
-                  <h3>{{article.title}}</h3>
-                  <p class="content">{{article.content}}</p>
-                  <span
-                    class="date"
-                  >{{article.createDate[0]}}년 {{article.createDate[1]}}월 {{article.createDate[2]}}일ㆍ</span>
+                  <h3>{{ article.title }}</h3>
+                  <p class="content">{{ article.content }}</p>
+                  <span class="date">
+                    {{ article.createDate.slice(0, 4) }}년
+                    {{ article.createDate.slice(5, 7) }}월
+                    {{ article.createDate.slice(8, 10) }}일ㆍ
+                  </span>
                   <span class="comment">댓글 0개</span>
                 </div>
               </a>
 
               <div class="writer-wrap">
-                <a>{{article.author}}</a>
+                <a>{{ article.author }}</a>
                 <span>♥ 2</span>
               </div>
             </div>
@@ -36,9 +51,23 @@
         <div class="tag-list-wrap col-md-3 col-12">
           <h4>공지사항</h4>
           <ul class="tag-list mb-5">
-            <li>공지사항1</li>
-            <li>공지사항2</li>
-            <li>공지사항3</li>
+            <li class="notice">
+              <a href="#">공지사항1</a>
+            </li>
+            <div class="text-secondary mb-3">2020년 8월 4일</div>
+            <li class="notice">
+              <a href="#">공지사항2</a>
+            </li>
+            <div class="text-secondary mb-3">2020년 8월 4일</div>
+            <li class="notice">
+              <a href="#"
+                >제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</a
+              >
+            </li>
+            <div class="text-secondary mb-3">2020년 8월 4일</div>
+            <a href="#" class="text-secondary">
+              <u>더보기</u>
+            </a>
           </ul>
           <h4>인기태그</h4>
           <ul class="tag-list">
@@ -66,12 +95,15 @@ import "../../assets/css/post.scss";
 import axios from "axios";
 
 export default {
-  name: "Post",
+  name: "MainList",
   components: {},
   watch: {},
   created() {
     this.$store.commit("SET_header", "welog"),
-      this.$store.commit("SET_headerPath", "/");
+      this.$store.commit("SET_headerPath", {
+        PathName: "main",
+        PathParams: null,
+      });
     this.getArticles();
   },
   data: () => {

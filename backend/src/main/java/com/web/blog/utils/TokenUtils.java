@@ -107,10 +107,10 @@ public class TokenUtils {
     return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey))
             .parseClaimsJws(token).getBody();
   }
-  private String getTokenFromRequest(HttpServletRequest request){
+  public String getTokenFromRequest(HttpServletRequest request){
     return request.getHeader("Authorization");
   }
-  private String getUserEmailFromToken(String token) {
+  public String getUserEmailFromToken(String token) {
     Claims claims = getClaimsFormToken(token);
     return (String) claims.get("useremail");
   }

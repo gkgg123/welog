@@ -1,13 +1,14 @@
 package com.web.blog.controller.post;
 
 import java.util.List;
-import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import com.web.blog.dao.post.PostDao;
+import com.web.blog.model.account.repository.LikeRepository;
+import com.web.blog.model.account.repository.PostRepository;
 import com.web.blog.model.BasicResponse;
+import com.web.blog.model.account.repository.AccountRepository;
+import com.web.blog.model.post.LikeInfo;
 import com.web.blog.model.post.Post;
 
 import org.springframework.data.domain.Sort;
@@ -32,74 +33,80 @@ public class PostController {
     String SUCCESS = "success";
 
     @Autowired
-    PostDao postDao;
+    PostRepository postRepository;
+    @Autowired
+    LikeRepository likeRepository;
+    @Autowired
+    AccountRepository accountRepository;
 
     @GetMapping("/latest")
     @ApiOperation(value = "최신 글 조회")
     public ResponseEntity<List<Post>> retrievePostbyLatest(){
-        return new ResponseEntity<List<Post>>(postDao.findAll(Sort.by("createDate").descending()), HttpStatus.OK);
+        return new ResponseEntity<List<Post>>(postRepository.findAll(Sort.by("createDate").descending()), HttpStatus.OK);
     }
-//
+
     @GetMapping("/popularity")
     @ApiOperation(value = "인기 글 조회")
     public ResponseEntity<List<Post>> retrievePostbyPopularity(){
-        return new ResponseEntity<List<Post>>(postDao.findAll(Sort.by("count").descending()), HttpStatus.OK);
+        return new ResponseEntity<List<Post>>(postRepository.findAll(Sort.by("count").descending()), HttpStatus.OK);
     }
 
-    @GetMapping("/{author}/")
+    @GetMapping("/{author}")
     @ApiOperation(value = "해당 유저 전체 글 조회")
     public ResponseEntity<List<Post>> retrievePost(@PathVariable String author) throws Exception{
-        return new ResponseEntity<List<Post>>(postDao.getPostByAuthor(author),HttpStatus.OK);
+        return new ResponseEntity<List<Post>>(postRepository.getPostByAuthor(author),HttpStatus.OK);
     }
 
 
     @GetMapping("/{author}/{pid}")
     @ApiOperation(value = "글 조회")
-    public ResponseEntity<Post> ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
-        Post post = postDao.getPostByAuthorAndPid(author,pid);
+    public Object ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
+        BasicResponse result = new BasicResponse();
+        Post post = postRepository.getPostByAuthorAndPid(author,pid);
         post.setCount(post.getCount()+1);
-        postDao.save(post);
+        postRepository.save(post);
+        result.status = true;
+        result.data = SUCCESS;
+        result.object = post;
+        result.count = likeRepository.countByPid(pid);
 
-        return new ResponseEntity<Post>(post,HttpStatus.OK);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
-    @PostMapping("/{author}/create")
+    @PostMapping("/{author}")
     @ApiOperation(value = "글쓰기")
-    public Object create(@RequestBody Post post, @PathVariable String author, HttpSession session) {
+    public Object create(@RequestBody Post post, @PathVariable String author) {
         BasicResponse result = new BasicResponse();
-        if(post.getTitle()==null)
-            System.out.printf("??");
-        else
-            System.out.printf(post.getTitle());
         post.setPostno(post.getPostno()+1);
         post.setAuthor(author);
-        postDao.save(post);
+        postRepository.save(post);
+
         result.status = true;
         result.data = SUCCESS;
         result.object = post;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PutMapping("/{author}/update/{pid}")
+    @PutMapping("/{author}/{pid}")
     @ApiOperation(value = "글 수정")
-    public Object update(@RequestBody Post post, @PathVariable int pid, HttpSession session){
-        Object o = session.getAttribute("User");
+    public Object update(@RequestBody Post post, @PathVariable int pid){
         BasicResponse result = new BasicResponse();
         post.setPid(pid);
-        postDao.save(post);
+        postRepository.save(post);
         result.status = true;
         result.data = SUCCESS;
+        result.object = post;
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{author}/delete/{pid}")
+    @DeleteMapping("/{author}/{pid}")
     @ApiOperation(value = "글 삭제")
 
     public Object delete(@Valid @PathVariable int pid, @PathVariable String author) {
-        Post findPost = postDao.getPostByAuthorAndPid(author, pid);
+        Post findPost = postRepository.getPostByAuthorAndPid(author, pid);
         BasicResponse result = new BasicResponse();
         if(findPost != null){
-            postDao.delete(findPost);
+            postRepository.delete(findPost);
             result.data = SUCCESS;
             result.status = true;
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -108,5 +115,42 @@ public class PostController {
         result.status = false;
         return new ResponseEntity<>(result, HttpStatus.CONFLICT);
     }
+
+    @GetMapping("/tag/{tag}")
+    @ApiOperation(value = "태그 검색")
+    public ResponseEntity<List<Post>> retrievePostbyTags(@PathVariable String tag){
+        return new ResponseEntity<List<Post>>(postRepository.findByTagsContaining(","+tag+","), HttpStatus.OK);
+    }
+
+    @GetMapping("/{author}/{pid}/likeit")
+    @ApiOperation(value= "좋아요인지 아닌지")
+    public int likeIt(@PathVariable String author, @PathVariable int pid){
+        int uid = accountRepository.findByUsername(author).getId();
+        return likeRepository.findByPidAndUid(pid, uid).getIsLike();
+    }
+
+    @PostMapping("/{author}/{pid}/likeit")
+    @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
+    public Object clickLike(@PathVariable String author, @PathVariable int pid){
+        int uid = accountRepository.findByUsername(author).getId();
+        LikeInfo likeInfo = new LikeInfo();
+        likeInfo.setPid(pid);
+        likeInfo.setUid(uid);
+        likeInfo.setIsLike(likeRepository.findByPidAndUid(pid, uid).getIsLike() == 0 ? 1: 0);
+        likeRepository.save(likeInfo);
+        BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = SUCCESS;
+        result.object = likeInfo;
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/searchPost")
+    @ApiOperation(value = "제목 + 내용 검색")
+    public ResponseEntity<List<Post>> searchPost(@RequestParam String text){
+        return new ResponseEntity<List<Post>>(postRepository.findByTitleAndContent(text, text), HttpStatus.OK);
+    }
+
 
 }
