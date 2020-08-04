@@ -8,6 +8,7 @@ import com.web.blog.model.account.repository.LikeRepository;
 import com.web.blog.model.account.repository.PostRepository;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.account.repository.AccountRepository;
+import com.web.blog.model.post.LikeInfo;
 import com.web.blog.model.post.Post;
 
 import org.springframework.data.domain.Sort;
@@ -121,11 +122,34 @@ public class PostController {
         return new ResponseEntity<List<Post>>(postRepository.findByTagsContaining(","+tag+","), HttpStatus.OK);
     }
 
+    @GetMapping("/{author}/{pid}/likeit")
+    @ApiOperation(value= "좋아요인지 아닌지")
+    public int likeIt(@PathVariable String author, @PathVariable int pid){
+        int uid = accountRepository.findByUsername(author).getId();
+        return likeRepository.findByPidAndUid(pid, uid).getIsLike();
+    }
+
     @PostMapping("/{author}/{pid}/likeit")
     @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
-    public int clickLike(@PathVariable String author, @PathVariable int pid){
+    public Object clickLike(@PathVariable String author, @PathVariable int pid){
         int uid = accountRepository.findByUsername(author).getId();
-        return likeRepository.findByPidAndUid(pid, uid).getIsLike() == 0 ? 1: 0;
+        LikeInfo likeInfo = new LikeInfo();
+        likeInfo.setPid(pid);
+        likeInfo.setUid(uid);
+        likeInfo.setIsLike(likeRepository.findByPidAndUid(pid, uid).getIsLike() == 0 ? 1: 0);
+        likeRepository.save(likeInfo);
+        BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = SUCCESS;
+        result.object = likeInfo;
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
+    }
+
+    @GetMapping("/searchPost")
+    @ApiOperation(value = "제목 + 내용 검색")
+    public ResponseEntity<List<Post>> searchPost(@RequestParam String text){
+        return new ResponseEntity<List<Post>>(postRepository.findByTitleAndContent(text, text), HttpStatus.OK);
     }
 
 

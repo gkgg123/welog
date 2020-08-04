@@ -10,7 +10,7 @@ public interface PostRepository extends JpaRepository<Post, String> {
     List<Post> getPostByAuthor(String author);
     Post getPostByAuthorAndPid(String author, int pid);
     List<Post> findByTagsContaining(String tags);
-
+    List<Post> findByTitleAndContent(String title, String content);
     //Optional<Post> findPostByEmailAndPassword(String email, String password);
 
 }
