@@ -6,7 +6,7 @@
         <section class="post-list col-12 col-md-9">
           <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles" :key="article.pid">
             <div class="post-card">
-              <a>
+              <a :href="'#/@'+article.author+'/'+article.pid">
                 <div
                   :style="{
                     backgroundImage:
@@ -20,7 +20,7 @@
                   <p class="content">{{article.content}}</p>
                   <span
                     class="date"
-                  >{{article.createDate[0]}}{{article.createDate[1]}}{{article.createDate[2]}}{{article.createDate[3]}}년 {{article.createDate[5]}}{{article.createDate[6]}}월 {{article.createDate[8]}}{{article.createDate[9]}}일ㆍ</span>
+                  >{{article.createDate.slice(0,4)}}년 {{article.createDate.slice(5,7)}}월 {{article.createDate.slice(8,10)}}일ㆍ</span>
                   <span class="comment">댓글 0개</span>
                 </div>
               </a>
@@ -84,7 +84,9 @@ export default {
   created() {
     this.$store.commit("SET_header", "welog"),
       this.$store.commit("SET_headerPath", "/");
+    let now = new Date();
     this.getArticles();
+    console.log(now.getFullYear());
   },
   data: () => {
     return {
