@@ -103,7 +103,6 @@ export default {
         PathParams: null,
       });
     this.getArticles();
-    console.log(now.getFullYear());
   },
   data: () => {
     return {
