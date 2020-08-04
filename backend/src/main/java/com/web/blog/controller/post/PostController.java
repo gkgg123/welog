@@ -11,6 +11,7 @@ import com.web.blog.model.BasicResponse;
 import com.web.blog.model.post.Post;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class PostController {
     public ResponseEntity<List<Post>> retrievePostbyLatest(){
         return new ResponseEntity<List<Post>>(postDao.findAll(Sort.by("createDate").descending()), HttpStatus.OK);
     }
-//
+
     @GetMapping("/popularity")
     @ApiOperation(value = "인기 글 조회")
     public ResponseEntity<List<Post>> retrievePostbyPopularity(){
@@ -65,12 +66,8 @@ public class PostController {
 
     @PostMapping("/{author}/create")
     @ApiOperation(value = "글쓰기")
-    public Object create(@RequestBody Post post, @PathVariable String author, HttpSession session) {
+    public Object create(@RequestBody Post post, @PathVariable String author) {
         BasicResponse result = new BasicResponse();
-        if(post.getTitle()==null)
-            System.out.printf("??");
-        else
-            System.out.printf(post.getTitle());
         post.setPostno(post.getPostno()+1);
         post.setAuthor(author);
         postDao.save(post);
@@ -82,8 +79,7 @@ public class PostController {
 
     @PutMapping("/{author}/update/{pid}")
     @ApiOperation(value = "글 수정")
-    public Object update(@RequestBody Post post, @PathVariable int pid, HttpSession session){
-        Object o = session.getAttribute("User");
+    public Object update(@RequestBody Post post, @PathVariable int pid){
         BasicResponse result = new BasicResponse();
         post.setPid(pid);
         postDao.save(post);
@@ -107,6 +103,12 @@ public class PostController {
         result.data = "fail";
         result.status = false;
         return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+    }
+
+    @GetMapping("/tag/{tag}")
+    @ApiOperation(value = "태그 검색")
+    public ResponseEntity<List<Post>> retrievePostbyTags(@PathVariable String tag){
+        return new ResponseEntity<List<Post>>(postDao.findByTagsContaining(","+tag+","), HttpStatus.OK);
     }
 
 }
