@@ -3,9 +3,7 @@
     <h1>
       <router-link
         :to="{ name: headerPathName, params: { id: headerPathParams } }"
-      >
-        {{ headerTitle }}
-      </router-link>
+      >{{ headerTitle }}</router-link>
     </h1>
     <div class="right">
       <div class="search-input">
@@ -17,19 +15,13 @@
         v-if="!isLogined"
         :to="{ name: constants.URL_TYPE.USER.LOGIN }"
         class="login-btn"
-      >
-        로그인
-      </router-link>
+      >로그인</router-link>
       <router-link
         v-else
         v-bind:to="{ name: constants.URL_TYPE.USER.LOGOUT }"
         class="login-btn"
-      >
-        로그아웃
-      </router-link>
-      <router-link v-if="isLogined" to="/create" class="login-btn"
-        >새 글쓰기</router-link
-      >
+      >로그아웃</router-link>
+      <router-link v-if="isLogined" to="/create" class="login-btn">새 글쓰기</router-link>
     </div>
   </div>
 </template>
@@ -40,15 +32,14 @@ import { mapState, mapGetters } from "vuex";
 export default {
   name: "Header",
   components: {},
-  props: ["isHeader"],
+  props: ["isHeader", "isLogined"],
   computed: {
     ...mapState(["headerTitle", "headerPathName", "headerPathParams"]),
-    ...mapGetters(["isLogined"]),
   },
   watch: {},
   created() {},
   methods: {},
-  data: function() {
+  data: function () {
     return {
       constants,
       keyword: "",

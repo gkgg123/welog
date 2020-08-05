@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <Header :isHeader="isHeader" />
+    <Header :isHeader="isHeader" :isLogined="isLogined" />
     <router-view />
+    {{username}}
   </div>
 </template>
 
@@ -10,6 +11,7 @@
 import "./assets/css/style.scss";
 import Header from "./components/common/Header.vue";
 import constants from "./lib/constants";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -18,7 +20,6 @@ export default {
   },
   created() {
     let url = this.$route.name;
-
     this.checkUrl(url);
   },
   watch: {
@@ -41,7 +42,11 @@ export default {
       this.isHeader = isHeader;
     },
   },
-  data: function() {
+  computed: {
+    ...mapState(["username"]),
+    ...mapGetters(["isLogined"]),
+  },
+  data: function () {
     return {
       isHeader: true,
       constants,

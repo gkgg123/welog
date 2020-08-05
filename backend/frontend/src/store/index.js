@@ -1,6 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import axios from "axios";
+import constants from "@/lib/constants";
+import router from "@/router";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -8,30 +10,56 @@ export default new Vuex.Store({
     headerTitle: "welog",
     headerPathName: "main",
     headerPathParams: null,
-    username: sessionStorage.getItem("username"),
+    authToken: sessionStorage.getItem("auth-token"),
+    username: null,
     articleList: [],
   },
   getters: {
-    isLogined: (state) => !!state.username,
+    isLogined: (state) => !!state.authToken,
   },
   mutations: {
     SET_header(state, urlname) {
       state.headerTitle = urlname;
     },
     SET_headerPath(state, payload) {
-      console.log(payload, "tttttttttttttt");
-      console.log(payload.PathName, payload.PathParams);
       state.headerPathName = payload.PathName;
       state.headerPathParams = payload.PathParams;
     },
+    SET_TOKEN(state, token) {
+      state.authToken = token;
+      sessionStorage.setItem("auth-token", token);
+    },
     SET_USERNAME(state, username) {
       state.username = username;
-      sessionStorage.setItem("username", username);
     },
     SET_Articles(state, articles) {
       state.articles = articles;
     },
   },
-  actions: {},
+  actions: {
+    postAuthData({ commit }, info) {
+      console.log("store postAuthData");
+      axios.post(constants.baseUrl + info.location, info.data).then((res) => {
+        const token = res.headers.authorization.replace("Bearer", "");
+        const data = JSON.parse(atob(token.split(".")[1]));
+        console.log(data);
+        commit("SET_USERNAME", data.username);
+        commit("SET_TOKEN", token);
+        router.push({ name: "userPostItems", params: { id: data.username } });
+      });
+    },
+    login({ dispatch }, loginData) {
+      const info = {
+        data: loginData,
+        location: "user/login",
+      };
+      dispatch("postAuthData", info);
+    },
+    logout({ commit }) {
+      commit("SET_TOKEN", null);
+      sessionStorage.removeItem("auth-token");
+      console.log("여기");
+    },
+  },
   modules: {},
 });

@@ -117,13 +117,11 @@ export default {
   methods: {
     getArticles() {
       axios.get("http://localhost:8080/" + "post/latest/").then((res) => {
-        console.log(res);
         this.articles = res.data;
       });
     },
     getArticlesOrderByPopularity() {
       axios.get("http://localhost:8080/" + "post/popularity/").then((res) => {
-        console.log(res);
         this.articles = res.data;
       });
     },
