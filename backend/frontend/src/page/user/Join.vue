@@ -56,24 +56,21 @@ export default {
   created() {},
   methods: {
     signup() {
-
       const signupData = {
-        headers :{
-        useremail : this.email,
-        nickname : this.nickName,
-        password : this.password
-      } }
-      console.log(signupData)
-      axios.get(constants.baseUrl+'user/signup/',signupData)
-      .then((res)=>{
-        console.log(res)
-      })
-      .catch((err)=>{
-        console.log('여기냐?')
-        console.log(err)
-      })
-
-
+        useremail: this.email,
+        nickname: this.nickName,
+        password: this.password,
+      };
+      console.log(signupData);
+      axios
+        .post(constants.baseUrl + "user/signup", signupData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log("여기냐?");
+          console.log(err);
+        });
 
       // if (this.isTerm) {
       //   if (this.password === this.passwordConfirm) {
