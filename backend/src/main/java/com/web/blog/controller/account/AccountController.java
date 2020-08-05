@@ -27,14 +27,12 @@ public class AccountController {
   TokenUtils tokenUtils;
   @Autowired
   AccountService accountService;
-  @GetMapping("/signup")
+
+  @RequestMapping(value = "/signup", method = RequestMethod.POST)
   @ApiOperation(value = "회원 가입")
-  public String signup(HttpServletRequest httpServletRequest){
+  public String signup(@RequestBody Account account){
+    System.out.println(account.getUseremail());
     try {
-      Account account = new Account();
-      account.setUseremail(httpServletRequest.getHeader("useremail"));
-      account.setPassword(httpServletRequest.getHeader("password"));
-      account.setUsername(httpServletRequest.getHeader("nickname"));
       System.out.println(account.getUsername());
       account.setGrade(AccountGrade.USER);
       accountService.createNew(account);

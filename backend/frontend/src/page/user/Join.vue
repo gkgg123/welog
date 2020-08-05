@@ -58,7 +58,7 @@ export default {
     signup() {
       const signupData = {
         useremail: this.email,
-        nickname: this.nickName,
+        username: this.nickName,
         password: this.password,
       };
       console.log(signupData);
