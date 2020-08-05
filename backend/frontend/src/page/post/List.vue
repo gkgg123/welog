@@ -2,11 +2,11 @@
   <div class="post">
     <div class>
       <div class="main-post-bar">
-        <div class="post-bar-item">
+        <div class="post-bar-item" @click="getArticles">
           <i class="fas fa-border-all"></i>
           <h2>전체 글</h2>
         </div>
-        <div class="post-bar-item">
+        <div class="post-bar-item" @click="getArticlesOrderByPopularity">
           <i class="fas fa-chart-line"></i>
           <h2>인기 글</h2>
         </div>
@@ -30,7 +30,12 @@
 
                 <div class="contents">
                   <h3>{{ article.title }}</h3>
-                  <p class="content">{{ article.content }}</p>
+                  <div v-for="tag in article.tags">
+                    <span>
+                      <a href="#">{{ tag }}</a>
+                    </span>
+                  </div>
+                  <hr />
                   <span class="date">
                     {{ article.createDate.slice(0, 4) }}년
                     {{ article.createDate.slice(5, 7) }}월
@@ -60,9 +65,7 @@
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
             <li class="notice">
-              <a href="#"
-                >제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</a
-              >
+              <a href="#">제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</a>
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
             <a href="#" class="text-secondary">
@@ -114,6 +117,12 @@ export default {
   methods: {
     getArticles() {
       axios.get("http://localhost:8080/" + "post/latest/").then((res) => {
+        console.log(res);
+        this.articles = res.data;
+      });
+    },
+    getArticlesOrderByPopularity() {
+      axios.get("http://localhost:8080/" + "post/popularity/").then((res) => {
         console.log(res);
         this.articles = res.data;
       });
