@@ -88,9 +88,6 @@
 </template>
 
 <style>
-ul {
-  list-style: none;
-}
 </style>
 
 <script>

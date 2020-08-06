@@ -2,7 +2,7 @@
   <div id="detail" class="mt-5">
     <div class="post-title">
       <div class="title">
-        <h2>제목: {{title}}</h2>
+        <p>제목: {{title}}</p>
       </div>
     </div>
 
@@ -30,7 +30,7 @@
       </div>
     </div>
     <v-md-editor
-      class="col-8 mx-auto"
+      class="col-7 mx-auto"
       style="margin:5vh 0px; height:100vh;"
       id="detail"
       mode="preview"

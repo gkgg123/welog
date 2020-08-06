@@ -54,17 +54,22 @@
 <script>
 import "../../assets/css/personal.scss";
 
-const whiteboardUrl = "@/assets/img/whiteboard.png";
-
 export default {
   name: "userBlog",
-  methods: {},
-  data() {
-    return {
-      postImg: whiteboardUrl,
-    };
+  methods: {
+    headerChange() {
+      const urlname = this.$route.params.id;
+      console.log(urlname, "test");
+      this.$store.commit("SET_header", urlname);
+      this.$store.commit("SET_headerPath", {
+        PathName: "userPostItems",
+        PathParams: urlname,
+      });
+    },
   },
-  created() {},
+  created() {
+    this.headerChange();
+  },
 };
 </script>
 
