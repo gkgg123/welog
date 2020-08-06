@@ -36,6 +36,7 @@
       mode="preview"
       v-model="text"
       ref="editor"
+      @copy-code-success="handleCopyCodeSuccess"
     />
 
     <div id="context-menu" class="context-menu">
@@ -77,6 +78,7 @@
 <script>
 import axios from "axios";
 import "../../assets/css/personal.scss";
+import { mapActions } from "vuex";
 export default {
   name: "userPost",
   data() {
@@ -90,11 +92,6 @@ export default {
     };
   },
   methods: {
-    headerChange() {
-      const urlname = this.$route.params.id;
-      this.$store.commit("SET_header", urlname);
-      this.$store.commit("SET_headerPath", "@" + urlname);
-    },
     //  오른쪽 버튼 Custom
     contextmenu(event) {
       const creatediv = document.querySelector(".v-md-editor__preview-wrapper");
@@ -128,8 +125,8 @@ export default {
         .get("http://localhost:8080/" + `post/${author}/${pid}/`)
         .then((res) => {
           console.log(res.data, "안녕하세요");
-          this.title = res.data.title;
-          this.text = res.data.content;
+          this.title = res.data.object.title;
+          this.text = res.data.object.content;
         })
         .then(() => {
           const anchors = this.$refs.editor.$el.querySelectorAll(
@@ -155,6 +152,11 @@ export default {
           }));
         });
     },
+    // codeblock 복사//
+    handleCopyCodeSuccess(code) {
+      alert("성공적으로 복사되었습니다.");
+      console.log(code);
+    },
 
     handleAnchorClick(anchor) {
       const { editor } = this.$refs;
@@ -172,9 +174,10 @@ export default {
         });
       }
     },
+    ...mapActions(["headerChange"]),
   },
   created() {
-    this.headerChange();
+    this.headerChange(this.$route.params.id);
     this.carryText();
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   },

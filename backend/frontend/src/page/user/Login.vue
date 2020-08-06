@@ -38,21 +38,6 @@ export default {
   watch: {},
   methods: {
     ...mapActions(["login"]),
-    // login() {
-    //   const loginData = {
-    //     useremail: this.email,
-    //     password: this.password,
-    //   };
-    //   axios
-    //     .post(constants.baseUrl + "user/login", loginData)
-    //     .then((res) => {
-    //       const token = res.headers.authorization.replace("Bearer", "");
-    //       sessionStorage.setItem("userToken", token);
-    //     })
-    //     .catch((res) => {
-    //       console.log(res.response);
-    //     });
-    // },
   },
   data: () => {
     return {

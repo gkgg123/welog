@@ -42,7 +42,6 @@ export default new Vuex.Store({
       axios.post(constants.baseUrl + info.location, info.data).then((res) => {
         const token = res.headers.authorization.replace("Bearer", "");
         const data = JSON.parse(atob(token.split(".")[1]));
-        console.log(data);
         commit("SET_USERNAME", data.username);
         commit("SET_TOKEN", token);
         router.push({ name: "userPostItems", params: { id: data.username } });
@@ -58,7 +57,19 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit("SET_TOKEN", null);
       sessionStorage.removeItem("auth-token");
-      console.log("여기");
+      commit("SET_USERNAME", null);
+    },
+    usernameCheck({ state, commit }) {
+      const data = JSON.parse(atob(state.authToken.split(".")[1]));
+
+      commit("SET_USERNAME", data.username);
+    },
+    headerChange({ commit }, urlname) {
+      commit("SET_header", urlname);
+      commit("SET_headerPath", {
+        PathName: "userPostItems",
+        PathParams: urlname,
+      });
     },
   },
   modules: {},

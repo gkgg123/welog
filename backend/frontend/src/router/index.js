@@ -16,7 +16,8 @@ import userBlog from "../page/post/userBlog.vue";
 import userPostItems from "../page/post/userPostItems.vue";
 import userPost from "../page/post/userPost.vue";
 import userPersonalIntro from "../page/post/userPersonalIntro.vue";
-// import { compile, component } from 'vue/types/umd'
+
+import store from "../store/index.js";
 Vue.use(Router);
 
 export default new Router({
@@ -52,6 +53,10 @@ export default new Router({
       path: "/@:id",
       name: "userBlog",
       component: userBlog,
+      beforeEnter: (to, from, next) => {
+        store.dispatch("headerChange", to.params.id);
+        next();
+      },
       children: [
         {
           path: "",
@@ -62,6 +67,10 @@ export default new Router({
           path: "intro",
           name: "userPersonalIntro",
           component: userPersonalIntro,
+          beforeEnter: (to, from, next) => {
+            store.dispatch("headerChange", to.params.id);
+            next();
+          },
         },
       ],
     },
