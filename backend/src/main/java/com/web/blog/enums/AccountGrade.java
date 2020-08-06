@@ -1,4 +1,4 @@
-package com.web.blog.enums.role;
+package com.web.blog.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

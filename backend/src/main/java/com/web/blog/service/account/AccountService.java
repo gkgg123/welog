@@ -1,6 +1,8 @@
 package com.web.blog.service.account;
 
 
+import com.web.blog.exception.account.DuplicatedEmailException;
+import com.web.blog.exception.account.DuplicatedNicknameException;
 import com.web.blog.model.account.Account;
 import com.web.blog.model.account.AccountDetails;
 import com.web.blog.model.account.repository.AccountRepository;
@@ -23,6 +25,11 @@ public class AccountService implements UserDetailsService {
 
 
   public Account createNew(Account account){
+    if(accountRepository.findByUseremail(account.getUseremail()) != null){
+      throw new DuplicatedEmailException(account.getUseremail());
+    } else if(accountRepository.findByUsername(account.getUsername()) != null){
+      throw new DuplicatedNicknameException(account.getUsername());
+    }
     account.encodePassword(passwordEncoder);
     return this.accountRepository.save(account);
   }

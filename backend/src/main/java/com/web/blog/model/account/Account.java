@@ -1,6 +1,6 @@
 package com.web.blog.model.account;
 
-import com.web.blog.enums.role.AccountGrade;
+import com.web.blog.enums.AccountGrade;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
