@@ -5,12 +5,7 @@
         <p id="newPost">새 글 쓰기</p>
       </div>
 
-      <input
-        placeholder="제목을 입력하세요"
-        class="titleInput"
-        v-model="title"
-        type="text"
-      />
+      <input placeholder="제목을 입력하세요" class="titleInput" v-model="title" type="text" />
 
       <div id="tag" class="flex-column"></div>
       <input
@@ -35,10 +30,12 @@
 
 <script>
 import axios from "axios";
+import constants from "@/lib/constants.js";
 export default {
   name: "CreateView",
   data() {
     return {
+      constants,
       title: "",
       text: "",
       inputTag: null,
@@ -97,17 +94,16 @@ export default {
         content: this.text,
         tags: configTag,
       };
-      console.log(this.text);
+
       axios
         .post(
-          "http://localhost:8080" +
-            `/post/${this.$store.state.username}/create/`,
+          constants.baseUrl + `post/${this.$store.state.username}/`,
           postData
         )
         .then((res) => {
           console.log(res.data.object.pid);
           this.$router.push({
-            name: "userPersonalPost",
+            name: constants.URL_TYPE.POST.POST,
             params: {
               id: this.$store.state.username,
               pid: res.data.object.pid,

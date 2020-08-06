@@ -1,21 +1,25 @@
 export default {
-    TITLE: 'SSAFY 개발블로그',
-    baseUrl: 'http://127.0.0.1:8080/',
-    LS_KEY: {
-        USER_TOKEN: 'userToken',
+  TITLE: "SSAFY 개발블로그",
+  baseUrl: "http://127.0.0.1:8080/",
+  ERROR: {
+    FRONT_ERROR: "FE00",
+  },
+  URL_TYPE: {
+    USER: {
+      LOGIN: "login",
+      JOIN: "join",
+      LOGOUT: "logout",
     },
-    ERROR: { 
-        FRONT_ERROR: 'FE00' 
+    MAIN: {
+      MAIN: "main",
+      LIST: "list",
     },
-    URL_TYPE: {
-        USER: {
-            LOGIN: 'login',
-            JOIN: 'join',
-            LOGOUT : 'logout', 
-        },
-        POST: {
-            MAIN : "main",
-        },
-    }
-}
-
+    POST: {
+      CREATE: "createView",
+      BLOG: "userBlog",
+      POSTITEMS: "userPostItems",
+      BLOGINTRO: "userPersonalIntro",
+      POST: "userPost",
+    },
+  },
+};

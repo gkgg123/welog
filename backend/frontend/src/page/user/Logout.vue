@@ -4,7 +4,7 @@
 
 <script>
 import axios from "axios";
-import constants from "../../lib/constants";
+import constants from "@/lib/constants";
 export default {
   name: "Logout",
   data() {
@@ -15,7 +15,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
-      this.$router.push({ name: "main" });
+      this.$router.push({ name: constants.URL_TYPE.MAIN.MAIN });
     },
   },
   created() {

@@ -2,7 +2,7 @@
   <div class="user" id="login">
     <div class="wrapC table">
       <div class="middle">
-        <h1>SS_log</h1>
+        <h1>welog</h1>
         <div class="input-wrap">
           <input v-model="loginData.useremail" id="email" placeholder="이메일을 입력해주세요" type="text" />
         </div>

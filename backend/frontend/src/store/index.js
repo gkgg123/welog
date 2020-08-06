@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     headerTitle: "welog",
-    headerPathName: "main",
+    headerPathName: constants.URL_TYPE.MAIN.MAIN,
     headerPathParams: null,
     authToken: sessionStorage.getItem("auth-token"),
     username: null,
@@ -39,13 +39,19 @@ export default new Vuex.Store({
   actions: {
     postAuthData({ commit }, info) {
       console.log("store postAuthData");
-      axios.post(constants.baseUrl + info.location, info.data).then((res) => {
-        const token = res.headers.authorization.replace("Bearer", "");
-        const data = JSON.parse(atob(token.split(".")[1]));
-        commit("SET_USERNAME", data.username);
-        commit("SET_TOKEN", token);
-        router.push({ name: "userPostItems", params: { id: data.username } });
-      });
+      axios
+        .post(constants.baseUrl + info.location, info.data)
+
+        .then((res) => {
+          const token = res.headers.authorization.replace("Bearer", "");
+          const data = JSON.parse(atob(token.split(".")[1]));
+          commit("SET_USERNAME", data.username);
+          commit("SET_TOKEN", token);
+          router.push({
+            name: constants.URL_TYPE.POST.POSTITEMS,
+            params: { id: data.username },
+          });
+        });
     },
     login({ dispatch }, loginData) {
       const info = {
@@ -67,7 +73,7 @@ export default new Vuex.Store({
     headerChange({ commit }, urlname) {
       commit("SET_header", urlname);
       commit("SET_headerPath", {
-        PathName: "userPostItems",
+        PathName: constants.URL_TYPE.POST.POSTITEMS,
         PathParams: urlname,
       });
     },
