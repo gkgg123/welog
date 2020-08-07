@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     headerTitle: "welog",
-    headerPathName: constants.URL_TYPE.MAIN.MAIN,
+    headerPathName: constants.URL_TYPE.MAIN.LIST,
     headerPathParams: null,
     authToken: sessionStorage.getItem("auth-token"),
     username: null,

@@ -10,7 +10,8 @@ import Logout from "../page/user/Logout.vue";
 
 // 메인화면
 import Main from "../page/main/Main.vue";
-
+import recentList from "../page/main/recentList.vue";
+import recommandList from "../page/main/recommandList.vue";
 // 개인블로그
 import CreateView from "../page/blog/CreateView.vue";
 import userBlog from "../page/blog/userBlog.vue";
@@ -44,6 +45,18 @@ export default new Router({
       path: "/",
       name: constants.URL_TYPE.MAIN.MAIN,
       component: Main,
+      children: [
+        {
+          path: "",
+          name: constants.URL_TYPE.MAIN.LIST,
+          component: recentList,
+        },
+        {
+          path: "recommand",
+          name: constants.URL_TYPE.MAIN.RECOMMAND,
+          component: recommandList,
+        },
+      ],
     },
     // POST
     {

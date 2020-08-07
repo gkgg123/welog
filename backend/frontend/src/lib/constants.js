@@ -12,7 +12,8 @@ export default {
     },
     MAIN: {
       MAIN: "main",
-      LIST: "list",
+      LIST: "recentList",
+      RECOMMAND: "recommandList",
     },
     POST: {
       CREATE: "createView",
