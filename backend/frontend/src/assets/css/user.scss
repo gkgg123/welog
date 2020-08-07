@@ -3,24 +3,36 @@
 
 .user {
   height: 100vh;
-  h1 {
-    font-size: $font-size__2;
-    text-align: center;
-    font-weight: $f600;
-    margin-bottom: 20px;
-  }
+
   .wrapC {
+    width: 750px;
+    margin: 70px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .middle {
     width: 300px;
-    margin: 0 auto;
+  }
+  .logo-welcome {
+    margin: 10px 0px 20px 0px;
+    height: 80px;
+    width: 530px;
+  }
+  .login-image {
+    margin: 10px 0px 40px 0px;
   }
   .input-wrap {
     @include wrap;
+
     margin-bottom: 10px;
     position: relative;
     input {
       @include wrap;
-      border: 1px solid #000;
-      padding: 7px 15px;
+      margin: 0;
+      border-radius: 5px;
+      border: 1px solid #5ac2ab;
+      padding: 10px 15px;
       box-sizing: border-box;
     }
     &.password-wrap {
@@ -28,6 +40,7 @@
         padding-right: 30px;
       }
     }
+
     span {
       position: absolute;
       right: 9px;
@@ -45,8 +58,9 @@
 
   .btn {
     @include wrap;
-    border-radius: 0;
-    background-color: #000;
+    border: none;
+    border-radius: 5px;
+    background-color: #5ac2ab;
     color: #fff;
   }
 }
@@ -70,16 +84,71 @@
     @include wrap;
     p {
       float: left;
+      margin: 5px 10px 10px 10px;
       color: #aaa;
     }
     a {
+      margin: 10px;
       float: right;
-      margin-top: 4px;
+    }
+  }
+  .btn--text {
+    color: #36cb45;
+  }
+  .btn--login {
+    height: 45px;
+  }
+  .btn--facebook-login {
+    height: 45px;
+    padding-left: 20px;
+    background-color: #3b5998;
+    border-color: #3b5998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .fab {
+      margin-left: 11px;
+    }
+    span {
+      margin: auto;
+    }
+  }
+  .btn--naver-login {
+    height: 45px;
+    background-color: #1ec800;
+    border-color: #1ec800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .naver-icon {
+      margin-left: 5px;
+      width: 40px;
+      height: 40px;
+    }
+    span {
+      margin: auto;
+    }
+  }
+  .btn--google-login {
+    height: 45px;
+    background-color: #db4a39;
+    border-color: #db4a39;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .fab {
+      margin-left: 10px;
+    }
+    span {
+      margin: auto;
     }
   }
 }
-
+// 회원가입
 #join {
+  .signup-image {
+    margin: 50px;
+  }
   .btn {
     margin-top: 20px;
   }
@@ -95,6 +164,10 @@
     left: 0;
     top: 0;
     background: #fff;
+  }
+  .term-span {
+    color: #aaaaaa;
+    margin: 0px 97px 0px 6px;
   }
 }
 

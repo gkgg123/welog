@@ -1,8 +1,8 @@
 <template>
   <div class="user" id="join">
     <div class="wrapC table">
+      <img class="signup-image" src="img\signup.png" alt />
       <div class="middle">
-        <h1>회원가입</h1>
         <div class="form-wrap">
           <div class="input-wrap">
             <input v-model="nickName" id="nickname" placeholder="닉네임을 입력해주세요" type="text" />
@@ -31,14 +31,56 @@
             </span>
           </div>
         </div>
-
         <label>
-          <input v-model="isTerm" type="checkbox" id="term" />
-          <span>약관에 동의합니다</span>
+          <input
+            v-model="isTerm"
+            data-toggle="modal"
+            data-target="#staticBackdrop"
+            type="checkbox"
+            id="term"
+          />
+          <span class="term-span">약관에 동의합니다</span>
         </label>
 
-        <span class="go-term">약관 보기</span>
-
+        <span class="go-term" data-toggle="modal" data-target="#staticBackdrop">약관 보기</span>
+        <div
+          class="modal fade"
+          id="staticBackdrop"
+          data-backdrop="static"
+          data-keyboard="false"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="staticBackdropLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title" id="staticBackdropLabel">이용약관</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <TermsOfUse />
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="modal-btn-secondary rounded-lg"
+                  data-dismiss="modal"
+                  v-on:click="isTerm=true"
+                >동의함</button>
+                <button
+                  type="button"
+                  class="modal-btn-primary rounded-lg"
+                  data-dismiss="modal"
+                  v-on:click="isTerm=false"
+                >동의안함</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <button class="btn" @click="signup">
           <span>작성완료</span>
         </button>
@@ -51,8 +93,9 @@
 import "../../assets/css/user.scss";
 import constants from "../../lib/constants";
 import axios from "axios";
+import TermsOfUse from "@/page/user/TermsOfUse";
 export default {
-  components: {},
+  components: { TermsOfUse },
   created() {},
   methods: {
     signup() {
