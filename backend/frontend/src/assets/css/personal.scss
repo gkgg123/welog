@@ -60,14 +60,14 @@
     }
   }
   .aside-left {
-    width: auto;
+    width: 60px;
     float: left;
     position: fixed;
     justify-content: center;
     .left-side {
       position: fixed;
       top: 350px;
-      left: 250px;
+      left: 100px;
       font-size: 40px;
       .floating-bar {
         flex-direction: row;

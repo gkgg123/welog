@@ -60,7 +60,6 @@ ul {
 <script>
 import "@/assets/css/post.scss";
 import constants from "@/lib/constants";
-import axios from "axios";
 
 export default {
   name: "Main",
@@ -70,6 +69,18 @@ export default {
     return {
       constants,
     };
+  },
+  methods: {
+    headerInit() {
+      this.$store.commit("SET_header", "welog"),
+        this.$store.commit("SET_headerPath", {
+          PathName: constants.URL_TYPE.MAIN.MAIN,
+          PathParams: null,
+        });
+    },
+  },
+  created() {
+    this.headerInit();
   },
 };
 </script>

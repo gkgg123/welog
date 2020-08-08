@@ -32,88 +32,48 @@
 
         <div class="writer-wrap">
           <router-link
-            :to="{name:constants.URL_TYPE.POST.POSTITEMS , params : {id : article.author}}"
+            :to="{name:constants.URL_TYPE.POST.BLOG , params : {id : article.author}}"
           >{{ article.author }}</router-link>
           <span>♥ 2</span>
         </div>
       </div>
     </div>
     <div id="bottomSensor"></div>
-    <button @click="getArticles">더보기</button>
+    <button @click="attachArticles">더보기</button>
   </section>
 </template>
 
 <script>
 import "@/assets/css/post.scss";
 import constants from "@/lib/constants";
-import axios from "axios";
+import { mapState, mapActions } from "vuex";
+
 export default {
   name: "recentList",
   created() {
-    this.$store.commit("SET_header", "welog"),
-      this.$store.commit("SET_headerPath", {
-        PathName: constants.URL_TYPE.MAIN.LIST,
-        PathParams: null,
-      });
-    this.getTotalArticles();
+    this.getArticles("post/latest");
   },
   data: () => {
     return {
       constants,
-      totalarticles: [],
-      articles: [],
-      nextpage: 0,
-      pageLimit: 0,
     };
   },
+  computed: {
+    ...mapState(["articles", "nextPage", "pageLimit"]),
+  },
   methods: {
-    getTotalArticles() {
-      axios
-        .get(constants.baseUrl + "post/latest/")
-        .then((res) => {
-          const temp = Object.values(res.data);
-          temp.forEach((item) => {
-            if (!!item.tags) {
-              item.tags = item.tags.split(",").filter((tag) => !!tag);
-            } else {
-              item.tags = [];
-            }
-          });
-          this.totalarticles = temp;
-          this.pageLimit = parseInt(this.totalarticles.length / 10);
-        })
-        .then(() => {
-          this.getArticles();
-        });
-    },
-    getArticlesOrderByPopularity() {
-      axios.get(constants.baseUrl + "post/popularity/").then((res) => {
-        this.totalarticles = res.data;
-      });
-    },
-    getArticles() {
-      const currentpage = this.nextpage++;
-      if (currentpage <= this.pageLimit - 1) {
-        const nextArticles = this.totalarticles.slice(
-          currentpage * 10,
-          (currentpage + 1) * 10
-        );
-        this.articles = [...this.articles, ...nextArticles];
-      } else {
-        const nextArticles = this.totalarticles.slice(currentpage * 10);
-        this.articles = [...this.articles, ...nextArticles];
-      }
-    },
+    ...mapActions(["getArticles", "attachArticles"]),
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
         setTimeout(() => {
-          this.getArticles();
+          this.attachArticles();
         }, 500);
       });
     },
   },
+
   mounted() {
     this.addScrollMonitor();
   },

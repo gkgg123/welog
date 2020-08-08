@@ -45,6 +45,9 @@ export default new Router({
       path: "/",
       name: constants.URL_TYPE.MAIN.MAIN,
       component: Main,
+      redirect: {
+        name: constants.URL_TYPE.MAIN.LIST,
+      },
       children: [
         {
           path: "",
@@ -71,6 +74,9 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         store.dispatch("headerChange", to.params.id);
         next();
+      },
+      redirect: {
+        name: constants.URL_TYPE.POST.POSTITEMS,
       },
       children: [
         {
