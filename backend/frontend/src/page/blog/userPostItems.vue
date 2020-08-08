@@ -39,7 +39,6 @@ export default {
       const username = this.$route.params.id;
       axios.get(constants.baseUrl + `post/${username}/`).then((res) => {
         this.articles = res.data;
-        console.log(res);
       });
     },
   },

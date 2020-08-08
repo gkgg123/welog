@@ -39,13 +39,16 @@
       @copy-code-success="handleCopyCodeSuccess"
     />
 
+    <button v-if="checkAuthorLogin" class="btn btn-primary" @click="confirmDelete">삭제버튼입니다.</button>
+
     <div id="context-menu" class="context-menu">
       <div class="item" data-toggle="modal" data-target="#exampleModal">수정요청</div>
       <div class="item">나가기</div>
     </div>
+
     <div class="comment">
-      <textarea placeholder="댓글을 남겨주세요" name id></textarea>
-      <button>작성</button>
+      <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
+      <button @click="commentSubmit">작성</button>
     </div>
 
     <div
@@ -78,13 +81,15 @@
 <script>
 import axios from "axios";
 import "../../assets/css/personal.scss";
-import { mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 import constants from "@/lib/constants.js";
 export default {
   name: "userPost",
   data() {
     return {
       title: "",
+      pid: null,
+      author: "",
       text: "",
       tagList: [],
       confirmText: "",
@@ -92,6 +97,16 @@ export default {
       commentContents: "",
       constants,
     };
+  },
+  computed: {
+    ...mapState(["username"]),
+    checkAuthorLogin() {
+      if (this.username === this.author) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   methods: {
     //  오른쪽 버튼 Custom
@@ -114,8 +129,21 @@ export default {
 
     ///  댓글 작성
     commentSubmit() {
-      const commentContent = this.commentContents;
-      axios.post(constants.baseUrl + `post/${pid}/comment/create/`);
+      const postData = {
+        content: this.commentContents,
+      };
+      console.log(this.commentContents);
+      axios
+        .post(
+          constants.baseUrl + `post/${this.$route.params.pid}/comment/`,
+          postData
+        )
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
     },
 
     /// 가져오기 ///
@@ -125,8 +153,11 @@ export default {
       axios
         .get(constants.baseUrl + `post/${author}/${pid}/`)
         .then((res) => {
+          console.log(res.data);
           this.title = res.data.object.title;
           this.text = res.data.object.content;
+          this.author = res.data.object.author;
+          this.pid = res.data.object.pid;
         })
         .then(() => {
           const anchors = this.$refs.editor.$el.querySelectorAll(
@@ -152,6 +183,23 @@ export default {
           }));
         });
     },
+    confirmDelete() {
+      if (confirm("정말 지울실껀가요?")) {
+        this.deletePost();
+      }
+    },
+
+    deletePost() {
+      axios
+        .delete(constants.baseUrl + `post/${this.author}/${this.pid}`)
+        .then((res) => {
+          this.$router.push({
+            name: constants.URL_TYPE.POST.BLOG,
+            params: { id: this.author },
+          });
+        });
+    },
+
     // codeblock 복사//
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
