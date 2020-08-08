@@ -38,7 +38,6 @@ export default new Vuex.Store({
   },
   actions: {
     postAuthData({ commit }, info) {
-      console.log("store postAuthData");
       axios
         .post(constants.baseUrl + info.location, info.data)
 
@@ -66,9 +65,13 @@ export default new Vuex.Store({
       commit("SET_USERNAME", null);
     },
     usernameCheck({ state, commit }) {
-      const data = JSON.parse(atob(state.authToken.split(".")[1]));
-
-      commit("SET_USERNAME", data.username);
+      console.log(!!state.authToken);
+      if (!!state.authToken) {
+        const data = JSON.parse(atob(state.authToken.split(".")[1]));
+        commit("SET_USERNAME", data.username);
+      } else {
+        commit("SET_USERNAME", null);
+      }
     },
     headerChange({ commit }, urlname) {
       commit("SET_header", urlname);

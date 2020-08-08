@@ -105,10 +105,8 @@ export default {
       }
     },
     addScrollMonitor() {
-      console.log("addScrollMonitor");
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
-      console.log(watcher.isFullyInViewport, "1");
       watcher.enterViewport(() => {
         setTimeout(() => {
           this.getArticles();

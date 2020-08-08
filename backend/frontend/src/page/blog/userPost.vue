@@ -130,7 +130,7 @@ export default {
         })
         .then(() => {
           const anchors = this.$refs.editor.$el.querySelectorAll(
-            ".v-md-editor-preview h1,h2,h3,h4,h5,h6"
+            ".v-md-editor-preview h1,h2,h3,h4"
           );
           const titles = Array.from(anchors).filter(
             (title) => !!title.innerText.trim()

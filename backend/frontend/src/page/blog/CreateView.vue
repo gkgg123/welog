@@ -23,7 +23,7 @@
         v-model="text"
         @copy-code-success="handleCopyCodeSuccess"
       />
-      <button @click="createPost">제출</button>
+      <button @click="checkCreate">제출</button>
     </div>
   </div>
 </template>
@@ -44,23 +44,36 @@ export default {
     };
   },
   methods: {
+    checkCreate() {
+      if (confirm("작성완료되었습니까?")) {
+        this.createPost();
+      }
+    },
+    // Tag 추가 이벤트
     tagEvent() {
       if (this.inputTag.length <= 15) {
-        const tagDiv = document.querySelector("#tag");
-        const btn = document.createElement("button");
-        btn.innerText = this.inputTag;
-        btn.setAttribute(
-          "style",
-          "background-color:#ddd; border: none; cursor:auto; border-radius: 16px; padding: 7px; margin:7px 3px; color:#0CA678"
-        );
-        tagDiv.append(btn);
-        this.taglist.push(this.inputTag);
-        this.inputTag = null;
+        if (!this.taglist.includes(this.inputTag)) {
+          const btn = document.createElement("button");
+          const tagDiv = document.querySelector("#tag");
+          btn.innerText = this.inputTag;
+          btn.setAttribute(
+            "style",
+            "background-color:#ddd; border: none; cursor:auto; border-radius: 16px; padding: 7px; margin:7px 3px; color:#0CA678"
+          );
+          tagDiv.append(btn);
+          this.taglist.push(this.inputTag);
+          this.inputTag = null;
+        } else {
+          this.inputTag = null;
+          alert("이미 중복된 Tag가 있습니다.");
+        }
       } else {
         this.inputTag = null;
         alert("Tag는 15자 이하로 입력해주세요");
       }
     },
+
+    /// Tag 지우는 로직
     deleteTag() {
       if (
         this.taglist.length >= 1 &&
@@ -79,6 +92,8 @@ export default {
         }
       }
     },
+
+    /// 코드 복사
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
       console.log(code);
