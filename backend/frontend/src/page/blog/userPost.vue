@@ -38,6 +38,43 @@
       ref="editor"
       @copy-code-success="handleCopyCodeSuccess"
     />
+    <button
+      v-if="checkAuthorLogin"
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#exampleModal"
+    >수정버튼입니다.</button>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <v-md-editor
+              style="margin:5vh 0px; box-sizing: border-box;"
+              id="create"
+              placeholder="새 글을 작성해 보세요"
+              v-model="text"
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" @click="updatePost">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <button v-if="checkAuthorLogin" class="btn btn-primary" @click="confirmDelete">삭제버튼입니다.</button>
 
@@ -125,6 +162,23 @@ export default {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
+    },
+
+    updatePost() {
+      const putData = {
+        title: this.title,
+        content: this.text,
+      };
+      console.log(
+        "요청주소 : ",
+        constants.baseUrl + `post/${this.author}/${this.pid}/`
+      );
+      console.log("전송데이터:", putData);
+      axios
+        .put(constants.baseUrl + `post/${this.author}/${this.pid}/`, putData)
+        .then((res) => {
+          console.log("수정결과 : ", res.data);
+        });
     },
 
     ///  댓글 작성
