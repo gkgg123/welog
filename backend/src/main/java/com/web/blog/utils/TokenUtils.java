@@ -114,4 +114,9 @@ public class TokenUtils {
     Claims claims = getClaimsFormToken(token);
     return (String) claims.get("useremail");
   }
+
+  public String getUserNameFromToken(String token){
+    Claims claims = getClaimsFormToken(token);
+    return (String) claims.get("username");
+  }
 }
