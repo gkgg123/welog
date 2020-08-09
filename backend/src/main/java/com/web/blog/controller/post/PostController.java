@@ -89,9 +89,10 @@ public class PostController {
 
     @PutMapping("/{author}/{pid}")
     @ApiOperation(value = "글 수정")
-    public Object update(@RequestBody Post post, @PathVariable int pid){
+    public Object update(@RequestBody Post post, @PathVariable String author, @PathVariable int pid){
         BasicResponse result = new BasicResponse();
         post.setPid(pid);
+        post.setAuthor(author);
         postRepository.save(post);
         result.status = true;
         result.data = SUCCESS;
