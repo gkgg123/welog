@@ -8,6 +8,7 @@ import com.web.blog.model.account.repository.CommentRepository;
 import com.web.blog.model.BasicResponse;
 
 import com.web.blog.model.post.Comment;
+import com.web.blog.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,8 @@ public class CommentController {
 
     @Autowired
     CommentRepository commentRepository;
+    @Autowired
+    TokenUtils tokenUtils;
 
     @GetMapping("/")
     @ApiOperation(value = "해당 글 모든 댓글 조회")
@@ -39,9 +42,10 @@ public class CommentController {
 
     @PostMapping("/")
     @ApiOperation(value = "댓글 작성")
-    public Object createComment(@PathVariable int pid, @RequestBody Comment comment){
+    public Object createComment(@PathVariable int pid, @RequestBody Comment comment, @RequestParam String token){
         BasicResponse result = new BasicResponse();
         comment.setPid(pid);
+        comment.setName(tokenUtils.getUserNameFromToken(token));
         commentRepository.save(comment);
         result.status = true;
         result.data = "SUCCESS";
@@ -51,11 +55,12 @@ public class CommentController {
 
     @PutMapping("/{cid}")
     @ApiOperation(value = "댓글 수정")
-    public Object update(@RequestBody Comment comment, @PathVariable int cid, @PathVariable int pid){
+    public Object update(@RequestBody Comment comment, @PathVariable int cid, @PathVariable int pid, @RequestParam String token){
 
         BasicResponse result = new BasicResponse();
         comment.setPid(pid);
         comment.setCid(cid);
+        comment.setName(tokenUtils.getUserNameFromToken(token));
         commentRepository.save(comment);
         result.status = true;
         result.data = SUCCESS;
