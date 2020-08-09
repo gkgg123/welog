@@ -1,37 +1,160 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import axios from "axios";
+import constants from "@/lib/constants";
+import router from "@/router";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     headerTitle: "welog",
-    headerPathName: "main",
+    headerPathName: constants.URL_TYPE.MAIN.MAIN,
     headerPathParams: null,
-    username: sessionStorage.getItem("username"),
-    articleList: [],
+    authToken: sessionStorage.getItem("auth-token"),
+    username: null,
+    receiveArticleList: [],
+    articles: [],
+    nextPage: 0,
+    pageLimit: 0,
   },
   getters: {
-    isLogined: (state) => !!state.username,
+    isLogined: (state) => !!state.authToken,
+    pageLimitcalc: (state) => parseInt(state.receiveArticleList.length / 10),
   },
   mutations: {
+    // Header의 이름을 바꿔주는 mutaion
     SET_header(state, urlname) {
       state.headerTitle = urlname;
     },
+    // Header의 링크 Path를 바꿔주는 mutation
     SET_headerPath(state, payload) {
-      console.log(payload, "tttttttttttttt");
-      console.log(payload.PathName, payload.PathParams);
       state.headerPathName = payload.PathName;
       state.headerPathParams = payload.PathParams;
     },
+    // TOKEN을 session에 적어주는 mutaiton
+    SET_TOKEN(state, token) {
+      state.authToken = token;
+      sessionStorage.setItem("auth-token", token);
+    },
+    // state의 username을 변경해주는 mutation
     SET_USERNAME(state, username) {
       state.username = username;
-      sessionStorage.setItem("username", username);
     },
-    SET_Articles(state, articles) {
-      state.articles = articles;
+    // RECEVIE_ARTICLES를 변경하는 함수
+    SET_RECEIVEARTICLES(state, reciveArticleList) {
+      state.receiveArticleList = reciveArticleList;
+    },
+    // Articles를 변경하는 mutation
+    SET_ARTICLES(state, articles) {
+      state.articles = [...state.articles, ...articles];
+    },
+    // PAGELIMIT를 변경하는 mutation
+    SET_PAGELIMIT(state, pageLimit) {
+      state.pageLimit = pageLimit;
+    },
+    // nextPage의 값을 늘려주는 mutation
+    INCREASE_NEXTPAGE(state) {
+      state.nextPage += 1;
+    },
+    // PAGE 관련 변수를 초기화 시켜주는 mutation
+    RESET_PAGINATION(state) {
+      state.pageLimit = 0;
+      state.nextPage = 0;
+    },
+    // ARTICLES와 관련된 변수를 초기화 시켜주는 mutations
+    RESET_ARTICLES(state) {
+      (state.receiveArticleList = []), (state.articles = []);
     },
   },
-  actions: {},
+  actions: {
+    // 로그인 Axios 요청하는 과정
+    postAuthData({ commit }, info) {
+      axios
+        .post(constants.baseUrl + info.location, info.data)
+
+        .then((res) => {
+          const token = res.headers.authorization.replace("Bearer", "");
+          const data = JSON.parse(atob(token.split(".")[1]));
+          commit("SET_USERNAME", data.username);
+          commit("SET_TOKEN", token);
+          router.push({
+            name: constants.URL_TYPE.POST.POSTITEMS,
+            params: { id: data.username },
+          });
+        });
+    },
+    //Login 하는 함수
+    login({ dispatch }, loginData) {
+      const info = {
+        data: loginData,
+        location: "user/login",
+      };
+      dispatch("postAuthData", info);
+    },
+    //Logout 하는 함수
+    logout({ commit }) {
+      commit("SET_TOKEN", null);
+      sessionStorage.removeItem("auth-token");
+      commit("SET_USERNAME", null);
+    },
+    //UserName을 JWT TOKEN에서 decoding 하는 함수
+    usernameCheck({ state, commit }) {
+      console.log(!!state.authToken);
+      if (!!state.authToken) {
+        const data = JSON.parse(atob(state.authToken.split(".")[1]));
+        commit("SET_USERNAME", data.username);
+      } else {
+        commit("SET_USERNAME", null);
+      }
+    },
+    // Headers의 Path와 Name을 바꿔주는 곳.
+    headerChange({ commit }, urlname) {
+      commit("SET_header", urlname);
+      commit("SET_headerPath", {
+        PathName: constants.URL_TYPE.POST.POSTITEMS,
+        PathParams: urlname,
+      });
+    },
+    // Articles의 List를 불러오는 함수 //
+    getArticles({ state, commit, getters, dispatch }, location) {
+      /// 새 페이지에 들어갔을때 RESET하는 역할
+      commit("RESET_PAGINATION");
+      commit("RESET_ARTICLES");
+      axios
+        .get(constants.baseUrl + location)
+        .then((res) => {
+          const temp = Object.values(res.data);
+          temp.forEach((item) => {
+            if (!!item.tags) {
+              item.tags = item.tags.split(",").filter((tag) => !!tag);
+            } else {
+              item.tags = [];
+            }
+          });
+          commit("SET_RECEIVEARTICLES", temp);
+          commit("SET_PAGELIMIT", getters.pageLimitcalc);
+        })
+        .then(() => {
+          dispatch("attachArticles");
+          console.log(state.articles);
+        });
+    },
+
+    // ReceiveArticles에서 필요한만큼 더 붙이는 과정.
+    attachArticles({ state, commit }) {
+      const currentPage = state.nextPage;
+      commit("INCREASE_NEXTPAGE");
+      if (currentPage <= state.pageLimit - 1) {
+        const nextArticles = state.receiveArticleList.slice(
+          currentPage * 10,
+          (currentPage + 1) * 10
+        );
+        commit("SET_ARTICLES", nextArticles);
+      } else {
+        const nextArticles = state.receiveArticleList.slice(currentPage * 10);
+        commit("SET_ARTICLES", nextArticles);
+      }
+    },
+  },
   modules: {},
 });

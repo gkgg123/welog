@@ -30,14 +30,14 @@
             <router-link
               class="postLink"
               :to="{
-                name: 'userPostItems',
+                name: constants.URL_TYPE.POST.POSTITEMS,
                 params: { id: $route.params.id },
               }"
             >글</router-link>
             <router-link
               class="postLink"
               :to="{
-                name: 'userPersonalIntro',
+                name: constants.URL_TYPE.POST.BLOGINTRO,
                 params: { id: $route.params.id },
               }"
             >소개글</router-link>
@@ -53,23 +53,20 @@
 
 <script>
 import "../../assets/css/personal.scss";
+import constants from "@/lib/constants.js";
+
+const whiteboardUrl = "@/assets/img/whiteboard.png";
 
 export default {
   name: "userBlog",
-  methods: {
-    headerChange() {
-      const urlname = this.$route.params.id;
-      console.log(urlname, "test");
-      this.$store.commit("SET_header", urlname);
-      this.$store.commit("SET_headerPath", {
-        PathName: "userPostItems",
-        PathParams: urlname,
-      });
-    },
+  methods: {},
+  data() {
+    return {
+      constants,
+      postImg: whiteboardUrl,
+    };
   },
-  created() {
-    this.headerChange();
-  },
+  created() {},
 };
 </script>
 

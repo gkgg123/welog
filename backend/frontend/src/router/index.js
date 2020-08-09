@@ -8,15 +8,18 @@ import Login from "../page/user/Login.vue";
 import Join from "../page/user/Join.vue";
 import Logout from "../page/user/Logout.vue";
 
-// 포스트
-import List from "../page/post/List.vue";
-import CreateView from "../page/post/CreateView.vue";
+// 메인화면
+import Main from "../page/main/Main.vue";
+import recentList from "../page/main/recentList.vue";
+import recommandList from "../page/main/recommandList.vue";
+// 개인블로그
+import CreateView from "../page/blog/CreateView.vue";
+import userBlog from "../page/blog/userBlog.vue";
+import userPostItems from "../page/blog/userPostItems.vue";
+import userPost from "../page/blog/userPost.vue";
+import userPersonalIntro from "../page/blog/userPersonalIntro.vue";
 
-import userBlog from "../page/post/userBlog.vue";
-import userPostItems from "../page/post/userPostItems.vue";
-import userPost from "../page/post/userPost.vue";
-import userPersonalIntro from "../page/post/userPersonalIntro.vue";
-// import { compile, component } from 'vue/types/umd'
+import store from "../store/index.js";
 Vue.use(Router);
 
 export default new Router({
@@ -32,42 +35,69 @@ export default new Router({
       name: constants.URL_TYPE.USER.JOIN,
       component: Join,
     },
-    // 포스트
-    {
-      path: "/",
-      name: constants.URL_TYPE.POST.MAIN,
-      component: List,
-    },
-    {
-      path: "/create",
-      name: "CreateView",
-      component: CreateView,
-    },
     {
       path: "/user/logout",
       name: constants.URL_TYPE.USER.LOGOUT,
       component: Logout,
     },
+    // 메인화면
     {
-      path: "/@:id",
-      name: "userBlog",
-      component: userBlog,
+      path: "/",
+      name: constants.URL_TYPE.MAIN.MAIN,
+      component: Main,
+      redirect: {
+        name: constants.URL_TYPE.MAIN.LIST,
+      },
       children: [
         {
           path: "",
-          name: "userPostItems",
+          name: constants.URL_TYPE.MAIN.LIST,
+          component: recentList,
+        },
+        {
+          path: "recommand",
+          name: constants.URL_TYPE.MAIN.RECOMMAND,
+          component: recommandList,
+        },
+      ],
+    },
+    // POST
+    {
+      path: "/create",
+      name: constants.URL_TYPE.POST.CREATE,
+      component: CreateView,
+    },
+    {
+      path: "/@:id",
+      name: constants.URL_TYPE.POST.BLOG,
+      component: userBlog,
+      beforeEnter: (to, from, next) => {
+        store.dispatch("headerChange", to.params.id);
+        next();
+      },
+      redirect: {
+        name: constants.URL_TYPE.POST.POSTITEMS,
+      },
+      children: [
+        {
+          path: "",
+          name: constants.URL_TYPE.POST.POSTITEMS,
           component: userPostItems,
         },
         {
           path: "intro",
-          name: "userPersonalIntro",
+          name: constants.URL_TYPE.POST.BLOGINTRO,
           component: userPersonalIntro,
+          beforeEnter: (to, from, next) => {
+            store.dispatch("headerChange", to.params.id);
+            next();
+          },
         },
       ],
     },
     {
       path: "/@:id/:pid",
-      name: "userPost",
+      name: constants.URL_TYPE.POST.POST,
       component: userPost,
     },
   ],
