@@ -1,5 +1,6 @@
 package com.web.blog.controller.post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import com.web.blog.model.account.repository.AccountRepository;
 import com.web.blog.model.post.LikeInfo;
 import com.web.blog.model.post.Post;
 
+import com.web.blog.model.post.PostInfo;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -41,20 +43,36 @@ public class PostController {
 
     @GetMapping("/latest")
     @ApiOperation(value = "최신 글 조회")
-    public ResponseEntity<List<Post>> retrievePostbyLatest(){
-        return new ResponseEntity<List<Post>>(postRepository.findAll(Sort.by("createDate").descending()), HttpStatus.OK);
+    public ResponseEntity<List<PostInfo>> retrievePostbyLatest(){
+        List<Post> post = postRepository.findAll(Sort.by("createDate").descending());
+        List<PostInfo> postInfo = new ArrayList<>();
+        for(Post p : post ){
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid())));
+        }
+        return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/popularity")
     @ApiOperation(value = "인기 글 조회")
-    public ResponseEntity<List<Post>> retrievePostbyPopularity(){
-        return new ResponseEntity<List<Post>>(postRepository.findAll(Sort.by("count").descending()), HttpStatus.OK);
+    public ResponseEntity<List<PostInfo>> retrievePostbyPopularity(){
+        List<Post> post = postRepository.findAll(Sort.by("count").descending());
+        List<PostInfo> postInfo = new ArrayList<>();
+        for(Post p : post ){
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid())));
+        }
+        return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/{author}")
     @ApiOperation(value = "해당 유저 전체 글 조회")
-    public ResponseEntity<List<Post>> retrievePost(@PathVariable String author) throws Exception{
-        return new ResponseEntity<List<Post>>(postRepository.getPostByAuthor(author),HttpStatus.OK);
+    public ResponseEntity<List<PostInfo>> retrievePost(@PathVariable String author) throws Exception{
+        List<Post> post = postRepository.getPostByAuthor(author);
+        List<PostInfo> postInfo = new ArrayList<>();
+        for(Post p : post ){
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid())));
+
+        }
+        return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
 
 
