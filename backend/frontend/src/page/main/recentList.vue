@@ -3,7 +3,7 @@
     <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles" :key="article.pid">
       <div class="post-card">
         <router-link
-          :to="{name :constants.URL_TYPE.POST.POST, params :{id : article.author, pid:article.pid}}"
+          :to="{name :constants.URL_TYPE.POST.POST, params :{id : article.post.author, pid:article.post.pid}}"
         >
           <div
             :style="{
@@ -14,17 +14,13 @@
           />
 
           <div class="contents">
-            <h3>{{ article.title }}</h3>
-            <div v-for="tag in article.tags" :key="tag">
-              <span>
-                <a href="#">{{ tag }}</a>
-              </span>
-            </div>
+            <h3>{{ article.post.title }}</h3>
+            <div>{{article.post.tag}}</div>
             <hr />
             <span class="date">
-              {{ article.createDate.slice(0, 4) }}년
-              {{ article.createDate.slice(5, 7) }}월
-              {{ article.createDate.slice(8, 10) }}일ㆍ
+              {{ article.post.createDate.slice(0, 4) }}년
+              {{ article.post.createDate.slice(5, 7) }}월
+              {{ article.post.createDate.slice(8, 10) }}일ㆍ
             </span>
             <span class="comment">댓글 0개</span>
           </div>
@@ -32,8 +28,8 @@
 
         <div class="writer-wrap">
           <router-link
-            :to="{name:constants.URL_TYPE.POST.BLOG , params : {id : article.author}}"
-          >{{ article.author }}</router-link>
+            :to="{name:constants.URL_TYPE.POST.BLOG , params : {id : article.post.author}}"
+          >{{ article.post.author }}</router-link>
           <span>♥ 2</span>
         </div>
       </div>

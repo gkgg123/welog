@@ -21,29 +21,29 @@
           <h4>공지사항</h4>
           <ul class="tag-list mb-5">
             <li class="notice">
-              <a href="#">공지사항1</a>
+              <p>공지사항1</p>
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
             <li class="notice">
-              <a href="#">공지사항2</a>
+              <p>공지사항2</p>
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
             <li class="notice">
-              <a href="#">제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</a>
+              <p>제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</p>
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
-            <a href="#" class="text-secondary">
+            <p class="text-secondary">
               <u>더보기</u>
-            </a>
+            </p>
           </ul>
           <h4>인기태그</h4>
           <ul class="tag-list">
             <li>#태그1 (8)</li>
             <li>#태그2 (5)</li>
             <li>#태그3 (2)</li>
-            <a href="#" class="text-secondary">
+            <p class="text-secondary">
               <u>더보기</u>
-            </a>
+            </p>
           </ul>
         </div>
       </div>
