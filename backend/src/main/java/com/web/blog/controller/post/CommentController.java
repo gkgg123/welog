@@ -9,6 +9,12 @@ import com.web.blog.model.BasicResponse;
 
 import com.web.blog.model.post.Comment;
 import com.web.blog.utils.TokenUtils;
+
+import org.json.JSONString;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,10 +48,28 @@ public class CommentController {
 
     @PostMapping("/")
     @ApiOperation(value = "댓글 작성")
-    public Object createComment(@PathVariable int pid, @RequestBody Comment comment, @RequestParam String token){
+    public Object createComment(@PathVariable int pid, @RequestBody String jsonObj) throws ParseException{
         BasicResponse result = new BasicResponse();
+        Comment comment = new Comment();
+        //json parsing 부분
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+
+        String token = (String) obj.get("token");
+        JSONArray commentArray = (JSONArray) obj.get("comment");
+        JSONObject commentObject = (JSONObject) commentArray.get(0);
+
+
+        String content = (String) commentObject.get("content");
+        int secret = Integer.parseInt((String) commentObject.get("secret"));
+        String name = tokenUtils.getUserNameFromToken(token);
+
         comment.setPid(pid);
-        comment.setName(tokenUtils.getUserNameFromToken(token));
+        comment.setContent(content);
+        comment.setSecret(secret);
+        comment.setName(name);
+
+        System.out.println(comment.toString());
         commentRepository.save(comment);
         result.status = true;
         result.data = "SUCCESS";
@@ -55,12 +79,29 @@ public class CommentController {
 
     @PutMapping("/{cid}")
     @ApiOperation(value = "댓글 수정")
-    public Object update(@RequestBody Comment comment, @PathVariable int cid, @PathVariable int pid, @RequestParam String token){
+    public Object update(@PathVariable int cid, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
 
         BasicResponse result = new BasicResponse();
-        comment.setPid(pid);
-        comment.setCid(cid);
-        comment.setName(tokenUtils.getUserNameFromToken(token));
+        Comment comment = commentRepository.getCommentByCid(cid);
+
+        //json parsing 부분
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+
+        String token = (String) obj.get("token");
+        if(!tokenUtils.getUserNameFromToken(token).equals(comment.getName())){
+            result.status = false;
+            result.data = "fail";
+            return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+        }
+        JSONArray commentArray = (JSONArray) obj.get("comment");
+        JSONObject commentObject = (JSONObject) commentArray.get(0);
+
+        String content = (String) commentObject.get("content");
+        int secret = Integer.parseInt((String) commentObject.get("secret"));
+
+        comment.setContent(content);
+        comment.setSecret(secret);
         commentRepository.save(comment);
         result.status = true;
         result.data = SUCCESS;
