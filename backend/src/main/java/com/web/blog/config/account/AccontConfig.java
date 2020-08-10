@@ -1,7 +1,9 @@
 package com.web.blog.config.account;
 
 import com.web.blog.handler.account.CustomLoginSuccessHandler;
+import com.web.blog.handler.account.Oauth2.CustomLoginFailureHandler;
 import com.web.blog.service.account.AccountService;
+import com.web.blog.service.account.CustomOAuth2AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,6 +32,9 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   AccountService accountService;
+
+  @Autowired
+  CustomOAuth2AccountService customOAuth2AccountService;
 
   public SecurityExpressionHandler expressionHandler() {
     RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -57,9 +63,21 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
             .disable()
           .addFilterBefore(customAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
           .logout()
-            .logoutUrl("/user/logout");
+            .logoutUrl("/user/logout")
+          .and()
+            .oauth2Login()
+              .userInfoEndpoint()
+                .userService(customOAuth2AccountService)
+                .and()
+              .failureHandler(customLoginFailureHandler());
+
 
   }
+
+  @Bean
+  public CustomLoginFailureHandler customLoginFailureHandler(){
+    System.out.println("fallll");
+    return new CustomLoginFailureHandler();}
 
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -73,8 +91,8 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
     customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler());
     customAuthenticationFilter.afterPropertiesSet();
     return customAuthenticationFilter;
-
   }
+
 
   @Bean
   public CustomLoginSuccessHandler customLoginSuccessHandler(){

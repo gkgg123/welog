@@ -27,7 +27,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
   @Override
   public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
     UsernamePasswordAuthenticationToken authenticationToken;
-
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     Enumeration<String> em = request.getHeaderNames();
@@ -59,5 +58,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     setDetails(request,authenticationToken);
     return this.getAuthenticationManager().authenticate(authenticationToken);
   }
+
 
 }

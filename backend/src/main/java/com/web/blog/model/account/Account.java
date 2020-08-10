@@ -1,17 +1,16 @@
 package com.web.blog.model.account;
 
 import com.web.blog.enums.AccountGrade;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class Account implements Serializable {
   @Id @GeneratedValue
   private Integer id;
@@ -41,43 +40,19 @@ public class Account implements Serializable {
     isEnable = enable;
   }
 
-  public Integer getId() {
-    return id;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
-  }
-
-  public String getUseremail() {
-    return useremail;
-  }
-
-  public void setUseremail(String useremail) {
+  @Builder
+  public Account(String username, String useremail, String password, AccountGrade grade){
+    this.username = username;
     this.useremail = useremail;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
     this.password = password;
-  }
-
-  public AccountGrade getGrade() {
-    return grade;
-  }
-  public void setGrade(AccountGrade grade) {
+    this.isEnable = true;
     this.grade = grade;
   }
 
-  public String getUsername() {
-    return username;
-  }
+  public Account update(String name){
+    this.username = name;
 
-  public void setUsername(String username) {
-    this.username = username;
+    return this;
   }
   public void encodePassword(BCryptPasswordEncoder passwordEncoder){
     this.password = passwordEncoder.encode(this.password);
