@@ -3,6 +3,13 @@
     <div class="post-title">
       <div class="title">
         <h2>제목: {{title}}</h2>
+        <div class="written">
+          <p>작성자{{title}} 작성일 {{title}}</p>
+          <div class="written-tag">
+            <span>태그</span>
+            <span>태그</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -30,8 +37,6 @@
       </div>
     </div>
     <v-md-editor
-      class="col-8 mx-auto"
-      style="margin:5vh 0px; height:100vh;"
       id="detail"
       mode="preview"
       v-model="text"
@@ -82,10 +87,24 @@
       <div class="item" data-toggle="modal" data-target="#exampleModal">수정요청</div>
       <div class="item">나가기</div>
     </div>
-
+    <div class="comment-label">
+      <p>0개의 댓글</p>
+    </div>
     <div class="comment">
       <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
-      <button @click="commentSubmit">작성</button>
+      <button @click="commentSubmit">댓글 작성</button>
+    </div>
+    <div class="comment-list">
+      <div class="comment-profile">
+        <div class="profile-img">
+          <i class="far fa-smile"></i>
+        </div>
+        <div class="writer-info">
+          <p class="writer-id">작성자 아이디</p>
+          <p class="written-day">작성 날짜</p>
+        </div>
+      </div>
+      <div class="comment-content">댓글 내용</div>
     </div>
 
     <div
