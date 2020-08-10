@@ -13,6 +13,11 @@ import com.web.blog.model.post.LikeInfo;
 import com.web.blog.model.post.Post;
 
 import com.web.blog.model.post.PostInfo;
+import com.web.blog.utils.TokenUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
@@ -40,6 +45,8 @@ public class PostController {
     LikeRepository likeRepository;
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    TokenUtils tokenUtils;
 
     @GetMapping("/latest")
     @ApiOperation(value = "최신 글 조회")
@@ -93,11 +100,34 @@ public class PostController {
 
     @PostMapping("/{author}")
     @ApiOperation(value = "글쓰기")
-    public Object create(@RequestBody Post post, @PathVariable String author) {
+    public Object create(@PathVariable String author, @RequestBody String jsonObj) throws ParseException {
         BasicResponse result = new BasicResponse();
-        post.setPostno(post.getPostno()+1);
+        //json parsing 부분
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+
+        String token = (String) obj.get("token");
+        if(!author.equals(tokenUtils.getUserNameFromToken(token))){
+            result.status = false;
+            result.data = "fail";
+            return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+        }
+        JSONArray commentArray = (JSONArray) obj.get("post");
+        JSONObject commentObject = (JSONObject) commentArray.get(0);
+
+        String title = (String) commentObject.get("title");
+        String content = (String) commentObject.get("content");
+        String tags = (String) commentObject.get("tags");
+
+        Post post = new Post();
+        post.setTitle(title);
+        post.setContent(content);
+        post.setPostno(post.getPostno()+1); // 이부분 수정해야함 아직안했음 08.10
         post.setAuthor(author);
+        post.setTags(tags);
+
         postRepository.save(post);
+
 
         result.status = true;
         result.data = SUCCESS;
@@ -107,11 +137,32 @@ public class PostController {
 
     @PutMapping("/{author}/{pid}")
     @ApiOperation(value = "글 수정")
-    public Object update(@RequestBody Post post, @PathVariable String author, @PathVariable int pid){
+    public Object update(@PathVariable String author, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
         BasicResponse result = new BasicResponse();
-        post.setPid(pid);
-        post.setAuthor(author);
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+
+        String token = (String) obj.get("token");
+        if(!author.equals(tokenUtils.getUserNameFromToken(token))){
+            result.status = false;
+            result.data = "fail";
+            return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+        }
+        JSONArray commentArray = (JSONArray) obj.get("post");
+        JSONObject commentObject = (JSONObject) commentArray.get(0);
+
+        String title = (String) commentObject.get("title");
+        String content = (String) commentObject.get("content");
+        String tags = (String) commentObject.get("tags");
+
+        Post post = postRepository.getPostByAuthorAndPid(author, pid);
+        post.setTitle(title);
+        post.setContent(content);
+        post.setTags(tags);
+
         postRepository.save(post);
+
+        
         result.status = true;
         result.data = SUCCESS;
         result.object = post;
