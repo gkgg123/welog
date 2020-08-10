@@ -58,7 +58,7 @@ export default {
           btn.innerText = this.inputTag;
           btn.setAttribute(
             "style",
-            "background-color:#ddd; border: none; cursor:auto; border-radius: 16px; padding: 7px; margin:7px 3px; color:#0CA678"
+            "background-color:#e8eaf6; border: none; cursor:auto; border-radius: 16px; padding: 7px; margin:7px 3px; color:#0CA678"
           );
           tagDiv.append(btn);
           this.taglist.push(this.inputTag);

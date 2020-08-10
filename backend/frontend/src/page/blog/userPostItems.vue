@@ -1,20 +1,24 @@
 <template>
   <div id="post-items">
     <div v-if="articles.length" v-cloak>
-      <div>
-        <ul v-for="article in articles" :key="article.pid">
-          <li>
-            제목 :
+      <div class="post-articles" v-for="article in articles" :key="article.pid">
+        <div class="post-article">
+          <li class="article-title">
             <router-link
               :to="{
               name: 'userPost',
               params: { id: $route.params.id, pid: article.pid },
             }"
-            >{{ article.title }}</router-link>
+            >{{ article.post.title }}</router-link>
           </li>
-          <li>{{ article.createDate }}</li>
-          <hr />
-        </ul>
+          <div class="article-content">{{ article.post.content }}</div>
+          <!--  <div v-for="tag in articles.tags" :key="tag"> -->
+          <div class="article-tag">
+            <span>태그</span>
+            <span>xoasd</span>
+          </div>
+          <li class="article-day">{{ article.post.createDate }}</li>
+        </div>
       </div>
     </div>
     <div class="post-item" v-else v-cloak>

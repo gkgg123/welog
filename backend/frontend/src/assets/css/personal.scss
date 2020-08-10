@@ -67,7 +67,7 @@
         padding: 10px 0px 20px 0px;
         span {
           font-size: 17px;
-          background-color: #ddd;
+          background-color: #e8eaf6;
           border: none;
           border-radius: 16px;
           padding: 7px;
@@ -202,8 +202,12 @@
   }
 }
 
+.personal-intro {
+  text-align: center;
+}
 #post-items {
   .post-item {
+    text-align: center;
     h3 {
       margin-bottom: 15px;
     }
@@ -224,22 +228,25 @@
     }
     .article-content {
       font-size: 20px;
-      margin: 10px 20px 30px 20px;
+      padding: 5px 0px 15px 0px;
+      margin: 10px 20px 10px 20px;
       text-align: left;
     }
     .article-tag {
-      background-color: #ddd;
-      border: none;
-      cursor: auto;
-      border-radius: 16px;
-      padding: 7px;
-      margin: 7px 3px;
-      color: #0ca678;
+      margin: 0px 13px;
+      padding: 20px 0px;
+      span {
+        background-color: #e8eaf6;
+        border: none;
+        border-radius: 16px;
+        padding: 7px;
+        margin: 7px 5px;
+        color: #0ca678;
+      }
     }
     .article-day {
-      display: inline;
       font-size: 15px;
-      margin: 10px 10px 10px 20px;
+      margin: 20px 10px 10px 20px;
       float: left;
     }
     .article-comment {
@@ -289,12 +296,11 @@
       }
     }
     .postView {
-      width: 55vw;
+      width: 52vw;
       margin: auto;
       margin-top: 70px;
       padding: 30px 100px;
       height: 50vh;
-      text-align: center;
     }
   }
 }
