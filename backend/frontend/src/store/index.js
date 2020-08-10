@@ -14,6 +14,7 @@ export default new Vuex.Store({
     username: null,
     receiveArticleList: [],
     articles: [],
+    articleDetail: [],
     nextPage: 0,
     pageLimit: 0,
   },
@@ -63,7 +64,11 @@ export default new Vuex.Store({
     },
     // ARTICLES와 관련된 변수를 초기화 시켜주는 mutations
     RESET_ARTICLES(state) {
-      (state.receiveArticleList = []), (state.articles = []);
+      state.receiveArticleList = [];
+      state.articles = [];
+    },
+    SET_ARTICLEDETAIL(state, article) {
+      state.articleDetail = article;
     },
   },
   actions: {
@@ -123,13 +128,15 @@ export default new Vuex.Store({
       axios
         .get(constants.baseUrl + location)
         .then((res) => {
-          const temp = Object.values(res.data);
-          temp.forEach((item) => {
-            if (!!item.tags) {
-              item.tags = item.tags.split(",").filter((tag) => !!tag);
+          var receive = Object.values(res.data);
+          const temp = receive.map((item) => {
+            if (!!item.post.tags) {
+              item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
             } else {
-              item.tags = [];
+              item.post.tags = [];
             }
+            item.post.likeCount = item.likeCount;
+            return item.post;
           });
           commit("SET_RECEIVEARTICLES", temp);
           commit("SET_PAGELIMIT", getters.pageLimitcalc);
@@ -154,6 +161,22 @@ export default new Vuex.Store({
         const nextArticles = state.receiveArticleList.slice(currentPage * 10);
         commit("SET_ARTICLES", nextArticles);
       }
+    },
+    async carryArticle({ commit }, location) {
+      return await axios.get(constants.baseUrl + location).then((res) => {
+        const receive = [res.data];
+        const temp = receive.map((item) => {
+          if (!!item.object.tags) {
+            item.object.tags = item.object.tags
+              .split(",")
+              .filter((tag) => !!tag);
+          } else {
+            item.object.tags = [];
+          }
+          return item.object;
+        });
+        commit("SET_ARTICLEDETAIL", temp[0]);
+      });
     },
   },
   modules: {},

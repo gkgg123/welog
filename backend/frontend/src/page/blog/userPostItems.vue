@@ -9,15 +9,15 @@
               name: 'userPost',
               params: { id: $route.params.id, pid: article.pid },
             }"
-            >{{ article.post.title }}</router-link>
+            >{{ article.title }}</router-link>
           </li>
-          <div class="article-content">{{ article.post.content }}</div>
+          <div class="article-content">{{ article.content }}</div>
           <!--  <div v-for="tag in articles.tags" :key="tag"> -->
           <div class="article-tag">
             <span>태그</span>
             <span>xoasd</span>
           </div>
-          <li class="article-day">{{ article.post.createDate }}</li>
+          <li class="article-day">{{ article.createDate }}</li>
         </div>
       </div>
     </div>
@@ -42,7 +42,20 @@ export default {
     getArticles() {
       const username = this.$route.params.id;
       axios.get(constants.baseUrl + `post/${username}/`).then((res) => {
-        this.articles = res.data;
+        var receive = Object.values(res.data);
+        const temp = receive.map((item) => {
+          if (!!item.post.tags) {
+            item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
+          } else {
+            item.post.tags = [];
+          }
+          item.post.likeCount = item.likeCount;
+
+          return item.post;
+        });
+        console.log(temp);
+        console.log(receive);
+        this.articles = temp;
       });
     },
   },

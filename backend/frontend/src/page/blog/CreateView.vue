@@ -31,6 +31,7 @@
 <script>
 import axios from "axios";
 import constants from "@/lib/constants.js";
+import { mapState } from "vuex";
 export default {
   name: "CreateView",
   data() {
@@ -42,6 +43,9 @@ export default {
       taglist: [],
       confirmText: "test중입니다.",
     };
+  },
+  computed: {
+    ...mapState(["authToken"]),
   },
   methods: {
     checkCreate() {
@@ -109,11 +113,15 @@ export default {
         content: this.text,
         tags: configTag,
       };
-
+      const totalData = {
+        post: [postData],
+        token: this.authToken,
+      };
+      console.log(totalData);
       axios
         .post(
           constants.baseUrl + `post/${this.$store.state.username}/`,
-          postData
+          totalData
         )
         .then((res) => {
           console.log(res.data.object.pid);

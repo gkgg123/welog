@@ -15,9 +15,9 @@
 
           <div class="contents">
             <h3>{{ article.title }}</h3>
-            <div v-for="tag in article.tags" :key="tag">
+            <div v-for="(tag,index) in article.tags" :key="tag">
               <span>
-                <a href="#">{{ tag }}</a>
+                <a href="#">{{index}} 와 {{ tag }}</a>
               </span>
             </div>
             <hr />
@@ -39,7 +39,7 @@
       </div>
     </div>
     <div id="bottomSensor"></div>
-    <button @click="getArticles">더보기</button>
+    <button @click="attachArticles">더보기</button>
   </section>
 </template>
 

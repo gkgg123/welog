@@ -2,9 +2,9 @@
   <div id="detail" class="mt-5">
     <div class="post-title">
       <div class="title">
-        <h2>제목: {{title}}</h2>
+        <h2>제목: {{articleDetail.title}}</h2>
         <div class="written">
-          <p>작성자{{title}} 작성일 {{title}}</p>
+          <p>작성자{{articleDetail.title}} 작성일 {{articleDetail.title}}</p>
           <div class="written-tag">
             <span>태그</span>
             <span>태그</span>
@@ -39,7 +39,7 @@
     <v-md-editor
       id="detail"
       mode="preview"
-      v-model="text"
+      v-model="articleDetail.content"
       ref="editor"
       @copy-code-success="handleCopyCodeSuccess"
     />
@@ -48,6 +48,7 @@
       class="btn btn-primary"
       data-toggle="modal"
       data-target="#exampleModal"
+      @click="updateData"
     >수정버튼입니다.</button>
     <div
       class="modal fade"
@@ -57,21 +58,17 @@
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+            <input class="modal-title" v-model="updateArticle.title" id="exampleModalLabel" />
+            <input v-model="updateArticle.tags" placeholder="안녕" />
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <v-md-editor
-              style="margin:5vh 0px; box-sizing: border-box;"
-              id="create"
-              placeholder="새 글을 작성해 보세요"
-              v-model="text"
-            />
+            <v-md-editor class="w-100" v-model="updateArticle.content" />
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -84,7 +81,7 @@
     <button v-if="checkAuthorLogin" class="btn btn-primary" @click="confirmDelete">삭제버튼입니다.</button>
 
     <div id="context-menu" class="context-menu">
-      <div class="item" data-toggle="modal" data-target="#exampleModal">수정요청</div>
+      <div class="item" data-toggle="modal" data-target="#example">수정요청</div>
       <div class="item">나가기</div>
     </div>
     <div class="comment-label">
@@ -106,10 +103,10 @@
       </div>
       <div class="comment-content">댓글 내용</div>
     </div>
-
+    <!-- 수정요청 -->
     <div
       class="modal fade"
-      id="exampleModal"
+      id="example"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -143,21 +140,17 @@ export default {
   name: "userPost",
   data() {
     return {
-      title: "",
-      pid: null,
-      author: "",
-      text: "",
-      tagList: [],
       confirmText: "",
       titles: [],
       commentContents: "",
       constants,
+      updateArticle: [],
     };
   },
   computed: {
-    ...mapState(["username"]),
+    ...mapState(["username", "authToken", "articleDetail"]),
     checkAuthorLogin() {
-      if (this.username === this.author) {
+      if (this.username === this.articleDetail.author) {
         return true;
       } else {
         return false;
@@ -172,8 +165,8 @@ export default {
       creatediv.addEventListener("contextmenu", (event) => {
         event.preventDefault();
         var contextElement = document.getElementById("context-menu");
-        contextElement.style.top = event.offsetY + 270 + "px";
-        contextElement.style.left = event.offsetX + 270 + "px";
+        contextElement.style.top = event.offsetY + 450 + "px";
+        contextElement.style.left = event.offsetX + 450 + "px";
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
@@ -184,17 +177,28 @@ export default {
     },
 
     updatePost() {
-      const putData = {
-        title: this.title,
-        content: this.text,
+      const temp = this.updateArticle;
+      console.log(temp);
+      const tempTags = "," + this.updateArticle.tags.join(",") + ",";
+      this.updateArticle.tags = tempTags;
+      const putData = this.updateArticle;
+
+      const totalData = {
+        post: [putData],
+        token: this.authToken,
       };
       console.log(
         "요청주소 : ",
-        constants.baseUrl + `post/${this.author}/${this.pid}/`
+        constants.baseUrl +
+          `post/${this.articleDetail.author}/${this.articleDetail.pid}/`
       );
-      console.log("전송데이터:", putData);
+      console.log("전송데이터:", totalData);
       axios
-        .put(constants.baseUrl + `post/${this.author}/${this.pid}/`, putData)
+        .put(
+          constants.baseUrl +
+            `post/${this.articleDetail.author}/${this.articleDetail.pid}/`,
+          totalData
+        )
         .then((res) => {
           console.log("수정결과 : ", res.data);
         });
@@ -204,12 +208,16 @@ export default {
     commentSubmit() {
       const postData = {
         content: this.commentContents,
+        secret: "0",
       };
-      console.log(this.commentContents);
+      const totalData = {
+        comment: [postData],
+        token: this.authToken,
+      };
       axios
         .post(
           constants.baseUrl + `post/${this.$route.params.pid}/comment/`,
-          postData
+          totalData
         )
         .then((res) => {
           console.log(res.data);
@@ -218,65 +226,62 @@ export default {
           console.log(err.response);
         });
     },
+    anchorCreate() {
+      const anchors = this.$refs.editor.$el.querySelectorAll(
+        ".v-md-editor-preview h1,h2,h3,h4"
+      );
+      const titles = Array.from(anchors).filter(
+        (title) => !!title.innerText.trim()
+      );
 
-    /// 가져오기 ///
-    carryText() {
-      const author = this.$route.params.id;
-      const pid = this.$route.params.pid;
-      axios
-        .get(constants.baseUrl + `post/${author}/${pid}/`)
-        .then((res) => {
-          console.log(res.data);
-          this.title = res.data.object.title;
-          this.text = res.data.object.content;
-          this.author = res.data.object.author;
-          this.pid = res.data.object.pid;
-        })
-        .then(() => {
-          const anchors = this.$refs.editor.$el.querySelectorAll(
-            ".v-md-editor-preview h1,h2,h3,h4"
-          );
-          const titles = Array.from(anchors).filter(
-            (title) => !!title.innerText.trim()
-          );
+      if (!titles.length) {
+        this.titles = [];
+        return;
+      }
 
-          if (!titles.length) {
-            this.titles = [];
-            return;
-          }
+      const hTags = Array.from(
+        new Set(titles.map((title) => title.tagName))
+      ).sort();
 
-          const hTags = Array.from(
-            new Set(titles.map((title) => title.tagName))
-          ).sort();
-
-          this.titles = titles.map((el) => ({
-            title: el.innerText,
-            lineIndex: el.getAttribute("data-v-md-line"),
-            indent: hTags.indexOf(el.tagName),
-          }));
-        });
+      this.titles = titles.map((el) => ({
+        title: el.innerText,
+        lineIndex: el.getAttribute("data-v-md-line"),
+        indent: hTags.indexOf(el.tagName),
+      }));
     },
+
+    async totalCreate() {
+      await this.carryArticle(
+        `post/${this.$route.params.id}/${this.$route.params.pid}/`
+      );
+      this.anchorCreate();
+    },
+
+    // 삭제 확인
     confirmDelete() {
       if (confirm("정말 지울실껀가요?")) {
         this.deletePost();
       }
     },
-
+    // 삭제 method
     deletePost() {
-      axios
-        .delete(constants.baseUrl + `post/${this.author}/${this.pid}`)
-        .then((res) => {
-          this.$router.push({
-            name: constants.URL_TYPE.POST.BLOG,
-            params: { id: this.author },
+      if (this.checkAuthorLogin) {
+        axios
+          .delete(constants.baseUrl + `post/${this.author}/${this.pid}`)
+          .then((res) => {
+            this.$router.push({
+              name: constants.URL_TYPE.POST.BLOG,
+              params: { id: this.author },
+            });
           });
-        });
+      }
     },
-
     // codeblock 복사//
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
-      console.log(code);
+    },
+    updateData() {
+      this.updateArticle = this.articleDetail;
     },
 
     handleAnchorClick(anchor) {
@@ -291,19 +296,19 @@ export default {
         editor.previewScrollToTarget({
           target: heading,
           scrollContainer: window,
-          top: 80,
+          top: 70,
         });
       }
     },
-    ...mapActions(["headerChange"]),
+    ...mapActions(["headerChange", "carryArticle"]),
   },
   created() {
     this.headerChange(this.$route.params.id);
-    this.carryText();
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   },
   mounted() {
     this.contextmenu();
+    this.totalCreate();
   },
 };
 </script>
