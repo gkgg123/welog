@@ -2,18 +2,22 @@
   <div class="post">
     <div class>
       <div class="main-post-bar">
-        <router-link class="post-bar-item" :to="{ name : constants.URL_TYPE.MAIN.LIST}">
-          <i class="fas fa-border-all"></i>
-          <h2>전체 글</h2>
+        <router-link :to="{ name : constants.URL_TYPE.MAIN.LIST}">
+          <div class="post-bar-item">
+            <i class="fas fa-border-all"></i>
+            <h2>전체 글</h2>
+          </div>
         </router-link>
-        <router-link class="post-bar-item" :to="{ name : constants.URL_TYPE.MAIN.RECOMMAND}">
-          <i class="fas fa-chart-line"></i>
-          <h2>인기 글</h2>
+        <router-link :to="{ name : constants.URL_TYPE.MAIN.RECOMMAND}">
+          <div class="post-bar-item">
+            <i class="fas fa-chart-line"></i>
+            <h2>인기 글</h2>
+          </div>
         </router-link>
       </div>
       <div>
         <router-view />
-        <div class="tag-list-wrap col-md-3 col-12">
+        <div class="tag-list-wrap">
           <h4>공지사항</h4>
           <ul class="tag-list mb-5">
             <li class="notice">

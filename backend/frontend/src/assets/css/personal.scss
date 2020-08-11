@@ -4,32 +4,9 @@
   margin: 40px 30px 0px 30px;
   height: 80vh;
 }
-@media only screen and (min-width: 770px) {
-  #personalUser {
-    margin-top: 60px;
-    display: flex;
-    width: 100%;
-    height: 15vh;
-    justify-content: center;
-  }
-  .userInfo {
-    width: 40vw;
-  }
-}
-@media only screen and (max-width: 770px) {
-  #personalUser {
-    margin-top: 60px;
-    display: flex;
-    width: 100%;
-    height: 15vh;
-    justify-content: left;
-  }
-  .userInfo {
-    width: 100%;
-  }
-}
 
 .userBar {
+  margin-top: 20px;
   padding-bottom: 20px;
   display: flex;
   border-bottom: solid thin #aaaa;
@@ -55,7 +32,7 @@
       font-size: 30px;
       margin: 100px 0px 50px 0px;
       padding-bottom: 15px;
-      width: 45vw;
+      width: 52%;
       border-bottom: solid 1.5px #00796b;
     }
     .written {
@@ -78,7 +55,7 @@
     }
   }
   .v-md-editor {
-    width: 47vw;
+    width: 53%;
     margin: auto;
     height: 100vh;
   }
@@ -90,7 +67,7 @@
     .left-side {
       position: fixed;
       top: 350px;
-      left: 15vw;
+      left: 15%;
       font-size: 40px;
       .floating-bar {
         flex-direction: row;
@@ -113,77 +90,6 @@
     position: fixed;
     .title-anchor {
       border-left: solid 4px #e1e2e1;
-    }
-  }
-  .post-update {
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  .comment {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 50px;
-    padding: 5px;
-    align-items: center;
-    .comment-label {
-      width: 50%;
-      text-align: start;
-      margin-left: 4%;
-      p {
-        padding: 8px;
-      }
-    }
-    .comment-input {
-      width: 50%;
-      textarea {
-        margin-left: 4%;
-        width: 78%;
-      }
-      button {
-      }
-    }
-    textarea {
-      width: 48%;
-      height: 50px;
-      padding: 10px 10px;
-      background-color: #f5f5f6;
-      border-radius: 10px;
-    }
-    button {
-      background-color: #00796b;
-      color: #eee;
-      height: 40px;
-      padding: 10px 15px 10px 15px;
-      margin-left: 20px;
-      border: none;
-      border-radius: 10px;
-    }
-  }
-  .comment-list {
-    margin: 15px 442px 50px 442px;
-    padding: 10px;
-    align-items: center;
-    border-bottom: solid 1px #aaaa;
-    width: 48%;
-    .comment-profile {
-      display: flex;
-      margin: 10px;
-      vertical-align: middle;
-      .profile-img {
-        font-size: 50px;
-        margin-right: 40px;
-      }
-      .writer-info {
-        .writer-id {
-          font-weight: bold;
-        }
-        .written-day {
-          color: #aaaa;
-        }
-      }
-    }
-    .comment-content {
-      margin: 30px 10px 30px 10px;
     }
   }
 
@@ -215,6 +121,72 @@
   #context-menu hr {
     margin: 2px 0px;
     border-color: #555;
+  }
+  .commentBox {
+    display: flex;
+    justify-content: center;
+    .commentBox2 {
+      margin: 100px 0px 50px 0px;
+      padding-bottom: 15px;
+      width: 52%;
+      .comment-label {
+        width: 95%;
+        justify-content: center;
+        margin: auto;
+        font-size: 20px;
+      }
+      .comment {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 30px;
+        padding: 5px;
+        align-items: center;
+        textarea {
+          width: calc(100% - 100px);
+          height: 50px;
+          padding: 10px 10px;
+          background-color: #f5f5f6;
+          border-radius: 10px;
+        }
+        button {
+          width: 100px;
+          background-color: #00796b;
+          color: #eee;
+          height: 40px;
+          padding: 10px 15px 10px 15px;
+          margin-left: 20px;
+          border: none;
+          border-radius: 10px;
+        }
+      }
+      .comment-list {
+        // margin: auto;
+        padding: 10px;
+        align-items: center;
+        border-bottom: solid 1px #aaaa;
+        width: 100%;
+        .comment-profile {
+          display: flex;
+          margin: 10px;
+          vertical-align: middle;
+          .profile-img {
+            font-size: 50px;
+            margin-right: 40px;
+          }
+          .writer-info {
+            .writer-id {
+              font-weight: bold;
+            }
+            .written-day {
+              color: #aaaa;
+            }
+          }
+        }
+        .comment-content {
+          margin: 30px 10px 30px 10px;
+        }
+      }
+    }
   }
 }
 
@@ -269,7 +241,7 @@
       display: inline;
       font-size: 15px;
       margin: 10px 0px;
-      float: left;
+      // float: left;
     }
   }
 }
@@ -302,6 +274,8 @@
       justify-content: center;
       margin-top: 60px;
       .postLink {
+        width: 40%;
+        text-align: center;
         font-size: 32px;
         margin: 0px 15px;
         padding: 15px;
@@ -312,7 +286,7 @@
       }
     }
     .postView {
-      width: 52vw;
+      width: 100%;
       margin: auto;
       margin-top: 70px;
       padding: 30px 100px;
@@ -320,7 +294,53 @@
     }
   }
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (min-width: 768px) {
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: center;
+  }
+  .userInfo {
+    width: 600px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  #detail {
+    .post-title {
+      .title {
+        width: 90%;
+      }
+    }
+    .v-md-editor {
+      width: 90%;
+    }
+    .aside-left {
+      .left-side {
+        display: none;
+      }
+    }
+    .aside-right {
+      display: none;
+    }
+    .commentBox {
+      .commentBox2 {
+        width: 90%;
+      }
+    }
+  }
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: left;
+  }
+  .userInfo {
+    width: 100%;
+  }
   #personalPost {
     width: 100%;
     .tagbar {
@@ -334,14 +354,21 @@
         justify-content: center;
         margin-top: 30px;
         .postLink {
-          width: 45%;
+          width: 50%;
           text-align: center;
           font-size: 32px;
-          margin: 0px 15px;
+          margin: 30px 15px;
           padding: 15px;
           color: #00796b;
+        }
+        .postLink:focus {
           border-bottom: solid #00796b;
         }
+      }
+      .postView {
+        width: 100%;
+        margin: 0;
+        padding: 0;
       }
     }
   }

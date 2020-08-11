@@ -1,14 +1,19 @@
 <template>
-  <section class="post-list col-12 col-md-9">
-    <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles" :key="article.pid">
+  <section class="post-list">
+    <div class="post-card-box" v-for="article in articles" :key="article.pid">
       <div class="post-card">
         <router-link
           v-if="article.pid"
           :to="{name :constants.URL_TYPE.POST.POST, params :{id : article.author, pid:article.pid}}"
         >
-          <div class="post-img">
-            <img src="img\no_image.png" alt />
-          </div>
+          <div
+            :style="{
+                    backgroundImage:
+                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
+                  }"
+            class="post-img"
+          />
+
           <div class="contents">
             <h3>{{ article.title }}</h3>
 

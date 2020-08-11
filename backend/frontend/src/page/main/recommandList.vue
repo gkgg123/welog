@@ -5,12 +5,21 @@
         <router-link
           :to="{name :constants.URL_TYPE.POST.POST, params :{id : article.author, pid:article.pid}}"
         >
-          <div class="post-img">
-            <img src="img\no_image.png" alt />
-          </div>
+          <div
+            :style="{
+                    backgroundImage:
+                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
+                  }"
+            class="post-img"
+          />
 
           <div class="contents">
             <h3>{{ article.title }}</h3>
+            <div v-for="(tag,index) in article.tags" :key="tag">
+              <span>
+                <a href="#">{{index}} 와 {{ tag }}</a>
+              </span>
+            </div>
             <hr />
             <span class="date">
               {{ article.createDate.slice(0, 4) }}년

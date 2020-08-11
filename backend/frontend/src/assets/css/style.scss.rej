@@ -1,0 +1,16 @@
+diff a/backend/frontend/src/assets/css/style.scss b/backend/frontend/src/assets/css/style.scss	(rejected hunks)
+@@ -318,12 +318,11 @@
+ // 헤더
+ #header {
+   @include wrap;
+-  position: fixed;
+   left: 0;
+   top: 0;
+-  height: 60px;
++  min-height: 75px;
+   border-bottom: 3px solid #00796b;
+-  padding: 12px 30px;
++  padding: 10px 30px;
+   background-color: #fff;
+   z-index: 9;
+   h1 {

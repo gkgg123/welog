@@ -63,19 +63,18 @@
       <div class="item" data-toggle="modal" data-target="#example">수정요청</div>
       <div class="item">나가기</div>
     </div>
-
-    <!-- 댓글 -->
-    <div class="comment">
-      <div class="comment-label">
-        <p>0개의 댓글</p>
+    <div class="commentBox">
+      <div class="commentBox2">
+        <div class="comment-label">
+          <p>0개의 댓글</p>
+        </div>
+        <div class="comment">
+          <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
+          <button @click="commentSubmit">댓글 작성</button>
+        </div>
+        <commentListItems />
       </div>
-      <div class="comment-input">
-        <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
-        <button @click="commentSubmit">댓글 작성</button>
-      </div>
-      <commentListItems />
     </div>
-
     <!-- 수정요청 -->
     <div
       class="modal fade"
