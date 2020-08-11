@@ -2,7 +2,7 @@
   <div id="detail" class="mt-5">
     <div class="post-title">
       <div class="title">
-        <h2>제목: {{articleDetail.title}}</h2>
+        <h2>{{articleDetail.title}}</h2>
         <div class="written">
           <p>작성자{{articleDetail.title}} 작성일 {{articleDetail.title}}</p>
           <div class="written-tag">
@@ -13,6 +13,7 @@
       </div>
     </div>
 
+    <!-- 좋아요, 공유하기 -->
     <aside class="aside-left">
       <div class="left-side">
         <div class="floating-bar">
@@ -24,6 +25,8 @@
         </div>
       </div>
     </aside>
+
+    <!-- 앵커 -->
     <div class="aside-right">
       <div class="title-anchor">
         <div
@@ -36,35 +39,43 @@
         </div>
       </div>
     </div>
-    <v-md-editor
-      id="detail"
-      mode="preview"
-      v-model="articleDetail.content"
-      ref="editor"
-      @copy-code-success="handleCopyCodeSuccess"
-    />
-    <button
-      v-if="checkAuthorLogin"
-      class="btn btn-primary"
-      data-toggle="modal"
-      data-target="#update"
-    >수정버튼입니다.</button>
 
-    <userPostUpdate />
-    <button v-if="checkAuthorLogin" class="btn btn-primary" @click="confirmDelete">삭제버튼입니다.</button>
+    <!-- 수정 삭제 버튼 -->
+    <div class="post-update">
+      <v-md-editor
+        id="detail"
+        mode="preview"
+        v-model="articleDetail.content"
+        ref="editor"
+        @copy-code-success="handleCopyCodeSuccess"
+      />
+      <button
+        v-if="checkAuthorLogin"
+        class="btn btn-primary"
+        data-toggle="modal"
+        data-target="#update"
+      >수정버튼입니다.</button>
 
+      <userPostUpdate />
+      <button v-if="checkAuthorLogin" class="btn btn-primary" @click="confirmDelete">삭제버튼입니다.</button>
+    </div>
     <div id="context-menu" class="context-menu">
       <div class="item" data-toggle="modal" data-target="#example">수정요청</div>
       <div class="item">나가기</div>
     </div>
-    <div class="comment-label">
-      <p>0개의 댓글</p>
-    </div>
+
+    <!-- 댓글 -->
     <div class="comment">
-      <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
-      <button @click="commentSubmit">댓글 작성</button>
+      <div class="comment-label">
+        <p>0개의 댓글</p>
+      </div>
+      <div class="comment-input">
+        <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
+        <button @click="commentSubmit">댓글 작성</button>
+      </div>
+      <commentListItems />
     </div>
-    <commentListItems />
+
     <!-- 수정요청 -->
     <div
       class="modal fade"

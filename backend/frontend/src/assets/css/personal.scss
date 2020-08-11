@@ -55,7 +55,7 @@
       font-size: 30px;
       margin: 100px 0px 50px 0px;
       padding-bottom: 15px;
-      width: 52%;
+      width: 45vw;
       border-bottom: solid 1.5px #00796b;
     }
     .written {
@@ -78,7 +78,7 @@
     }
   }
   .v-md-editor {
-    width: 53%;
+    width: 47vw;
     margin: auto;
     height: 100vh;
   }
@@ -90,7 +90,7 @@
     .left-side {
       position: fixed;
       top: 350px;
-      left: 260px;
+      left: 15vw;
       font-size: 40px;
       .floating-bar {
         flex-direction: row;
@@ -115,47 +115,33 @@
       border-left: solid 4px #e1e2e1;
     }
   }
-
-  #context-menu {
-    position: absolute;
-    z-index: 10000;
-    width: 150px;
-    background: #1b1a1a;
-    border-radius: 5px;
-    transform: scale(0);
-    transform-origin: top left;
-  }
-  #context-menu.active {
-    transform: scale(1);
-    transition: transform 300ms ease-in-out;
-  }
-  #context-menu .item {
-    padding: 8px 10px;
-    font-size: 15px;
-    color: #eee;
-  }
-  #context-menu .item:hover {
-    background: #555;
-  }
-  #context-menu .item i {
-    display: inline-block;
-    margin-right: 5px;
-  }
-  #context-menu hr {
-    margin: 2px 0px;
-    border-color: #555;
-  }
-  .comment-label {
-    width: 50%;
-    margin: 15px 450px;
-    font-size: 20px;
+  .post-update {
+    justify-content: center;
+    margin-bottom: 20px;
   }
   .comment {
     display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
+    flex-direction: column;
+    margin-bottom: 50px;
     padding: 5px;
     align-items: center;
+    .comment-label {
+      width: 50%;
+      text-align: start;
+      margin-left: 4%;
+      p {
+        padding: 8px;
+      }
+    }
+    .comment-input {
+      width: 50%;
+      textarea {
+        margin-left: 4%;
+        width: 78%;
+      }
+      button {
+      }
+    }
     textarea {
       width: 48%;
       height: 50px;
@@ -199,6 +185,36 @@
     .comment-content {
       margin: 30px 10px 30px 10px;
     }
+  }
+
+  #context-menu {
+    position: absolute;
+    z-index: 10000;
+    width: 150px;
+    background: #1b1a1a;
+    border-radius: 5px;
+    transform: scale(0);
+    transform-origin: top left;
+  }
+  #context-menu.active {
+    transform: scale(1);
+    transition: transform 300ms ease-in-out;
+  }
+  #context-menu .item {
+    padding: 8px 10px;
+    font-size: 15px;
+    color: #eee;
+  }
+  #context-menu .item:hover {
+    background: #555;
+  }
+  #context-menu .item i {
+    display: inline-block;
+    margin-right: 5px;
+  }
+  #context-menu hr {
+    margin: 2px 0px;
+    border-color: #555;
   }
 }
 

@@ -2,17 +2,13 @@
   <div class="post">
     <div class>
       <div class="main-post-bar">
-        <router-link :to="{ name : constants.URL_TYPE.MAIN.LIST}">
-          <div class="post-bar-item">
-            <i class="fas fa-border-all"></i>
-            <h2>전체 글</h2>
-          </div>
+        <router-link class="post-bar-item" :to="{ name : constants.URL_TYPE.MAIN.LIST}">
+          <i class="fas fa-border-all"></i>
+          <h2>전체 글</h2>
         </router-link>
-        <router-link :to="{ name : constants.URL_TYPE.MAIN.RECOMMAND}">
-          <div class="post-bar-item">
-            <i class="fas fa-chart-line"></i>
-            <h2>인기 글</h2>
-          </div>
+        <router-link class="post-bar-item" :to="{ name : constants.URL_TYPE.MAIN.RECOMMAND}">
+          <i class="fas fa-chart-line"></i>
+          <h2>인기 글</h2>
         </router-link>
       </div>
       <div>
@@ -51,11 +47,6 @@
   </div>
 </template>
 
-<style>
-ul {
-  list-style: none;
-}
-</style>
 
 <script>
 import "@/assets/css/post.scss";
