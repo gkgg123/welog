@@ -267,14 +267,14 @@
     }
   }
   .postBox {
-    float: left;
-    width: 80%;
+    margin: auto;
+    width: 60%;
     .postBar {
       display: flex;
       justify-content: center;
       margin-top: 60px;
       .postLink {
-        width: 40%;
+        width: 20%;
         text-align: center;
         font-size: 32px;
         margin: 0px 15px;
@@ -335,8 +335,8 @@
       display: none;
     }
     .postBox {
-      float: left;
-      width: 100%;
+      margin: auto;
+      width: 60%;
       .postBar {
         display: flex;
         justify-content: center;
