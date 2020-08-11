@@ -11,6 +11,8 @@ import com.web.blog.model.account.repository.LikeRepository;
 import com.web.blog.model.account.repository.PostRepository;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.account.repository.AccountRepository;
+import com.web.blog.model.file.Image;
+import com.web.blog.model.file.repository.ImageRepository;
 import com.web.blog.model.post.LikeInfo;
 import com.web.blog.model.post.Post;
 
@@ -49,6 +51,8 @@ public class PostController {
     AccountRepository accountRepository;
     @Autowired
     TokenUtils tokenUtils;
+    @Autowired
+    ImageRepository imageRepository;
 
     @GetMapping("/latest")
     @ApiOperation(value = "최신 글 조회")
@@ -128,6 +132,7 @@ public class PostController {
         }
         JSONArray commentArray = (JSONArray) obj.get("post");
         JSONObject commentObject = (JSONObject) commentArray.get(0);
+        JSONArray imageArray = (JSONArray) obj.get("images");
 
         String title = (String) commentObject.get("title");
         String content = (String) commentObject.get("content");
@@ -140,7 +145,14 @@ public class PostController {
         post.setAuthor(author);
         post.setTags(tags);
         postRepository.save(post);
-
+        for(Object object : imageArray){
+            JSONObject imageObject = (JSONObject) object;
+            String str = (String) imageObject.get("image");
+            Image image = imageRepository.findByIid(str);
+            System.out.println(str);
+            image.setPid(post.getPid());
+            imageRepository.save(image);
+        }
 
         result.status = true;
         result.data = SUCCESS;
@@ -163,6 +175,7 @@ public class PostController {
         }
         JSONArray commentArray = (JSONArray) obj.get("post");
         JSONObject commentObject = (JSONObject) commentArray.get(0);
+        JSONArray imageArray = (JSONArray) obj.get("images");
 
         String title = (String) commentObject.get("title");
         String content = (String) commentObject.get("content");
@@ -174,7 +187,18 @@ public class PostController {
         post.setTags(tags);
 
         postRepository.save(post);
-
+        List<Image> images = imageRepository.findByPid(pid);
+        for(Image image : images){
+            imageRepository.delete(image);
+        }
+        for(Object object : imageArray){
+            JSONObject imageObject = (JSONObject) object;
+            String str = (String) imageObject.get("image");
+            Image image = imageRepository.findByIid(str);
+            System.out.println(str);
+            image.setPid(post.getPid());
+            imageRepository.save(image);
+        }
         
         result.status = true;
         result.data = SUCCESS;
