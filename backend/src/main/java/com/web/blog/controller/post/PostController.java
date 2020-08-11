@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.web.blog.model.ErrorResponse;
+import com.web.blog.model.account.Account;
 import com.web.blog.model.account.repository.LikeRepository;
 import com.web.blog.model.account.repository.PostRepository;
 import com.web.blog.model.BasicResponse;
@@ -53,8 +55,11 @@ public class PostController {
     public ResponseEntity<List<PostInfo>> retrievePostbyLatest(){
         List<Post> post = postRepository.findAll(Sort.by("createDate").descending());
         List<PostInfo> postInfo = new ArrayList<>();
+        List<String> userlist;
+
         for(Post p : post ){
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid())));
+            userlist = likeRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
@@ -64,38 +69,47 @@ public class PostController {
     public ResponseEntity<List<PostInfo>> retrievePostbyPopularity(){
         List<Post> post = postRepository.findAll(Sort.by("count").descending());
         List<PostInfo> postInfo = new ArrayList<>();
+        List<String> userlist;
         for(Post p : post ){
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid())));
+            userlist = likeRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/{author}")
     @ApiOperation(value = "해당 유저 전체 글 조회")
-    public ResponseEntity<List<PostInfo>> retrievePost(@PathVariable String author) throws Exception{
-        List<Post> post = postRepository.getPostByAuthor(author);
-        List<PostInfo> postInfo = new ArrayList<>();
-        for(Post p : post ){
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid())));
-
+    public ResponseEntity<Object> retrievePost(@PathVariable String author) throws Exception{
+        Account account = accountRepository.findByUsername(author);
+        if(account == null){
+            String msg = "not found";
+            return new ResponseEntity<>(msg ,HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
+        List<Post> post = postRepository.getPostByAuthor(author);
+
+        List<PostInfo> postInfo = new ArrayList<>();
+        List<String> userlist;
+        for(Post p : post ){
+            userlist = likeRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist));
+        }
+        return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
 
     @GetMapping("/{author}/{pid}")
     @ApiOperation(value = "글 조회")
     public Object ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
-        BasicResponse result = new BasicResponse();
         Post post = postRepository.getPostByAuthorAndPid(author,pid);
         post.setCount(post.getCount()+1);
         postRepository.save(post);
-        result.status = true;
-        result.data = SUCCESS;
-        result.object = post;
-        result.count = likeRepository.countByPid(pid);
 
-        return new ResponseEntity<>(result,HttpStatus.OK);
+        int likeCount = likeRepository.countByPid(pid);
+        List<String> userlist = likeRepository.findByPid(pid);
+
+        PostInfo postInfo = new PostInfo(post, likeCount, userlist);
+
+        return new ResponseEntity<>(postInfo,HttpStatus.OK);
     }
 
     @PostMapping("/{author}")
@@ -122,10 +136,9 @@ public class PostController {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
-        post.setPostno(post.getPostno()+1); // 이부분 수정해야함 아직안했음 08.10
+        post.setPostno(postRepository.findByAuthor(author)+1);
         post.setAuthor(author);
         post.setTags(tags);
-
         postRepository.save(post);
 
 
@@ -195,18 +208,19 @@ public class PostController {
     @GetMapping("/{author}/{pid}/likeit")
     @ApiOperation(value= "좋아요인지 아닌지")
     public int likeIt(@PathVariable String author, @PathVariable int pid){
-        int uid = accountRepository.findByUsername(author).getId();
-        return likeRepository.findByPidAndUid(pid, uid).getIsLike();
+        String username = accountRepository.findByUsername(author).getUsername();
+        return likeRepository.findByPidAndUsername(pid, username).getIsLike();
     }
 
     @PostMapping("/{author}/{pid}/likeit")
     @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
     public Object clickLike(@PathVariable String author, @PathVariable int pid){
-        int uid = accountRepository.findByUsername(author).getId();
+        String username = accountRepository.findByUsername(author).getUsername();
         LikeInfo likeInfo = new LikeInfo();
+
         likeInfo.setPid(pid);
-        likeInfo.setUid(uid);
-        likeInfo.setIsLike(likeRepository.findByPidAndUid(pid, uid).getIsLike() == 0 ? 1: 0);
+        likeInfo.setUsername(username);
+        likeInfo.setIsLike(likeRepository.findByPidAndUsername(pid, username).getIsLike() == 0 ? 1: 0);
         likeRepository.save(likeInfo);
         BasicResponse result = new BasicResponse();
         result.status = true;

@@ -19,7 +19,7 @@ public class LikeInfo {
     private int pid;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uid;
+    private String username;
 
     private int isLike;
 
