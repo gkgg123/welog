@@ -47,37 +47,10 @@
       v-if="checkAuthorLogin"
       class="btn btn-primary"
       data-toggle="modal"
-      data-target="#exampleModal"
-      @click="updateData"
+      data-target="#update"
     >수정버튼입니다.</button>
-    <div
-      class="modal fade"
-      id="exampleModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <input class="modal-title" v-model="updateArticle.title" id="exampleModalLabel" />
-            <input v-model="updateArticle.tags" placeholder="안녕" />
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <v-md-editor class="w-100" v-model="updateArticle.content" />
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" @click="updatePost">Save changes</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
+    <userPostUpdate />
     <button v-if="checkAuthorLogin" class="btn btn-primary" @click="confirmDelete">삭제버튼입니다.</button>
 
     <div id="context-menu" class="context-menu">
@@ -91,18 +64,7 @@
       <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
       <button @click="commentSubmit">댓글 작성</button>
     </div>
-    <div class="comment-list">
-      <div class="comment-profile">
-        <div class="profile-img">
-          <i class="far fa-smile"></i>
-        </div>
-        <div class="writer-info">
-          <p class="writer-id">작성자 아이디</p>
-          <p class="written-day">작성 날짜</p>
-        </div>
-      </div>
-      <div class="comment-content">댓글 내용</div>
-    </div>
+    <commentListItems />
     <!-- 수정요청 -->
     <div
       class="modal fade"
@@ -136,6 +98,8 @@ import axios from "axios";
 import "../../assets/css/personal.scss";
 import { mapState, mapActions } from "vuex";
 import constants from "@/lib/constants.js";
+import userPostUpdate from "@/page/blog/userPostUpdate.vue";
+import commentListItems from "@/page/blog/commentListItems.vue";
 export default {
   name: "userPost",
   data() {
@@ -144,8 +108,11 @@ export default {
       titles: [],
       commentContents: "",
       constants,
-      updateArticle: [],
     };
+  },
+  components: {
+    userPostUpdate,
+    commentListItems,
   },
   computed: {
     ...mapState(["username", "authToken", "articleDetail"]),
@@ -174,34 +141,6 @@ export default {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
-    },
-
-    updatePost() {
-      const temp = this.updateArticle;
-      console.log(temp);
-      const tempTags = "," + this.updateArticle.tags.join(",") + ",";
-      this.updateArticle.tags = tempTags;
-      const putData = this.updateArticle;
-
-      const totalData = {
-        post: [putData],
-        token: this.authToken,
-      };
-      console.log(
-        "요청주소 : ",
-        constants.baseUrl +
-          `post/${this.articleDetail.author}/${this.articleDetail.pid}/`
-      );
-      console.log("전송데이터:", totalData);
-      axios
-        .put(
-          constants.baseUrl +
-            `post/${this.articleDetail.author}/${this.articleDetail.pid}/`,
-          totalData
-        )
-        .then((res) => {
-          console.log("수정결과 : ", res.data);
-        });
     },
 
     ///  댓글 작성
@@ -254,6 +193,7 @@ export default {
       await this.carryArticle(
         `post/${this.$route.params.id}/${this.$route.params.pid}/`
       );
+      await this.carryComment(`post/${this.$route.params.pid}/comment/`);
       this.anchorCreate();
     },
 
@@ -280,9 +220,6 @@ export default {
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
     },
-    updateData() {
-      this.updateArticle = this.articleDetail;
-    },
 
     handleAnchorClick(anchor) {
       const { editor } = this.$refs;
@@ -300,7 +237,7 @@ export default {
         });
       }
     },
-    ...mapActions(["headerChange", "carryArticle"]),
+    ...mapActions(["headerChange", "carryArticle", "carryComment"]),
   },
   created() {
     this.headerChange(this.$route.params.id);

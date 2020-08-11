@@ -15,6 +15,8 @@ export default new Vuex.Store({
     receiveArticleList: [],
     articles: [],
     articleDetail: [],
+    updateArticle: [],
+    commentList: [],
     nextPage: 0,
     pageLimit: 0,
   },
@@ -68,7 +70,18 @@ export default new Vuex.Store({
       state.articles = [];
     },
     SET_ARTICLEDETAIL(state, article) {
-      state.articleDetail = article;
+      function clone(obj) {
+        var output = {};
+        for (var i in obj) {
+          output[i] = obj[i];
+        }
+        return output;
+      }
+      state.articleDetail = clone(article);
+      state.updateArticle = clone(article);
+    },
+    SET_COMMENTLIST(state, comment) {
+      state.commentList = comment;
     },
   },
   actions: {
@@ -176,6 +189,11 @@ export default new Vuex.Store({
           return item.object;
         });
         commit("SET_ARTICLEDETAIL", temp[0]);
+      });
+    },
+    carryComment({ commit }, location) {
+      return axios.get(constants.baseUrl + location).then((res) => {
+        commit("SET_COMMENTLIST", res.data);
       });
     },
   },
