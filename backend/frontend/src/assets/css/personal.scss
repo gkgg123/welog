@@ -32,7 +32,7 @@
       font-size: 30px;
       margin: 100px 0px 50px 0px;
       padding-bottom: 15px;
-      width: 52%;
+      width: 45vw;
       border-bottom: solid 1.5px #00796b;
     }
     .written {
@@ -55,7 +55,7 @@
     }
   }
   .v-md-editor {
-    width: 53%;
+    width: 47vw;
     margin: auto;
     height: 100vh;
   }
@@ -66,8 +66,8 @@
     justify-content: center;
     .left-side {
       position: fixed;
-      top: 350px;
-      left: 15%;
+      top: 35vh;
+      left: 15vw;
       font-size: 40px;
       .floating-bar {
         flex-direction: row;

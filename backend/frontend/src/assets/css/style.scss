@@ -321,7 +321,7 @@ h2 {
   position: fixed;
   left: 0;
   top: 0;
-  height: 60px;
+  min-height: 75px;
   border-bottom: 3px solid #00796b;
   padding: 12px 30px;
   background-color: #fff;
@@ -431,13 +431,3 @@ h2 {
 }
 
 /* media query */
-@media (max-width: 1024px) {
-  .hejhome {
-    .header {
-      .user-info-wrap {
-        h3 {
-        }
-      }
-    }
-  }
-}
