@@ -14,8 +14,7 @@
           <div class="article-content">{{ article.content }}</div>
           <!--  <div v-for="tag in articles.tags" :key="tag"> -->
           <div class="article-tag">
-            <span>태그</span>
-            <span>xoasd</span>
+            <span v-for="tag in article.tags" :key="tag">{{tag}}</span>
           </div>
           <li class="article-day">{{ article.createDate }}</li>
         </div>
@@ -25,42 +24,41 @@
       <h3>작성된 글이 없습니다.</h3>
       <img id="defalutimg" src="img/no post.jpg" />
     </div>
+    <div id="bottomSensor"></div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import constants from "@/lib/constants.js";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "userPostItems",
   data() {
     return {
-      articles: [],
+      constants,
     };
   },
+  computed: {
+    ...mapState(["articles", "nextPage", "pageLimit"]),
+  },
   methods: {
-    getArticles() {
-      const username = this.$route.params.id;
-      axios.get(constants.baseUrl + `post/${username}/`).then((res) => {
-        var receive = Object.values(res.data);
-        const temp = receive.map((item) => {
-          if (!!item.post.tags) {
-            item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
-          } else {
-            item.post.tags = [];
-          }
-          item.post.likeCount = item.likeCount;
-
-          return item.post;
-        });
-        console.log(temp);
-        console.log(receive);
-        this.articles = temp;
+    ...mapActions(["getArticles", "attachArticles"]),
+    addScrollMonitor() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollMonitor.create(bottomSensor);
+      watcher.enterViewport(() => {
+        setTimeout(() => {
+          this.attachArticles();
+        }, 500);
       });
     },
   },
   created() {
-    this.getArticles();
+    this.getArticles(`post/${this.$route.params.id}/`);
+  },
+  mounted() {
+    this.addScrollMonitor();
   },
 };
 </script>

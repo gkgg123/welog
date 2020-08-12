@@ -13,7 +13,7 @@
         <div class="modal-header">
           <input class="modal-title" v-model="updateArticle.title" id="exampleModalLabel" />
           <div id="tag" class="flex-column">
-            <button class="tagBtn" v-for="tag in updateArticle.tags" :key="tag">{{tag}}</button>
+            <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
           </div>
           <input v-model="inputTag" placeholder="Tag를 입력하고 Enter를 누르세요" @keyup.enter="tagEvent" />
           <button
@@ -55,13 +55,17 @@ export default {
   data() {
     return {
       inputTag: "",
+      tagList: [],
     };
+  },
+  mounted() {
+    this.tagList = this.updateArticle.tags;
   },
   methods: {
     tagEvent() {
       if (this.inputTag.length <= 15) {
-        if (!this.updateArticle.tags.includes(this.inputTag)) {
-          this.updateArticle.tags.push(this.inputTag);
+        if (!this.tagList.includes(this.inputTag)) {
+          this.tagList.push(this.inputTag);
           this.inputTag = null;
         } else {
           this.inputTag = null;
@@ -77,11 +81,8 @@ export default {
       this.$store.commit("SET_ARTICLEDETAIL", this.articleDetail);
     },
     updatePost() {
-      const temp = this.updateArticle;
-      const tempTags = "," + this.updateArticle.tags.join(",") + ",";
+      const tempTags = "," + this.tagList.join(",") + ",";
       this.updateArticle.tags = tempTags;
-      delete this.updateArticle.likeCount;
-      delete this.updateArticle.likeuserlist;
       const putData = this.updateArticle;
 
       const totalData = {
@@ -89,7 +90,6 @@ export default {
         images: [],
         token: this.authToken,
       };
-      console.log(totalData);
       console.log(
         "요청주소 : ",
         constants.baseUrl +
@@ -103,10 +103,10 @@ export default {
           totalData
         )
         .then((res) => {
-          console.log("수정결과 : ", res.data);
+          setTimeout(this.$router.go(0), 1000);
         })
         .catch((err) => {
-          console.log("에러 : ", err.response);
+          console.log("에러 : ", err);
         });
     },
   },

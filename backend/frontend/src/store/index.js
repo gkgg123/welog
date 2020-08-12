@@ -99,6 +99,9 @@ export default new Vuex.Store({
             name: constants.URL_TYPE.POST.POSTITEMS,
             params: { id: data.username },
           });
+        })
+        .catch((err) => {
+          alert("아이디가 없거나 비밀번호가 틀렸습니다.");
         });
     },
     //Login 하는 함수
@@ -191,6 +194,25 @@ export default new Vuex.Store({
         commit("SET_ARTICLEDETAIL", temp[0]);
       });
     },
+
+    ///삭제하는 곳
+    deletePost({ state }) {
+      if (state.username === state.articleDetail.author) {
+        axios
+          .delete(
+            constants.baseUrl +
+              `post/${state.articleDetail.author}/${state.articleDetail.pid}`
+          )
+          .then((res) => {
+            router.push({
+              name: constants.URL_TYPE.POST.BLOG,
+              params: { id: state.articleDetail.author },
+            });
+          });
+      }
+    },
+
+    //CommentList 가져오는 방법
     carryComment({ commit }, location) {
       return axios.get(constants.baseUrl + location).then((res) => {
         commit("SET_COMMENTLIST", res.data);

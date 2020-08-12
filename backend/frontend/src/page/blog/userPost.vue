@@ -17,7 +17,7 @@
       <div class="left-side">
         <div class="floating-bar">
           <div class="like">
-            <i class="far fa-heart"></i>
+            <i class="far fa-heart" @click="likePost"></i>
             <p>like</p>
           </div>
           <i class="fas fa-share-alt"></i>
@@ -69,6 +69,8 @@
         </div>
         <div class="comment">
           <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
+          <label for="isSecret">비밀댓글</label>
+          <input type="checkbox" name="isSecret" id="isSecret" v-model="isSecret" />
           <button @click="commentSubmit">댓글 작성</button>
         </div>
         <commentListItems />
@@ -117,6 +119,7 @@ export default {
       titles: [],
       commentContents: "",
       constants,
+      isSecret: false,
     };
   },
   components: {
@@ -154,25 +157,37 @@ export default {
 
     ///  댓글 작성
     commentSubmit() {
-      const postData = {
-        content: this.commentContents,
-        secret: "0",
-      };
-      const totalData = {
-        comment: [postData],
-        token: this.authToken,
-      };
-      axios
-        .post(
-          constants.baseUrl + `post/${this.$route.params.pid}/comment/`,
-          totalData
-        )
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+      console.log(this.isSecret);
+      var text = this.commentContents.trim();
+      console.log(text.trim());
+      var secret = "0";
+      if (this.isSecret) {
+        secret = "1";
+      }
+
+      if (!this.commentContents.trim().length) {
+        alert("내용을 입력하세요");
+      } else {
+        const postData = {
+          content: this.commentContents,
+          secret: secret,
+        };
+        const totalData = {
+          comment: [postData],
+          token: this.authToken,
+        };
+        axios
+          .post(
+            constants.baseUrl + `post/${this.$route.params.pid}/comment/`,
+            totalData
+          )
+          .then((res) => {
+            this.$router.go();
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
     },
     anchorCreate() {
       const anchors = this.$refs.editor.$el.querySelectorAll(
@@ -213,18 +228,7 @@ export default {
       }
     },
     // 삭제 method
-    deletePost() {
-      if (this.checkAuthorLogin) {
-        axios
-          .delete(constants.baseUrl + `post/${this.author}/${this.pid}`)
-          .then((res) => {
-            this.$router.push({
-              name: constants.URL_TYPE.POST.BLOG,
-              params: { id: this.author },
-            });
-          });
-      }
-    },
+
     // codeblock 복사//
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
@@ -246,7 +250,30 @@ export default {
         });
       }
     },
-    ...mapActions(["headerChange", "carryArticle", "carryComment"]),
+    // 좋아요 로직
+    likePost() {
+      if (this.usernmae === this.articleDetail.author) {
+        alert("자기글에 추천을 누를수없습니다.");
+      } else {
+        axios
+          .post(
+            constants.baseUrl +
+              `post/${this.username}/${this.articleDetail.pid}/likeit/`
+          )
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
+    },
+    ...mapActions([
+      "headerChange",
+      "carryArticle",
+      "deletePost",
+      "carryComment",
+    ]),
   },
   created() {
     this.headerChange(this.$route.params.id);
