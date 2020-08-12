@@ -260,7 +260,7 @@
     }
     ul {
       list-style-type: square;
-      margin: 30px;
+      margin: 30px 15px;
       li {
         margin: 0px 0px 10px 20px;
       }
@@ -291,6 +291,9 @@
       margin-top: 70px;
       padding: 30px 100px;
       height: 50vh;
+    }
+    .smallTagbar {
+      display: none;
     }
   }
 }
@@ -357,6 +360,22 @@
         width: 100%;
         margin: 0;
         padding: 0;
+      }
+      .smallTagbar {
+        display: block;
+        padding-bottom: 30px;
+        .smallTagItem {
+          background-color: #e8eaf6;
+          border: none;
+          border-radius: 16px;
+          padding: 7px;
+          margin: 7px 5px;
+          color: #0ca678;
+        }
+        .smallTagItem:hover {
+          background-color: #00796b;
+          color: #e8eaf6;
+        }
       }
     }
   }
