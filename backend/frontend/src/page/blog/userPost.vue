@@ -4,10 +4,9 @@
       <div class="title">
         <h2>{{articleDetail.title}}</h2>
         <div class="written">
-          <p>작성자{{articleDetail.title}} 작성일 {{articleDetail.title}}</p>
+          <p>작성자 : {{articleDetail.author}} 작성일 {{articleDetail.title}}</p>
           <div class="written-tag">
-            <span>태그</span>
-            <span>태그</span>
+            <span v-for="(tag,index) in articleDetail.tags" :key="index">{{tag}}</span>
           </div>
         </div>
       </div>

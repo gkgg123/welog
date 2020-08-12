@@ -21,6 +21,9 @@
         id="create"
         placeholder="새 글을 작성해 보세요"
         v-model="text"
+        left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code"
+        :disabled-menus="[]"
+        @upload-image="handleUploadImage"
         @copy-code-success="handleCopyCodeSuccess"
       />
       <button @click="checkCreate">제출</button>
@@ -42,6 +45,7 @@ export default {
       inputTag: null,
       taglist: [],
       confirmText: "test중입니다.",
+      imageList: [],
     };
   },
   computed: {
@@ -113,11 +117,21 @@ export default {
         content: this.text,
         tags: configTag,
       };
+      this.imageList = this.imageList.filter((item) => {
+        return this.text.includes(item.iid);
+      });
+      const images = this.imageList.map((image) => {
+        const data = {};
+        data.image = image.iid;
+        return data;
+      });
+
+      console.log(images);
       const totalData = {
         post: [postData],
+        images: images,
         token: this.authToken,
       };
-      console.log(totalData);
       axios
         .post(
           constants.baseUrl + `post/${this.$store.state.username}/`,
@@ -131,6 +145,24 @@ export default {
               id: this.$store.state.username,
               pid: res.data.object.pid,
             },
+          });
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    handleUploadImage(event, insertImage, files) {
+      const formData = new FormData();
+      formData.append("files", files[0]);
+
+      axios
+        .post(constants.baseUrl + "file/upload/", formData)
+        .then((res) => {
+          console.log(res.data);
+          this.imageList.push(res.data.object);
+          insertImage({
+            url: `${constants.baseUrl}${res.data.object.path}`,
+            desc: res.data.object.iname,
           });
         })
         .catch((err) => {

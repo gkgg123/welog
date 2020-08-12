@@ -117,7 +117,6 @@ export default new Vuex.Store({
     },
     //UserName을 JWT TOKEN에서 decoding 하는 함수
     usernameCheck({ state, commit }) {
-      console.log(!!state.authToken);
       if (!!state.authToken) {
         const data = JSON.parse(atob(state.authToken.split(".")[1]));
         commit("SET_USERNAME", data.username);
@@ -149,6 +148,7 @@ export default new Vuex.Store({
               item.post.tags = [];
             }
             item.post.likeCount = item.likeCount;
+            item.post.liseuserlist = item.userlist;
             return item.post;
           });
           commit("SET_RECEIVEARTICLES", temp);
@@ -156,7 +156,6 @@ export default new Vuex.Store({
         })
         .then(() => {
           dispatch("attachArticles");
-          console.log(state.articles);
         });
     },
 
@@ -175,18 +174,19 @@ export default new Vuex.Store({
         commit("SET_ARTICLES", nextArticles);
       }
     },
+    /// ArticleDetail 정보를 불러오는 곳
     async carryArticle({ commit }, location) {
       return await axios.get(constants.baseUrl + location).then((res) => {
         const receive = [res.data];
         const temp = receive.map((item) => {
-          if (!!item.object.tags) {
-            item.object.tags = item.object.tags
-              .split(",")
-              .filter((tag) => !!tag);
+          if (!!item.post.tags) {
+            item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
           } else {
-            item.object.tags = [];
+            item.post.tags = [];
           }
-          return item.object;
+          item.post.likeCount = item.likeCount;
+          item.post.likeuserlist = item.userlist;
+          return item.post;
         });
         commit("SET_ARTICLEDETAIL", temp[0]);
       });
