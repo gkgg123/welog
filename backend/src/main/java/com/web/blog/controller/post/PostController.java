@@ -60,10 +60,11 @@ public class PostController {
         List<Post> post = postRepository.findAll(Sort.by("createDate").descending());
         List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
-
+        List<Image> images;
         for(Post p : post ){
             userlist = likeRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist));
+            images = imageRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
@@ -74,9 +75,11 @@ public class PostController {
         List<Post> post = postRepository.findAll(Sort.by("count").descending());
         List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
+        List<Image> images;
         for(Post p : post ){
             userlist = likeRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist));
+            images = imageRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
@@ -93,9 +96,11 @@ public class PostController {
 
         List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
+        List<Image> images;
         for(Post p : post ){
             userlist = likeRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist));
+            images = imageRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -110,8 +115,8 @@ public class PostController {
 
         int likeCount = likeRepository.countByPid(pid);
         List<String> userlist = likeRepository.findByPid(pid);
-
-        PostInfo postInfo = new PostInfo(post, likeCount, userlist);
+        List<Image> images = imageRepository.findByPid(pid);
+        PostInfo postInfo = new PostInfo(post, likeCount, userlist, images);
 
         return new ResponseEntity<>(postInfo,HttpStatus.OK);
     }
@@ -209,10 +214,14 @@ public class PostController {
     @DeleteMapping("/{author}/{pid}")
     @ApiOperation(value = "글 삭제")
 
-    public Object delete(@Valid @PathVariable int pid, @PathVariable String author) {
+    public Object delete(@Valid @PathVariable int pid, @PathVariable String author, @RequestBody String jsonObj) throws ParseException {
         Post findPost = postRepository.getPostByAuthorAndPid(author, pid);
         BasicResponse result = new BasicResponse();
-        if(findPost != null){
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+
+        String token = (String) obj.get("token");
+        if((findPost != null) &&(tokenUtils.getUserNameFromToken(token).equals(author))){
             postRepository.delete(findPost);
             result.data = SUCCESS;
             result.status = true;
