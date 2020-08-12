@@ -111,10 +111,15 @@ public class CommentController {
     @DeleteMapping("/{cid}")
     @ApiOperation(value = "글 삭제")
 
-    public Object delete(@Valid @PathVariable int cid) {
+    public Object delete(@Valid @PathVariable int cid, @RequestBody String jsonObj) throws ParseException {
         Comment findComment = commentRepository.getCommentByCid(cid);
         BasicResponse result = new BasicResponse();
-        if(findComment != null){
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+
+        String token = (String) obj.get("token");
+        String name = commentRepository.getCommentByCid(cid).getName();
+        if((findComment != null) && (tokenUtils.getUserNameFromToken(token).equals(name))){
             commentRepository.delete(findComment);
             result.data = SUCCESS;
             result.status = true;

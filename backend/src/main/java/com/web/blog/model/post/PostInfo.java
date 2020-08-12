@@ -1,15 +1,19 @@
 package com.web.blog.model.post;
 
+import com.web.blog.model.file.Image;
+
 import java.util.List;
 
 public class PostInfo {
     private Post post;
     private int likeCount;
     private List<String> userlist;
-    public PostInfo(Post post, int likeCount, List<String> userlist){
+    private List<Image> images;
+    public PostInfo(Post post, int likeCount, List<String> userlist, List<Image> images){
         this.post = post;
         this.likeCount = likeCount;
         this.userlist = userlist;
+        this.images = images;
     }
 
     public Post getPost() {
@@ -34,5 +38,13 @@ public class PostInfo {
 
     public void setUserlist(List<String> userlist) {
         this.userlist = userlist;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }
