@@ -2,8 +2,18 @@
   <div id="header" v-if="isHeader">
     <h1>
       <router-link
+        v-if="headerPathName !== constants.URL_TYPE.MAIN.MAIN"
+        :to="{name : constants.URL_TYPE.MAIN.MAIN}"
+      >
+        <img style="width: auto; height: 30px" src="/img/small_home_logo.png" />
+      </router-link>
+      <router-link
+        v-if="headerPathName !== constants.URL_TYPE.MAIN.MAIN"
         :to="{ name: headerPathName, params: { id: headerPathParams } }"
-      >{{ headerTitle }}</router-link>
+      >{{headerTitle}}</router-link>
+      <router-link v-else :to="{ name: headerPathName, params: { id: headerPathParams } }">
+        <img src="/img/home_logo.png" style="height:30px" />
+      </router-link>
     </h1>
     <div class="right d-flex">
       <select v-model="selected" class="h-75 my-2">
@@ -43,8 +53,6 @@ export default {
   created() {},
   methods: {
     search() {
-      console.log(this.selected);
-      console.log(this.keyword);
       this.$router.push({
         name: constants.URL_TYPE.MAIN.SEARCH,
         query: {
