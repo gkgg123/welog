@@ -39,25 +39,24 @@
       </div>
     </div>
 
+    <v-md-editor
+      id="detail"
+      mode="preview"
+      v-model="articleDetail.content"
+      ref="editor"
+      @copy-code-success="handleCopyCodeSuccess"
+    />
     <!-- 수정 삭제 버튼 -->
     <div class="post-update">
-      <v-md-editor
-        id="detail"
-        mode="preview"
-        v-model="articleDetail.content"
-        ref="editor"
-        @copy-code-success="handleCopyCodeSuccess"
-      />
       <button
+        class="update-button"
         v-if="checkAuthorLogin"
-        class="btn btn-primary"
         data-toggle="modal"
         data-target="#update"
-      >수정버튼입니다.</button>
-
-      <userPostUpdate />
-      <button v-if="checkAuthorLogin" class="btn btn-primary" @click="confirmDelete">삭제버튼입니다.</button>
+      >수정</button>
+      <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
     </div>
+    <userPostUpdate />
     <div id="context-menu" class="context-menu">
       <div class="item" data-toggle="modal" data-target="#example">수정요청</div>
       <div class="item">나가기</div>
@@ -69,9 +68,14 @@
         </div>
         <div class="comment">
           <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
-          <label for="isSecret">비밀댓글</label>
-          <input type="checkbox" name="isSecret" id="isSecret" v-model="isSecret" />
-          <button @click="commentSubmit">댓글 작성</button>
+          <div class="comment-underbar">
+            <span>비밀글</span>
+            <div class="secret-button">
+              <i class="fas fa-lock" v-if="isSecret" @click="isSecret = !isSecret"></i>
+              <i class="fas fa-unlock" v-else @click="isSecret = !isSecret"></i>
+            </div>
+            <button @click="commentSubmit">댓글 작성</button>
+          </div>
         </div>
         <commentListItems />
       </div>
