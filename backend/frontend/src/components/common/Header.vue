@@ -5,10 +5,13 @@
         :to="{ name: headerPathName, params: { id: headerPathParams } }"
       >{{ headerTitle }}</router-link>
     </h1>
-    <div class="right">
+    <div class="right d-flex">
+      <select v-model="selected" class="h-75 my-2">
+        <option v-for="option in options" :value="option.value" :key="option.text">{{option.text}}</option>
+      </select>
       <div class="search-input">
         <i class="fas fa-search"></i>
-        <input v-model="keyword" type="text" />
+        <input v-model="keyword" type="text" @keyup.enter="search" />
       </div>
 
       <router-link
@@ -38,11 +41,28 @@ export default {
   },
   watch: {},
   created() {},
-  methods: {},
+  methods: {
+    search() {
+      console.log(this.selected);
+      console.log(this.keyword);
+      this.$router.push({
+        name: constants.URL_TYPE.MAIN.SEARCH,
+        query: {
+          type: this.selected,
+          search: this.keyword,
+        },
+      });
+    },
+  },
   data: function () {
     return {
       constants,
       keyword: "",
+      selected: "Both",
+      options: [
+        { text: "제목+내용", value: "Both" },
+        { text: "태그", value: "tag" },
+      ],
     };
   },
 };

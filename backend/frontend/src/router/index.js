@@ -12,6 +12,7 @@ import Logout from "../page/user/Logout.vue";
 import Main from "../page/main/Main.vue";
 import recentList from "../page/main/recentList.vue";
 import recommandList from "../page/main/recommandList.vue";
+import searchList from "../page/main/Search/search.vue";
 // 개인블로그
 import CreateView from "../page/blog/CreateView.vue";
 import userBlog from "../page/blog/userBlog.vue";
@@ -59,6 +60,11 @@ const routes = [
         component: recommandList,
       },
     ],
+  },
+  {
+    path: "/search",
+    name: constants.URL_TYPE.MAIN.SEARCH,
+    component: searchList,
   },
   // POST
   {
@@ -116,6 +122,7 @@ router.beforeEach((to, from, next) => {
     constants.URL_TYPE.MAIN.LIST,
     constants.URL_TYPE.USER.JOIN,
     constants.URL_TYPE.USER.LOGIN,
+    constants.URL_TYPE.MAIN.SEARCH,
   ];
   // auth page 같은경우엔 로그인해서 접근하면 안되는 페이지들을 넣어주면 된다.
   const authPages = [
