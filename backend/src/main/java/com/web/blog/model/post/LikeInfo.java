@@ -15,10 +15,8 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LikeInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pid;
 
-    @Id
     private String username;
 
     private int likeit;
