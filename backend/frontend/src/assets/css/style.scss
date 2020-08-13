@@ -321,22 +321,44 @@ h2 {
   position: fixed;
   left: 0;
   top: 0;
-  min-height: 75px;
+  min-height: 85px;
   max-height: 85px;
   border-bottom: 3px solid #00796b;
-  padding: 12px 30px;
+  padding: 0px 30px;
   background-color: #fff;
   z-index: 9;
   display: table;
-  h1 {
+  .header-logo {
+    width: 400px;
     float: left;
     font-weight: $f600;
+    display: flex;
     a {
-      font-size: 1.5em;
+      font-size: 40px;
+      .home-logo {
+        margin-top: 12px;
+        height: 56px;
+      }
+      .small-logo {
+        margin-top: 12px;
+        height: 56px;
+        margin-right: 20px;
+      }
+      .header-name {
+        margin-top: 20px;
+      }
     }
   }
   .right {
-    display: table-row;
+    float: right;
+    margin-top: 18px;
+    .select-box {
+      margin-top: 6px;
+      max-height: 36px;
+      width: 110px;
+      border: solid 3px #dddddd;
+      border-radius: 5px;
+    }
     .search-input {
       position: relative;
       width: 270px;

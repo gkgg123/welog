@@ -154,6 +154,7 @@
       // }
       .post-card {
         @include wrap;
+        height: 370px;
         text-align: left;
         border: 2px solid #fafafa;
         border-radius: 10px;

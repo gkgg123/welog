@@ -1,22 +1,25 @@
 <template>
   <div id="header" v-if="isHeader">
-    <h1>
+    <div class="header-logo">
       <router-link
         v-if="headerPathName !== constants.URL_TYPE.MAIN.MAIN"
         :to="{name : constants.URL_TYPE.MAIN.MAIN}"
       >
-        <img style="width: auto; height: 30px" src="/img/small_home_logo.png" />
+        <img class="small-logo" src="/img/small_home_logo.png" />
       </router-link>
       <router-link
         v-if="headerPathName !== constants.URL_TYPE.MAIN.MAIN"
         :to="{ name: headerPathName, params: { id: headerPathParams } }"
-      >{{headerTitle}}</router-link>
-      <router-link v-else :to="{ name: headerPathName, params: { id: headerPathParams } }">
-        <img src="/img/home_logo.png" style="height:30px" />
+      >
+        <div class="header-name">{{headerTitle}}</div>
       </router-link>
-    </h1>
+
+      <router-link v-else :to="{ name: headerPathName, params: { id: headerPathParams } }">
+        <img class="home-logo" src="/img/home_logo.png" />
+      </router-link>
+    </div>
     <div class="right d-flex">
-      <select v-model="selected" class="h-75 my-2">
+      <select class="select-box" v-model="selected">
         <option v-for="option in options" :value="option.value" :key="option.text">{{option.text}}</option>
       </select>
       <div class="search-input">
