@@ -242,7 +242,7 @@ public class PostController {
     @ApiOperation(value= "좋아요인지 아닌지")
     public int likeIt(@PathVariable String author, @PathVariable int pid){
         String username = accountRepository.findByUsername(author).getUsername();
-        return likeRepository.findByPidAndUsername(pid, username).getIsLike();
+        return likeRepository.findByPidAndUsername(pid, username).getLikeit();
     }
 
     @PostMapping("/{author}/{pid}/likeit")
@@ -253,7 +253,7 @@ public class PostController {
 
         likeInfo.setPid(pid);
         likeInfo.setUsername(username);
-        likeInfo.setIsLike(likeRepository.findByPidAndUsername(pid, username).getIsLike() == 0 ? 1: 0);
+        likeInfo.setLikeit(likeRepository.findByPidAndUsername(pid, username).getLikeit() == 0 ? 1: 0);
         likeRepository.save(likeInfo);
         BasicResponse result = new BasicResponse();
         result.status = true;
