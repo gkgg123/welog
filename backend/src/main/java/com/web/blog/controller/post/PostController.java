@@ -18,6 +18,7 @@ import com.web.blog.model.post.Post;
 
 import com.web.blog.model.post.PostInfo;
 import com.web.blog.utils.TokenUtils;
+import io.swagger.annotations.Api;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -232,11 +233,7 @@ public class PostController {
         return new ResponseEntity<>(result, HttpStatus.CONFLICT);
     }
 
-    @GetMapping("/tag/{tag}")
-    @ApiOperation(value = "태그 검색")
-    public ResponseEntity<List<Post>> retrievePostbyTags(@PathVariable String tag){
-        return new ResponseEntity<List<Post>>(postRepository.findByTagsContaining(","+tag+","), HttpStatus.OK);
-    }
+
 
     @GetMapping("/{author}/{pid}/likeit")
     @ApiOperation(value= "좋아요인지 아닌지")
@@ -247,13 +244,19 @@ public class PostController {
 
     @PostMapping("/{author}/{pid}/likeit")
     @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
-    public Object clickLike(@PathVariable String author, @PathVariable int pid){
-        String username = accountRepository.findByUsername(author).getUsername();
-        LikeInfo likeInfo = new LikeInfo();
+    public Object clickLike(@PathVariable String author, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
 
-        likeInfo.setPid(pid);
-        likeInfo.setUsername(username);
-        likeInfo.setLikeit(likeRepository.findByPidAndUsername(pid, username).getLikeit() == 0 ? 1: 0);
+        String token = (String) obj.get("token");
+        String userName = tokenUtils.getUserNameFromToken(token);
+
+        LikeInfo likeInfo = likeRepository.findByPidAndUsername(pid, userName);
+        if(likeInfo == null) {
+            likeInfo.setUsername(userName);
+            likeInfo.setLikeit(1);
+        }
+        likeInfo.setLikeit(likeInfo.getLikeit() == 0 ? 1: 0);
         likeRepository.save(likeInfo);
         BasicResponse result = new BasicResponse();
         result.status = true;
@@ -263,10 +266,92 @@ public class PostController {
 
     }
 
+    @GetMapping("/search/title")
+    @ApiOperation(value = "제목 검색")
+    public ResponseEntity<Object> searchTitle(@RequestParam String title){
+        BasicResponse result = new BasicResponse();
+        List<Post> postList = postRepository.findByTitleContaining(title);
+        if(postList.isEmpty()){
+            result.object = null;
+            result.status = false;
+            result.data = "fail";
+            return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+        }
+        List<PostInfo> postInfo = new ArrayList<>();
+        List<String> userlist;
+        List<Image> images;
+        for(Post p : postList ){
+            userlist = likeRepository.findByPid(p.getPid());
+            images = imageRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+        }
+        return new ResponseEntity<>(postInfo, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/content")
+    @ApiOperation(value = "내용 검색")
+    public ResponseEntity<Object> searchContent(@RequestParam String content){
+        BasicResponse result = new BasicResponse();
+        List<Post> postList = postRepository.findByContentContaining(content);
+        if(postList.isEmpty()){
+            result.object = null;
+            result.status = false;
+            result.data = "fail";
+            return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+        }
+        List<PostInfo> postInfo = new ArrayList<>();
+        List<String> userlist;
+        List<Image> images;
+        for(Post p : postList ){
+            userlist = likeRepository.findByPid(p.getPid());
+            images = imageRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+        }
+        return new ResponseEntity<>(postInfo, HttpStatus.OK);
+    }
+
     @GetMapping("/searchPost")
     @ApiOperation(value = "제목 + 내용 검색")
-    public ResponseEntity<List<Post>> searchPost(@RequestParam String text){
-        return new ResponseEntity<List<Post>>(postRepository.findByTitleAndContent(text, text), HttpStatus.OK);
+    public ResponseEntity<Object> searchPost(@RequestParam String text){
+        BasicResponse result = new BasicResponse();
+        List<Post> postList = postRepository.findByTitleContainingOrContentContaining(text,text);
+        if(postList.isEmpty()){
+            result.object = null;
+            result.status = false;
+            result.data = "fail";
+            return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+        }
+        List<PostInfo> postInfo = new ArrayList<>();
+        List<String> userlist;
+        List<Image> images;
+        for(Post p : postList ){
+            userlist = likeRepository.findByPid(p.getPid());
+            images = imageRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+        }
+        return new ResponseEntity<>(postInfo, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/tag")
+    @ApiOperation(value = "태그 검색")
+    public ResponseEntity<Object> retrievePostbyTags(@RequestParam String tag){
+        BasicResponse result = new BasicResponse();
+        List<Post> postList = postRepository.findByTagsContaining(","+tag+",");
+        if(postList.isEmpty()){
+            result.object = null;
+            result.status = false;
+            result.data = "fail";
+            return new ResponseEntity<>(result, HttpStatus.CONFLICT);
+        }
+        List<PostInfo> postInfo = new ArrayList<>();
+        List<String> userlist;
+        List<Image> images;
+        for(Post p : postList ){
+            userlist = likeRepository.findByPid(p.getPid());
+            images = imageRepository.findByPid(p.getPid());
+            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+        }
+        return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
 
