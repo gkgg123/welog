@@ -239,33 +239,40 @@ public class PostController {
 
     @GetMapping("/{author}/{pid}/likeit")
     @ApiOperation(value= "좋아요인지 아닌지")
-    public int likeIt(@PathVariable String author, @PathVariable int pid){
-        String username = accountRepository.findByUsername(author).getUsername();
-        return likeRepository.findByPidAndUsername(pid, username).getLikeit();
-    }
-
-    @PostMapping("/{author}/{pid}/likeit")
-    @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
-    public Object clickLike(@PathVariable String author, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
+    public int likeIt(@PathVariable String author, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException{
         JSONParser jsonParse = new JSONParser();
         JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
 
         String token = (String) obj.get("token");
         String userName = tokenUtils.getUserNameFromToken(token);
 
+        return likeRepository.findByPidAndUsername(pid, userName).getLikeit();
+    }
+
+    @PostMapping("/{author}/{pid}/likeit")
+    @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
+    public Object clickLike(@PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+
+        String token = (String) obj.get("token");
+        String userName = tokenUtils.getUserNameFromToken(token);
         LikeInfo likeInfo = likeRepository.findByPidAndUsername(pid, userName);
         if(likeInfo == null) {
+            likeInfo = new LikeInfo();
+            likeInfo.setPid(pid);
             likeInfo.setUsername(userName);
             likeInfo.setLikeit(1);
+        }else {
+            likeInfo.setLikeit(likeInfo.getLikeit() == 0 ? 1 : 0);
         }
-        likeInfo.setLikeit(likeInfo.getLikeit() == 0 ? 1: 0);
         likeRepository.save(likeInfo);
         BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = SUCCESS;
         result.object = likeInfo;
-        return new ResponseEntity<>(result, HttpStatus.OK);
 
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/search/title")
@@ -312,7 +319,7 @@ public class PostController {
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
-    @GetMapping("/searchPost")
+    @GetMapping("/search/post")
     @ApiOperation(value = "제목 + 내용 검색")
     public ResponseEntity<Object> searchPost(@RequestParam String text){
         BasicResponse result = new BasicResponse();
