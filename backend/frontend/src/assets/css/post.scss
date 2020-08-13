@@ -365,7 +365,7 @@
   display: block;
   position: fixed;
   text-align: center;
-  left: 75%;
+  left: 1500px;
   top: 180px;
   justify-content: center;
   width: 200px;
@@ -404,6 +404,9 @@
       }
     }
   }
+  .tag-list-wrap {
+    left: 1125px;
+  }
 }
 @media only screen and (max-width: 1439px) {
   .post {
@@ -414,14 +417,10 @@
       }
     }
   }
+  .tag-list-wrap {
+    left: 750px;
+  }
 }
-// @media only screen and (max-width: 1023px) {
-//   .post {
-//     .post-list {
-//       width: 650px;
-//     }
-//   }
-// }
 @media only screen and (max-width: 944px) {
   .post {
     .post-list {
