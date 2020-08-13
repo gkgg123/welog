@@ -327,6 +327,7 @@ h2 {
   padding: 12px 30px;
   background-color: #fff;
   z-index: 9;
+  display: table;
   h1 {
     float: left;
     font-weight: $f600;
@@ -335,6 +336,7 @@ h2 {
     }
   }
   .right {
+    display: table-row;
     .search-input {
       position: relative;
       width: 270px;
@@ -432,11 +434,11 @@ h2 {
 }
 
 /* media query */
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 950px) {
   #header {
     .right {
       .search-input {
-        width: 150px;
+        width: 100px;
       }
     }
   }

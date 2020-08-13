@@ -165,6 +165,11 @@
         align-items: center;
         border-bottom: solid 1px #aaaa;
         width: 100%;
+        > div {
+          > textarea {
+            width: 100%;
+          }
+        }
         .comment-profile {
           display: flex;
           margin: 10px;
