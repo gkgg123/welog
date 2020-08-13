@@ -65,7 +65,7 @@ public class PostController {
         for(Post p : post ){
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
@@ -80,7 +80,7 @@ public class PostController {
         for(Post p : post ){
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
@@ -101,7 +101,7 @@ public class PostController {
         for(Post p : post ){
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -114,8 +114,8 @@ public class PostController {
         post.setCount(post.getCount()+1);
         postRepository.save(post);
 
-        int likeCount = likeRepository.countByPid(pid);
         List<String> userlist = likeRepository.findByPid(pid);
+        int likeCount = userlist.size();
         List<Image> images = imageRepository.findByPid(pid);
         PostInfo postInfo = new PostInfo(post, likeCount, userlist, images);
 
@@ -290,7 +290,7 @@ public class PostController {
         for(Post p : postList ){
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -312,7 +312,7 @@ public class PostController {
         for(Post p : postList ){
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -334,7 +334,7 @@ public class PostController {
         for(Post p : postList ){
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -356,7 +356,7 @@ public class PostController {
         for(Post p : postList ){
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,likeRepository.countByPid(p.getPid()), userlist, images));
+            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
