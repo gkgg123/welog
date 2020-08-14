@@ -195,15 +195,17 @@ public class PostController {
         postRepository.save(post);
         List<Image> images = imageRepository.findByPid(pid);
         for(Image image : images){
-            imageRepository.delete(image);
-        }
-        for(Object object : imageArray){
-            JSONObject imageObject = (JSONObject) object;
-            String str = (String) imageObject.get("image");
-            Image image = imageRepository.findByIid(str);
-            System.out.println(str);
-            image.setPid(post.getPid());
+            image.setPid(0);
             imageRepository.save(image);
+        }
+        if(!imageArray.isEmpty()) {
+            for (Object object : imageArray) {
+                JSONObject imageObject = (JSONObject) object;
+                String str = (String) imageObject.get("image");
+                Image image = imageRepository.findByIid(str);
+                image.setPid(post.getPid());
+                imageRepository.save(image);
+            }
         }
         
         result.status = true;
