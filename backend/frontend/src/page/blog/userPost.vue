@@ -2,11 +2,15 @@
   <div id="detail" class="mt-5">
     <div class="post-title">
       <div class="title">
-        <h2>{{articleDetail.title}}</h2>
+        <h2>{{ articleDetail.title }}</h2>
         <div class="written">
-          <p>작성자 : {{articleDetail.author}} 작성일 {{articleDetail.title}}</p>
+          <p>
+            작성자 : {{ articleDetail.author }} 작성일 {{ articleDetail.title }}
+          </p>
           <div class="written-tag">
-            <span v-for="(tag,index) in articleDetail.tags" :key="index">{{tag}}</span>
+            <span v-for="(tag, index) in articleDetail.tags" :key="index">{{
+              tag
+            }}</span>
           </div>
         </div>
       </div>
@@ -19,10 +23,10 @@
           <div class="like">
             <i
               class="far fa-heart"
-              :class="{ likeBtn : isLikeuser , unlikeBtn : !isLikeuser  } "
+              :class="{ likeBtn: isLikeuser, unlikeBtn: !isLikeuser }"
               @click="likePost"
             ></i>
-            <p>{{likecount}}</p>
+            <p>{{ likecount }}</p>
           </div>
           <i class="fas fa-share-alt"></i>
         </div>
@@ -57,28 +61,47 @@
         v-if="checkAuthorLogin"
         data-toggle="modal"
         data-target="#update"
-      >수정</button>
-      <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
+      >
+        수정
+      </button>
+      <button
+        class="update-button"
+        v-if="checkAuthorLogin"
+        @click="confirmDelete"
+      >
+        삭제
+      </button>
     </div>
     <userPostUpdate />
     <div id="context-menu" class="context-menu">
-      <div class="item" data-toggle="modal" data-target="#example">수정요청</div>
+      <div class="item" data-toggle="modal" data-target="#example">
+        수정요청
+      </div>
       <div class="item">나가기</div>
     </div>
     <div class="commentBox">
       <div class="commentBox2">
         <div class="comment-label">
-          <p>0개의 댓글</p>
+          <p>{{ commentNumber }}개의 댓글</p>
         </div>
         <div class="comment">
-          <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
+          <textarea
+            placeholder="댓글을 남겨주세요"
+            v-model="commentContents"
+          ></textarea>
           <div class="comment-underbar">
             <span>비밀글</span>
             <div class="secret-button">
-              <i class="fas fa-lock" v-if="isSecret" @click="isSecret = !isSecret"></i>
+              <i
+                class="fas fa-lock"
+                v-if="isSecret"
+                @click="isSecret = !isSecret"
+              ></i>
               <i class="fas fa-unlock" v-else @click="isSecret = !isSecret"></i>
             </div>
-            <button @click="commentSubmit">댓글 작성</button>
+            <button @click="commentSubmit">
+              댓글 작성
+            </button>
           </div>
         </div>
         <commentListItems />
@@ -97,13 +120,24 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">{{ confirmText }}</div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
             <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
@@ -137,7 +171,7 @@ export default {
     commentListItems,
   },
   computed: {
-    ...mapState(["username", "authToken", "articleDetail"]),
+    ...mapState(["username", "authToken", "articleDetail", "commentList"]),
     ...mapGetters(["isLogined"]),
     checkAuthorLogin() {
       if (this.username === this.articleDetail.author) {
@@ -145,6 +179,9 @@ export default {
       } else {
         return false;
       }
+    },
+    commentNumber() {
+      return this.commentList.length;
     },
   },
   methods: {
@@ -160,7 +197,7 @@ export default {
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
-      creatediv.addEventListener("click", function () {
+      creatediv.addEventListener("click", function() {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
@@ -168,34 +205,38 @@ export default {
 
     ///  댓글 작성
     commentSubmit() {
-      var text = this.commentContents.trim();
-      var secret = "0";
-      if (this.isSecret) {
-        secret = "1";
-      }
-
-      if (!this.commentContents.trim().length) {
-        alert("내용을 입력하세요");
+      if (!this.isLogined) {
+        alert("로그인을 하시고 댓글을 작성해주세요");
       } else {
-        const postData = {
-          content: this.commentContents,
-          secret: secret,
-        };
-        const totalData = {
-          comment: [postData],
-          token: this.authToken,
-        };
-        axios
-          .post(
-            constants.baseUrl + `post/${this.$route.params.pid}/comment/`,
-            totalData
-          )
-          .then((res) => {
-            this.$router.go();
-          })
-          .catch((err) => {
-            console.log(err.response);
-          });
+        var text = this.commentContents.trim();
+        var secret = "0";
+        if (this.isSecret) {
+          secret = "1";
+        }
+
+        if (!this.commentContents.trim().length) {
+          alert("내용을 입력하세요");
+        } else {
+          const postData = {
+            content: this.commentContents,
+            secret: secret,
+          };
+          const totalData = {
+            comment: [postData],
+            token: this.authToken,
+          };
+          axios
+            .post(
+              constants.baseUrl + `post/${this.$route.params.pid}/comment/`,
+              totalData
+            )
+            .then((res) => {
+              this.$router.go();
+            })
+            .catch((err) => {
+              console.log(err.response);
+            });
+        }
       }
     },
     anchorCreate() {

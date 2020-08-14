@@ -55,7 +55,7 @@ export default {
     },
   },
   created() {
-    this.getArticles(`post/${this.$route.params.id}/`);
+    this.getArticles({ location: `post/${this.$route.params.id}/` });
   },
   mounted() {
     this.addScrollMonitor();

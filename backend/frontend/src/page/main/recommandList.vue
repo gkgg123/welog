@@ -39,7 +39,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "recommandList",
   created() {
-    this.getArticles("post/popularity");
+    this.getArticles({ location: "post/popularity" });
   },
   data: () => {
     return {

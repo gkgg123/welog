@@ -6,7 +6,7 @@
           <i class="far fa-smile"></i>
         </div>
         <div class="writer-info">
-          <p class="writer-id">{{comment.name}}</p>
+          <p class="writer-id">{{ comment.name }}</p>
           <p class="written-day">작성 날짜</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
@@ -14,16 +14,20 @@
           <p @click="deleteComment">삭제</p>
         </div>
       </div>
-      <div class="comment-content">{{comment.content}}</div>
+      <div class="comment-content">{{ comment.content }}</div>
 
       <div class="comment-update">
         <textarea
-          :id="'commentUpdate'+ comment.cid"
+          :id="'commentUpdate' + comment.cid"
           class="commentUpdate"
           name="commentUpdate"
           v-model="cofirmComment"
         ></textarea>
-        <div class="secretcheckboxclose" id="isSecret" :data-checkbox="comment.cid">
+        <div
+          class="secretcheckboxclose"
+          id="isSecret"
+          :data-checkbox="comment.cid"
+        >
           <i
             class="fas fa-lock"
             v-if="isSecret"
@@ -39,13 +43,24 @@
             @click="isSecret = !isSecret"
           ></i>
         </div>
-        <button class="btn close closedisplay" :data-set="comment.cid" @click="confirm">수정</button>
-        <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">취소</button>
+        <button
+          class="btn close closedisplay"
+          :data-set="comment.cid"
+          @click="confirmCMT"
+        >
+          수정
+        </button>
+        <button
+          class="btn close closedisplay"
+          :data-set="comment.cid"
+          @click="closepop"
+        >
+          취소
+        </button>
       </div>
     </div>
     <div v-if="!checkSecret">
-      ----------------------------
-      &nbsp;&nbsp;&nbsp;비밀댓글입니다.
+      ---------------------------- &nbsp;&nbsp;&nbsp;비밀댓글입니다.
       -----------------------------
     </div>
   </div>
@@ -63,6 +78,9 @@ export default {
       isSecret: false,
       constants,
     };
+  },
+  created() {
+    this.isSecret = !!this.comment.secret;
   },
   props: {
     comment: Object,
@@ -134,22 +152,23 @@ export default {
       const Btns = document.querySelectorAll(
         `[data-set="${this.comment.cid}"]`
       );
-      setTimeout(function () {
+      setTimeout(function() {
         Btns.forEach((Btn) => {
           Btn.classList.add("close");
           Btn.classList.remove("open");
         });
       }, 0);
-      setTimeout(function () {
+      setTimeout(function() {
         Btns.forEach((Btn) => {
           Btn.classList.add("closedisplay");
         });
       }, 0);
       updateBtn.classList.remove("popupComment");
       updateBtn.classList.add("commentUpdate");
+      this.isSecret = !!this.comment.secret;
       this.closeCheckbox();
     },
-    confirm() {
+    confirmCMT() {
       var secret = "0";
       if (this.isSecret) {
         secret = "1";
@@ -166,7 +185,6 @@ export default {
           comment: [postData],
           token: this.authToken,
         };
-        console.log(totalData);
         axios
           .put(
             constants.baseUrl +
@@ -182,14 +200,24 @@ export default {
       }
     },
     deleteComment() {
-      axios
-        .delete(
-          constants.baseUrl +
-            `post/${this.$route.params.pid}/comment/${this.comment.cid}/`
-        )
-        .then((res) => {
-          console.log(res);
-        });
+      if (confirm("정말 삭제하시겠습니까?")) {
+        axios
+          .delete(
+            constants.baseUrl +
+              `post/${this.$route.params.pid}/comment/${this.comment.cid}/`,
+            {
+              data: {
+                token: this.authToken,
+              },
+            }
+          )
+          .then((res) => {
+            this.$router.go();
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
     },
   },
 };

@@ -1,10 +1,13 @@
 <template>
-  <section class="post-list">
+  <section class="post-list" v-cloak>
     <div class="post-card-box" v-for="article in articles" :key="article.pid">
       <div class="post-card">
         <router-link
           v-if="article.pid"
-          :to="{name :constants.URL_TYPE.POST.POST, params :{id : article.author, pid:article.pid}}"
+          :to="{
+            name: constants.URL_TYPE.POST.POST,
+            params: { id: article.author, pid: article.pid },
+          }"
         >
           <div class="post-img" />
 
@@ -23,14 +26,16 @@
         <div class="writer-wrap">
           <router-link
             v-if="article.author"
-            :to="{name:constants.URL_TYPE.POST.BLOG , params : {id : article.author}}"
+            :to="{
+              name: constants.URL_TYPE.POST.BLOG,
+              params: { id: article.author },
+            }"
           >{{ article.author }}</router-link>
           <span>♥ 2</span>
         </div>
       </div>
     </div>
     <div id="bottomSensor"></div>
-    <button @click="attachArticles">더보기</button>
   </section>
 </template>
 
@@ -42,7 +47,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "recentList",
   created() {
-    this.getArticles("post/latest");
+    this.getArticles({ location: "post/latest" });
   },
   data: () => {
     return {
@@ -50,18 +55,21 @@ export default {
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit"]),
+    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
-      watcher.enterViewport(() => {
-        setTimeout(() => {
-          this.attachArticles();
-        }, 500);
-      });
+
+      if (!!this.receiveArticleList.length) {
+        watcher.enterViewport(() => {
+          setTimeout(() => {
+            this.attachArticles();
+          }, 500);
+        });
+      }
     },
   },
 
@@ -71,5 +79,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import constants from "@/lib/constants";
 import router from "@/router";
+import _ from "lodash";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -70,15 +71,8 @@ export default new Vuex.Store({
       state.articles = [];
     },
     SET_ARTICLEDETAIL(state, article) {
-      function clone(obj) {
-        var output = {};
-        for (var i in obj) {
-          output[i] = obj[i];
-        }
-        return output;
-      }
-      state.articleDetail = clone(article);
-      state.updateArticle = clone(article);
+      state.articleDetail = _.cloneDeep(article);
+      state.updateArticle = _.cloneDeep(article);
     },
     SET_COMMENTLIST(state, comment) {
       state.commentList = comment;
@@ -136,12 +130,13 @@ export default new Vuex.Store({
       });
     },
     // Articles의 List를 불러오는 함수 //
-    getArticles({ state, commit, getters, dispatch }, location) {
+    async getArticles({ state, commit, getters, dispatch }, payload) {
       /// 새 페이지에 들어갔을때 RESET하는 역할
+      console.log(payload);
       commit("RESET_PAGINATION");
       commit("RESET_ARTICLES");
-      axios
-        .get(constants.baseUrl + location)
+      await axios
+        .get(constants.baseUrl + payload.location, { params: payload.query })
         .then((res) => {
           var receive = Object.values(res.data);
           const temp = receive.map((item) => {
@@ -157,8 +152,11 @@ export default new Vuex.Store({
           commit("SET_RECEIVEARTICLES", temp);
           commit("SET_PAGELIMIT", getters.pageLimitcalc);
         })
-        .then(() => {
+        .finally(() => {
           dispatch("attachArticles");
+        })
+        .catch((err) => {
+          console.log(err.respnose);
         });
     },
 
@@ -202,7 +200,12 @@ export default new Vuex.Store({
         axios
           .delete(
             constants.baseUrl +
-              `post/${state.articleDetail.author}/${state.articleDetail.pid}`
+              `post/${state.articleDetail.author}/${state.articleDetail.pid}`,
+            {
+              data: {
+                token: state.authToken,
+              },
+            }
           )
           .then((res) => {
             router.push({
