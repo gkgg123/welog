@@ -280,13 +280,13 @@ public class PostController {
     public ResponseEntity<Object> searchTitle(@RequestParam String title){
         BasicResponse result = new BasicResponse();
         List<Post> postList = postRepository.findByTitleContaining(title);
+        List<PostInfo> postInfo = new ArrayList<>();
         if(postList.isEmpty()){
-            result.object = null;
+            result.object = postInfo;
             result.status = false;
             result.data = "fail";
             return new ResponseEntity<>(result, HttpStatus.CONFLICT);
         }
-        List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
         List<Image> images;
         for(Post p : postList ){
@@ -302,13 +302,13 @@ public class PostController {
     public ResponseEntity<Object> searchContent(@RequestParam String content){
         BasicResponse result = new BasicResponse();
         List<Post> postList = postRepository.findByContentContaining(content);
+        List<PostInfo> postInfo = new ArrayList<>();
         if(postList.isEmpty()){
-            result.object = null;
+            result.object = postInfo;
             result.status = false;
             result.data = "fail";
             return new ResponseEntity<>(result, HttpStatus.CONFLICT);
         }
-        List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
         List<Image> images;
         for(Post p : postList ){
@@ -319,18 +319,18 @@ public class PostController {
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
-    @GetMapping("/search/post")
+    @GetMapping("/search/text")
     @ApiOperation(value = "제목 + 내용 검색")
     public ResponseEntity<Object> searchPost(@RequestParam String text){
         BasicResponse result = new BasicResponse();
         List<Post> postList = postRepository.findByTitleContainingOrContentContaining(text,text);
+        List<PostInfo> postInfo = new ArrayList<>();
         if(postList.isEmpty()){
-            result.object = null;
+            result.object = postInfo;
             result.status = false;
             result.data = "fail";
             return new ResponseEntity<>(result, HttpStatus.CONFLICT);
         }
-        List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
         List<Image> images;
         for(Post p : postList ){
@@ -346,13 +346,13 @@ public class PostController {
     public ResponseEntity<Object> retrievePostbyTags(@RequestParam String tag){
         BasicResponse result = new BasicResponse();
         List<Post> postList = postRepository.findByTagsContaining(","+tag+",");
+        List<PostInfo> postInfo = new ArrayList<>();
         if(postList.isEmpty()){
-            result.object = null;
+            result.object = postInfo;
             result.status = false;
             result.data = "fail";
             return new ResponseEntity<>(result, HttpStatus.CONFLICT);
         }
-        List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
         List<Image> images;
         for(Post p : postList ){
