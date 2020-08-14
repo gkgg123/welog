@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="comment-content">{{comment.content}}</div>
-      <div v-if="checkAuthorLogin">
+      <div class="comment-update" v-if="checkAuthorLogin">
         <button class="btn" @click="popUp">수정</button>
         <button class="btn" @click="deleteComment">삭제</button>
       </div>
@@ -24,17 +24,21 @@
           rows="3"
           v-model="cofirmComment"
         ></textarea>
-        <label class="secretcheckboxclose" :data-checkbox="comment.cid" for="isSecret">비밀댓글</label>
-        <input
-          class="secretcheckboxclose"
-          type="checkbox"
-          name="isSecret"
-          id="isSecret"
-          :data-checkbox="comment.cid"
-          v-model="isSecret"
-        />
-        <button class="btn close closedisplay" :data-set="comment.cid" @click="confirm">수정완료</button>
-        <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">닫기</button>
+        <div class="comment-update-confirm">
+          <div>
+            <label class="secretcheckboxclose" :data-checkbox="comment.cid" for="isSecret">비밀댓글</label>
+            <input
+              class="secretcheckboxclose"
+              type="checkbox"
+              name="isSecret"
+              id="isSecret"
+              :data-checkbox="comment.cid"
+              v-model="isSecret"
+            />
+          </div>
+          <button class="btn close closedisplay" :data-set="comment.cid" @click="confirm">수정완료</button>
+          <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">닫기</button>
+        </div>
       </div>
     </div>
     <div v-if="!checkSecret">
