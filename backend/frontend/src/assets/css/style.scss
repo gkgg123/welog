@@ -379,6 +379,16 @@ h2 {
       }
     }
 
+    .dropdown-box {
+      text-align: center;
+      > a {
+        font-size: 24px;
+        > i {
+          font-size: 32px;
+        }
+      }
+    }
+
     .login-btn {
       font-size: 20px;
       padding: 5px;

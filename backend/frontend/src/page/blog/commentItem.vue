@@ -225,7 +225,7 @@ export default {
 
 <style scoped>
 .commentUpdate {
-  height: 0px;
+  display: none;
 }
 .popupComment {
   display: block;
