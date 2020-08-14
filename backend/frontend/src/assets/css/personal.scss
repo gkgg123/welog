@@ -107,6 +107,46 @@
     }
   }
 
+  .modal.fade {
+    .modal-dialog.modal-fullsize {
+      min-width: 80%;
+      height: 80%;
+      margin: 4% 10%;
+      padding: 0;
+    }
+    .modal-content.modal-fullsize {
+      min-height: 80%;
+      border-radius: 0;
+    }
+    .modal-header {
+      border: none;
+      .modal-title {
+        font-size: 28px;
+        width: 80%;
+      }
+    }
+    .modal-tags {
+      display: flex;
+      height: 63px;
+      padding: 16px;
+      border-bottom: solid 1px #dee2e6;
+      input {
+        margin-left: 8px;
+        width: 16%;
+      }
+    }
+    .modal-footer {
+      button {
+        font-size: 20px;
+        margin: 5px 15px;
+        padding: 8px 13px;
+        background-color: #48a999;
+        color: white;
+        border-radius: 8px;
+      }
+    }
+  }
+
   #context-menu {
     position: absolute;
     z-index: 10000;

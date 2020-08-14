@@ -8,19 +8,10 @@
     aria-hidden="true"
     @keydown.esc="returnData"
   >
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
+    <div class="modal-dialog modal-fullsize" role="document">
+      <div class="modal-content modal-fullsize">
         <div class="modal-header">
           <input class="modal-title" v-model="updateArticle.title" id="exampleModalLabel" />
-          <div id="tag" class="flex-column">
-            <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
-          </div>
-          <input
-            v-model="inputTag"
-            placeholder="Tag를 입력하고 Enter를 누르세요"
-            @keyup.enter="tagEvent"
-            @keyup.delete="deleteTag"
-          />
           <button
             type="button"
             class="close"
@@ -30,6 +21,17 @@
           >
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+        <div class="modal-tags">
+          <div id="tag" class="flex-column">
+            <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
+          </div>
+          <input
+            v-model="inputTag"
+            placeholder="Tag를 입력하고 Enter를 누르세요"
+            @keyup.enter="tagEvent"
+            @keyup.delete="deleteTag"
+          />
         </div>
         <div class="modal-body">
           <v-md-editor
@@ -41,13 +43,8 @@
           />
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            @click="returnData"
-            data-dismiss="modal"
-          >Close</button>
-          <button type="button" class="btn btn-primary" @click="updatePost">Save changes</button>
+          <button type="button" @click="returnData" data-dismiss="modal">취소</button>
+          <button type="button" @click="updatePost">수정</button>
         </div>
       </div>
     </div>
@@ -185,7 +182,7 @@ export default {
   cursor: auto;
   border-radius: 16px;
   padding: 7px;
-  margin: 7px 3px;
+  margin: 0px 3px;
   color: #0ca678;
 }
 </style>
