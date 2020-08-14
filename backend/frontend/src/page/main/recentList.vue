@@ -9,11 +9,23 @@
             params: { id: article.author, pid: article.pid },
           }"
         >
-          <div class="post-img" />
-
+          <div
+            v-if="!article.imageList.length"
+            :class="{ 'post-img': !article.imageList.length }"
+          />
+          <div
+            v-else
+            :style="{
+              'background-image': `url(
+                ${constants.baseUrl + article.imageList[0].path}
+              )`,
+            }"
+            style="background-size:auto 170px;
+                  background-repeat : no-repeat;
+                  height : 170px;"
+          ></div>
           <div class="contents">
             <h3>{{ article.title }}</h3>
-
             <span class="date">
               {{ article.createDate.slice(0, 4) }}년
               {{ article.createDate.slice(5, 7) }}월
@@ -30,19 +42,20 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-          >{{ article.author }}</router-link>
-          <span>♥ 2</span>
+            >{{ article.author }}</router-link
+          >
+          <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>
     </div>
-    <div id="bottomSensor"></div>
+    <div id="bottomSensor" style="height:10px;"></div>
   </section>
 </template>
 
 <script>
 import "@/assets/css/post.scss";
 import constants from "@/lib/constants";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 
 export default {
   name: "recentList",
@@ -56,18 +69,29 @@ export default {
   },
   computed: {
     ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
+    ...mapGetters(["isreceived"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
-
-      if (!!this.receiveArticleList.length) {
-        watcher.enterViewport(() => {
-          setTimeout(() => {
+      watcher.enterViewport(() => {
+        setTimeout(() => {
+          if (this.isreceived) {
             this.attachArticles();
-          }, 500);
+          }
+        }, 500);
+      });
+    },
+    loadUntilVieportIsFull() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollMonitor.create(bottomSensor);
+      if (watcher.isFullyInViewport) {
+        setTimeout(() => {
+          if (this.isreceived) {
+            this.attachArticles();
+          }
         });
       }
     },
@@ -75,6 +99,9 @@ export default {
 
   mounted() {
     this.addScrollMonitor();
+  },
+  updated() {
+    this.loadUntilVieportIsFull();
   },
 };
 </script>

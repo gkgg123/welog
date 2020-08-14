@@ -24,6 +24,7 @@ export default new Vuex.Store({
   getters: {
     isLogined: (state) => !!state.authToken,
     pageLimitcalc: (state) => parseInt(state.receiveArticleList.length / 10),
+    isreceived: (state) => !!state.receiveArticleList.length,
   },
   mutations: {
     // Header의 이름을 바꿔주는 mutaion
@@ -131,8 +132,6 @@ export default new Vuex.Store({
     },
     // Articles의 List를 불러오는 함수 //
     async getArticles({ state, commit, getters, dispatch }, payload) {
-      /// 새 페이지에 들어갔을때 RESET하는 역할
-      console.log(payload);
       commit("RESET_PAGINATION");
       commit("RESET_ARTICLES");
       await axios
@@ -147,19 +146,19 @@ export default new Vuex.Store({
             }
             item.post.likeCount = item.likeCount;
             item.post.liseuserlist = item.userlist;
+            item.post.imageList = item.images;
             return item.post;
           });
           commit("SET_RECEIVEARTICLES", temp);
-          commit("SET_PAGELIMIT", getters.pageLimitcalc);
-        })
-        .finally(() => {
-          dispatch("attachArticles");
+          if (getters.isreceived) {
+            commit("SET_PAGELIMIT", getters.pageLimitcalc);
+            dispatch("attachArticles");
+          }
         })
         .catch((err) => {
           console.log(err.respnose);
         });
     },
-
     // ReceiveArticles에서 필요한만큼 더 붙이는 과정.
     attachArticles({ state, commit }) {
       const currentPage = state.nextPage;
@@ -169,8 +168,9 @@ export default new Vuex.Store({
           currentPage * 10,
           (currentPage + 1) * 10
         );
+        console.log(nextArticles, currentPage, "최초");
         commit("SET_ARTICLES", nextArticles);
-      } else {
+      } else if (currentPage === state.pageLimit) {
         const nextArticles = state.receiveArticleList.slice(currentPage * 10);
         commit("SET_ARTICLES", nextArticles);
       }

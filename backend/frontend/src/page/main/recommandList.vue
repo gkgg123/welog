@@ -3,9 +3,26 @@
     <div class="post-card-box" v-for="article in articles" :key="article.pid">
       <div class="post-card">
         <router-link
-          :to="{name :constants.URL_TYPE.POST.POST, params :{id : article.author, pid:article.pid}}"
+          :to="{
+            name: constants.URL_TYPE.POST.POST,
+            params: { id: article.author, pid: article.pid },
+          }"
         >
-          <div class="post-img" />
+          <div
+            v-if="!article.imageList.length"
+            :class="{ 'post-img': !article.imageList.length }"
+          />
+          <div
+            v-else
+            :style="{
+              'background-image': `url(
+                ${constants.baseUrl + article.imageList[0].path}
+              )`,
+            }"
+            style="background-size:auto 170px;
+                  background-repeat : no-repeat;
+                  height : 170px;"
+          ></div>
 
           <div class="contents">
             <h3>{{ article.title }}</h3>
@@ -20,21 +37,24 @@
 
         <div class="writer-wrap">
           <router-link
-            :to="{name:constants.URL_TYPE.POST.BLOG , params : {id : article.author}}"
-          >{{ article.author }}</router-link>
-          <span>♥ 2</span>
+            :to="{
+              name: constants.URL_TYPE.POST.BLOG,
+              params: { id: article.author },
+            }"
+            >{{ article.author }}</router-link
+          >
+          <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>
     </div>
-    <div id="bottomSensor"></div>
-    <button @click="attachArticles">더보기</button>
+    <div id="bottomSensor" style="height:10px"></div>
   </section>
 </template>
 
 <script>
 import "@/assets/css/post.scss";
 import constants from "@/lib/constants";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "recommandList",
@@ -48,6 +68,7 @@ export default {
   },
   computed: {
     ...mapState(["articles", "nextPage", "pageLimit"]),
+    ...mapGetters(["isreceived"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
@@ -56,16 +77,31 @@ export default {
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
         setTimeout(() => {
-          this.attachArticles();
+          if (this.isreceived) {
+            this.attachArticles();
+          }
         }, 500);
       });
+    },
+    loadUntilVieportIsFull() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollMonitor.create(bottomSensor);
+      if (watcher.isFullyInViewport) {
+        setTimeout(() => {
+          if (this.isreceived) {
+            this.attachArticles();
+          }
+        });
+      }
     },
   },
   mounted() {
     this.addScrollMonitor();
   },
+  updated() {
+    this.loadUntilVieportIsFull();
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>
