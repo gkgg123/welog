@@ -197,7 +197,7 @@
       }
       .comment-list {
         // margin: auto;
-        padding: 10px;
+        padding: 10px 10px 30px 10px;
         align-items: center;
         border-bottom: solid 1px #aaaa;
         width: 100%;
@@ -205,26 +205,6 @@
           > textarea {
             width: 100%;
           }
-          .btn {
-            font-size: 13px;
-            margin: 5px 10px;
-            padding: 2px 20px;
-            background-color: rgb(224, 224, 224);
-            color: black;
-            border-radius: 8px;
-          }
-          .comment-update-confirm {
-            margin: 10px;
-            > div {
-              display: inline-block;
-            }
-            .btn {
-              display: inline-block;
-            }
-          }
-        }
-        .comment-update {
-          float: right;
         }
         .comment-profile {
           display: flex;
@@ -243,7 +223,14 @@
             }
           }
           .comment-button {
-            justify-self: end;
+            display: block;
+            width: 80%;
+            cursor: pointer;
+            p {
+              float: right;
+              margin-right: 10px;
+              color: #aaaa;
+            }
           }
         }
         .comment-content {

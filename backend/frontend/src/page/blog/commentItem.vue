@@ -6,44 +6,46 @@
           <i class="far fa-smile"></i>
         </div>
         <div class="writer-info">
-          <p class="writer-id">작성자 아이디 {{comment.name}}</p>
+          <p class="writer-id">{{comment.name}}</p>
           <p class="written-day">작성 날짜</p>
+        </div>
+        <div class="comment-button" v-if="checkAuthorLogin">
+          <p @click="popUp">수정</p>
+          <p @click="deleteComment">삭제</p>
         </div>
       </div>
       <div class="comment-content">{{comment.content}}</div>
-      <div class="comment-update" v-if="checkAuthorLogin">
-        <button class="btn" @click="popUp">수정</button>
-        <button class="btn" @click="deleteComment">삭제</button>
-      </div>
-      <div>
+
+      <div class="comment-update">
         <textarea
           :id="'commentUpdate'+ comment.cid"
-          class="border commentUpdate"
+          class="commentUpdate"
           name="commentUpdate"
-          cols="100"
-          rows="3"
           v-model="cofirmComment"
         ></textarea>
-        <div class="comment-update-confirm">
-          <div>
-            <label class="secretcheckboxclose" :data-checkbox="comment.cid" for="isSecret">비밀댓글</label>
-            <input
-              class="secretcheckboxclose"
-              type="checkbox"
-              name="isSecret"
-              id="isSecret"
-              :data-checkbox="comment.cid"
-              v-model="isSecret"
-            />
-          </div>
-          <button class="btn close closedisplay" :data-set="comment.cid" @click="confirm">수정완료</button>
-          <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">닫기</button>
+        <div class="secretcheckboxclose" id="isSecret" :data-checkbox="comment.cid">
+          <i
+            class="fas fa-lock"
+            v-if="isSecret"
+            id="isSecret"
+            :data-checkbox="comment.cid"
+            @click="isSecret = !isSecret"
+          ></i>
+          <i
+            class="fas fa-unlock"
+            v-else
+            id="isSecret"
+            :data-checkbox="comment.cid"
+            @click="isSecret = !isSecret"
+          ></i>
         </div>
+        <button class="btn close closedisplay" :data-set="comment.cid" @click="confirm">수정</button>
+        <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">취소</button>
       </div>
     </div>
     <div v-if="!checkSecret">
       ----------------------------
-      비밀댓글입니다.
+      &nbsp;&nbsp;&nbsp;비밀댓글입니다.
       -----------------------------
     </div>
   </div>
@@ -123,7 +125,7 @@ export default {
       updateBtn.classList.remove("commentUpdate");
       updateBtn.classList.add("popupComment");
       this.cofirmComment = this.comment.content;
-      setTimeout(this.popUpCheckbox, 500);
+      setTimeout(this.popUpCheckbox, 0);
     },
     closepop() {
       const updateBtn = document.querySelector(
@@ -137,12 +139,12 @@ export default {
           Btn.classList.add("close");
           Btn.classList.remove("open");
         });
-      }, 300);
+      }, 0);
       setTimeout(function () {
         Btns.forEach((Btn) => {
           Btn.classList.add("closedisplay");
         });
-      }, 200);
+      }, 0);
       updateBtn.classList.remove("popupComment");
       updateBtn.classList.add("commentUpdate");
       this.closeCheckbox();
@@ -196,35 +198,47 @@ export default {
 <style scoped>
 .commentUpdate {
   height: 0px;
-  -webkit-transition: height 1s;
-
-  transition: height 1s;
 }
 .popupComment {
   display: block;
+  border-radius: 7px;
+  padding: 5px 8px;
+  margin-bottom: 15px;
+  background-color: #f5f5f6;
   height: 100px;
-  -webkit-transition: height 1s;
-
-  transition: height 1s;
 }
 .close {
   opacity: 0;
   height: 0px;
-  transition: height 0.5s;
 }
 .closedisplay {
   display: none;
 }
 .open {
-  display: flex;
-  height: 30px;
-  opacity: 1;
-  transition: opacity 0.5s;
+  float: right;
+  font-size: 17px;
+  background-color: #48a999;
+  color: white;
+  padding: 5px 8px;
+  margin-left: 15px;
+  border: none;
+  border-radius: 7px;
 }
 .secretcheckboxclose {
   display: none;
 }
 .secretcheckboxopen {
   display: inline;
+}
+.fa-lock {
+  cursor: pointer;
+  margin-left: 81%;
+  font-size: 32px;
+}
+.fa-unlock {
+  cursor: pointer;
+  margin-left: 81%;
+  font-size: 32px;
+  color: #aaaa;
 }
 </style>
