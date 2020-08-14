@@ -189,6 +189,7 @@ export default new Vuex.Store({
           }
           item.post.likeCount = item.likeCount;
           item.post.likeuserlist = item.userlist;
+          item.post.imageList = item.images;
           return item.post;
         });
         commit("SET_ARTICLEDETAIL", temp[0]);

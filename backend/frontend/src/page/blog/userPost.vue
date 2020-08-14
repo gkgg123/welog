@@ -17,8 +17,12 @@
       <div class="left-side">
         <div class="floating-bar">
           <div class="like">
-            <i class="far fa-heart" @click="likePost"></i>
-            <p>like</p>
+            <i
+              class="far fa-heart"
+              :class="{ likeBtn : isLikeuser , unlikeBtn : !isLikeuser  } "
+              @click="likePost"
+            ></i>
+            <p>{{likecount}}</p>
           </div>
           <i class="fas fa-share-alt"></i>
         </div>
@@ -111,7 +115,7 @@
 <script>
 import axios from "axios";
 import "../../assets/css/personal.scss";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import constants from "@/lib/constants.js";
 import userPostUpdate from "@/page/blog/userPostUpdate.vue";
 import commentListItems from "@/page/blog/commentListItems.vue";
@@ -124,6 +128,8 @@ export default {
       commentContents: "",
       constants,
       isSecret: false,
+      isLikeuser: false,
+      likecount: 0,
     };
   },
   components: {
@@ -132,6 +138,7 @@ export default {
   },
   computed: {
     ...mapState(["username", "authToken", "articleDetail"]),
+    ...mapGetters(["isLogined"]),
     checkAuthorLogin() {
       if (this.username === this.articleDetail.author) {
         return true;
@@ -161,9 +168,7 @@ export default {
 
     ///  댓글 작성
     commentSubmit() {
-      console.log(this.isSecret);
       var text = this.commentContents.trim();
-      console.log(text.trim());
       var secret = "0";
       if (this.isSecret) {
         secret = "1";
@@ -223,6 +228,8 @@ export default {
       );
       await this.carryComment(`post/${this.$route.params.pid}/comment/`);
       this.anchorCreate();
+      this.isLike();
+      this.likecount = this.articleDetail.likeCount;
     },
 
     // 삭제 확인
@@ -256,20 +263,41 @@ export default {
     },
     // 좋아요 로직
     likePost() {
-      if (this.usernmae === this.articleDetail.author) {
+      const userData = {
+        token: this.authToken,
+      };
+      if (!this.isLogined) {
+        this.$router.push({ name: constants.URL_TYPE.USER.LOGIN });
+      }
+      if (this.username === this.articleDetail.author) {
         alert("자기글에 추천을 누를수없습니다.");
       } else {
         axios
           .post(
             constants.baseUrl +
-              `post/${this.username}/${this.articleDetail.pid}/likeit/`
+              `post/${this.articleDetail.author}/${this.articleDetail.pid}/likeit/`,
+            userData
           )
           .then((res) => {
-            console.log(res);
+            if (res.data.object.likeit) {
+              this.isLikeuser = true;
+              this.likecount += 1;
+            } else {
+              this.isLikeuser = false;
+              this.likecount -= 1;
+            }
           })
           .catch((err) => {
             console.log(err.response);
           });
+      }
+    },
+    isLike() {
+      const temp = Object.values(this.articleDetail.likeuserlist);
+      if (temp.includes(this.username)) {
+        this.isLikeuser = true;
+      } else {
+        this.isLikeuser = false;
       }
     },
     ...mapActions([
@@ -290,5 +318,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.likeBtn {
+  color: red;
+}
+.unlikeBtn {
+  color: black;
+}
 </style>

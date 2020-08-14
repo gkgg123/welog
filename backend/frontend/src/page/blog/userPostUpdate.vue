@@ -15,7 +15,12 @@
           <div id="tag" class="flex-column">
             <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
           </div>
-          <input v-model="inputTag" placeholder="Tag를 입력하고 Enter를 누르세요" @keyup.enter="tagEvent" />
+          <input
+            v-model="inputTag"
+            placeholder="Tag를 입력하고 Enter를 누르세요"
+            @keyup.enter="tagEvent"
+            @keyup.delete="deleteTag"
+          />
           <button
             type="button"
             class="close"
@@ -27,7 +32,13 @@
           </button>
         </div>
         <div class="modal-body">
-          <v-md-editor class="w-100" v-model="updateArticle.content" />
+          <v-md-editor
+            class="w-100"
+            v-model="updateArticle.content"
+            left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code"
+            :disabled-menus="[]"
+            @upload-image="handleUploadImage"
+          />
         </div>
         <div class="modal-footer">
           <button
@@ -56,24 +67,48 @@ export default {
     return {
       inputTag: "",
       tagList: [],
+      imageList: [],
     };
   },
   mounted() {
-    this.tagList = this.updateArticle.tags;
+    setTimeout(() => {
+      this.tagList = Object.values(this.updateArticle.tags);
+      this.imageList = this.updateArticle.imageList;
+    }, 500);
   },
   methods: {
     tagEvent() {
-      if (this.inputTag.length <= 15) {
+      if (this.inputTag.length <= 15 && !!this.inputTag.trim().length) {
         if (!this.tagList.includes(this.inputTag)) {
-          this.tagList.push(this.inputTag);
+          this.tagList.push(this.inputTag.trim());
           this.inputTag = null;
         } else {
           this.inputTag = null;
           alert("이미 중복된 Tag가 있습니다.");
         }
       } else {
+        if (this.inputTag.length > 15) {
+          alert("Tag는 15자 이하로 입력해주세요");
+        } else {
+          alert("Tag를 입력해주세요.");
+        }
         this.inputTag = null;
-        alert("Tag는 15자 이하로 입력해주세요");
+      }
+    },
+    deleteTag() {
+      if (
+        this.tagList.length >= 1 &&
+        (this.inputTag === null || this.inputTag === "")
+      ) {
+        if (
+          confirm(
+            this.tagList[this.tagList.length - 1] +
+              " Tag를" +
+              "정말 삭제하시겠습니까?"
+          )
+        ) {
+          this.tagList.pop();
+        }
       }
     },
 
@@ -84,29 +119,59 @@ export default {
       const tempTags = "," + this.tagList.join(",") + ",";
       this.updateArticle.tags = tempTags;
       const putData = this.updateArticle;
+      var titleCheck = this.updateArticle.title;
+      var contentCheck = this.updateArticle.content;
+      if (!titleCheck.trim().length || !contentCheck.trim().length) {
+        alert("제목과 내용을 빈칸으로 낼수 없습니다.");
+      } else {
+        this.imageList = this.imageList.filter((item) => {
+          return this.updateArticle.content.includes(item.iid);
+        });
+        console.log(this.imageList);
+        const images = this.imageList.map((image) => {
+          const data = {};
+          data.image = image.iid;
+          return data;
+        });
 
-      const totalData = {
-        post: [putData],
-        images: [],
-        token: this.authToken,
-      };
-      console.log(
-        "요청주소 : ",
-        constants.baseUrl +
-          `post/${this.articleDetail.author}/${this.articleDetail.pid}/`
-      );
-      console.log("전송데이터:", totalData);
+        console.log(images);
+        const totalData = {
+          post: [putData],
+          images: images,
+          token: this.authToken,
+        };
+        console.log(totalData);
+        axios
+          .put(
+            constants.baseUrl +
+              `post/${this.articleDetail.author}/${this.articleDetail.pid}/`,
+            totalData
+          )
+          .then((res) => {
+            console.log(res.data);
+            // setTimeout(this.$router.go(0), 1000);
+          })
+          .catch((err) => {
+            console.log("에러 : ", err);
+          });
+      }
+    },
+    handleUploadImage(event, insertImage, files) {
+      const formData = new FormData();
+      formData.append("files", files[0]);
+
       axios
-        .put(
-          constants.baseUrl +
-            `post/${this.articleDetail.author}/${this.articleDetail.pid}/`,
-          totalData
-        )
+        .post(constants.baseUrl + "file/upload/", formData)
         .then((res) => {
-          setTimeout(this.$router.go(0), 1000);
+          console.log(res.data);
+          this.imageList.push(res.data.object);
+          insertImage({
+            url: `${constants.baseUrl}${res.data.object.path}`,
+            desc: res.data.object.iname,
+          });
         })
         .catch((err) => {
-          console.log("에러 : ", err);
+          console.log(err.response);
         });
     },
   },
