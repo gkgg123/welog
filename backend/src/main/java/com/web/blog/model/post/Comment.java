@@ -28,7 +28,7 @@ public class Comment {
     private int pid;
     private String name;
     private String content;
-    private int isSecret;
+    private int secret;
     @Column(insertable = false, updatable = false)
     private LocalDateTime createDate;
 

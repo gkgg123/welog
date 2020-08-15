@@ -15,19 +15,17 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LikeInfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pid;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uid;
+    private String username;
 
-    private int isLike;
+    private int likeit;
 
-    public int getIsLike() {
-        return isLike;
+    public int getLikeit() {
+        return likeit;
     }
 
-    public void setIsLike(int isLike) {
-        this.isLike = isLike;
+    public void setLikeit(int likeit) {
+        this.likeit = likeit;
     }
 }

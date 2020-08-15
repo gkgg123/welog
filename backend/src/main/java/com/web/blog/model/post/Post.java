@@ -84,11 +84,11 @@ public class Post {
         this.count = count;
     }
 
-    public String getTag() {
+    public String getTags() {
         return tags;
     }
 
-    public void setTag(String tags) {
+    public void setTags(String tags) {
         this.tags = tags;
     }
 }
