@@ -9,6 +9,9 @@ export default {
       LOGIN: "login",
       JOIN: "join",
       LOGOUT: "logout",
+      PROFILE: "profile",
+      PROFILECONFIG: "profileconfig",
+      RECEIVECONFIRM: "recevieConfirm",
     },
     MAIN: {
       MAIN: "main",
