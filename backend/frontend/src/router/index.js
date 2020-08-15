@@ -7,6 +7,9 @@ import constants from "../lib/constants";
 import Login from "../page/user/Login.vue";
 import Join from "../page/user/Join.vue";
 import Logout from "../page/user/Logout.vue";
+import UserProfile from "../page/user/profile/UserProfile.vue";
+import UserProfileConfig from "../page/user/profile/UserProfileConfig.vue";
+import recevieConfirm from "../page/user/profile/recevieConfirm.vue";
 
 // 메인화면
 import Main from "../page/main/Main.vue";
@@ -39,6 +42,26 @@ const routes = [
     path: "/user/logout",
     name: constants.URL_TYPE.USER.LOGOUT,
     component: Logout,
+  },
+  {
+    path: "/:username/profile/",
+    name: constants.URL_TYPE.USER.PROFILE,
+    component: UserProfile,
+    redirect: {
+      name: constants.URL_TYPE.USER.PROFILECONFIG,
+    },
+    children: [
+      {
+        path: "",
+        name: constants.URL_TYPE.USER.PROFILECONFIG,
+        component: UserProfileConfig,
+      },
+      {
+        path: "receive",
+        name: constants.URL_TYPE.USER.RECEIVECONFIRM,
+        component: recevieConfirm,
+      },
+    ],
   },
   // 메인화면
   {
