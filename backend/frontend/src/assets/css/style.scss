@@ -1,6 +1,18 @@
 @charset "utf-8";
 @import "./common";
 
+@font-face {
+  font-family: "NanumSquareRoundR";
+  src: url(../../../public/font/NanumSquareRoundR.ttf) format("truetype");
+}
+
+* {
+  font-family: NanumSquareRoundR;
+  word-break: keep-all;
+  padding: 0;
+  margin: 0;
+  outline: 0;
+}
 /* reset */
 html,
 body,

@@ -41,12 +41,6 @@
         class="login-btn"
         >로그인</router-link
       >
-      <router-link
-        v-else
-        :to="{ name: constants.URL_TYPE.USER.LOGOUT }"
-        class="login-btn"
-        >로그아웃</router-link
-      >
 
       <router-link v-if="isLogined" to="/create" class="login-btn"
         >새 글쓰기</router-link
