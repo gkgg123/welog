@@ -12,6 +12,7 @@
             type="password"
             id="password"
             placeholder="영문, 숫자 혼용 8자 이상"
+            @keyup.enter="login(loginData)"
           />
         </div>
         <button class="btn btn--back btn--login" @click="login(loginData)">로그인 하기</button>

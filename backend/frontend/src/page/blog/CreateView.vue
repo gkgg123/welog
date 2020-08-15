@@ -7,7 +7,9 @@
 
       <input placeholder="제목을 입력하세요" class="titleInput" v-model="title" type="text" />
 
-      <div id="tag" class="flex-column"></div>
+      <div id="tag" class="flex-column">
+        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
+      </div>
       <input
         placeholder="Tag를 입력하고 Enter를 누르세요"
         @keyup.enter="tagEvent"
@@ -21,6 +23,9 @@
         id="create"
         placeholder="새 글을 작성해 보세요"
         v-model="text"
+        left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code"
+        :disabled-menus="[]"
+        @upload-image="handleUploadImage"
         @copy-code-success="handleCopyCodeSuccess"
       />
       <button @click="checkCreate">제출</button>
@@ -31,6 +36,7 @@
 <script>
 import axios from "axios";
 import constants from "@/lib/constants.js";
+import { mapState } from "vuex";
 export default {
   name: "CreateView",
   data() {
@@ -39,9 +45,12 @@ export default {
       title: "",
       text: "",
       inputTag: null,
-      taglist: [],
-      confirmText: "test중입니다.",
+      tagList: [],
+      imageList: [],
     };
+  },
+  computed: {
+    ...mapState(["authToken"]),
   },
   methods: {
     checkCreate() {
@@ -51,44 +60,38 @@ export default {
     },
     // Tag 추가 이벤트
     tagEvent() {
-      if (this.inputTag.length <= 15) {
-        if (!this.taglist.includes(this.inputTag)) {
-          const btn = document.createElement("button");
-          const tagDiv = document.querySelector("#tag");
-          btn.innerText = this.inputTag;
-          btn.setAttribute(
-            "style",
-            "background-color:#ddd; border: none; cursor:auto; border-radius: 16px; padding: 7px; margin:7px 3px; color:#0CA678"
-          );
-          tagDiv.append(btn);
-          this.taglist.push(this.inputTag);
+      if (this.inputTag.length <= 15 && !!this.inputTag.trim().length) {
+        if (!this.tagList.includes(this.inputTag)) {
+          this.tagList.push(this.inputTag.trim());
           this.inputTag = null;
         } else {
           this.inputTag = null;
           alert("이미 중복된 Tag가 있습니다.");
         }
       } else {
+        if (this.inputTag.length > 15) {
+          alert("Tag는 15자 이하로 입력해주세요");
+        } else {
+          alert("Tag를 입력해주세요.");
+        }
         this.inputTag = null;
-        alert("Tag는 15자 이하로 입력해주세요");
       }
     },
 
     /// Tag 지우는 로직
     deleteTag() {
       if (
-        this.taglist.length >= 1 &&
+        this.tagList.length >= 1 &&
         (this.inputTag === null || this.inputTag === "")
       ) {
         if (
           confirm(
-            this.taglist[this.taglist.length - 1] +
+            this.tagList[this.tagList.length - 1] +
               " Tag를" +
               "정말 삭제하시겠습니까?"
           )
         ) {
-          const tagDiv = document.querySelector("#tag");
-          tagDiv.lastChild.remove();
-          this.taglist.pop();
+          this.tagList.pop();
         }
       }
     },
@@ -103,26 +106,62 @@ export default {
       mainMarkdownEditor.style.minHeight = "55vh";
     },
     createPost() {
-      const configTag = "," + this.taglist.join(",") + ",";
+      const configTag = "," + this.tagList.join(",") + ",";
       const postData = {
         title: this.title,
         content: this.text,
         tags: configTag,
       };
+      var titleCheck = this.title;
+      var contentCheck = this.text;
+      if (!titleCheck.trim().length || !contentCheck.trim().length) {
+        alert("제목과 내용을 빈칸으로 낼수 없습니다.");
+      } else {
+        this.imageList = this.imageList.filter((item) => {
+          return this.text.includes(item.iid);
+        });
+        const images = this.imageList.map((image) => {
+          const data = {};
+          data.image = image.iid;
+          return data;
+        });
+
+        const totalData = {
+          post: [postData],
+          images: images,
+          token: this.authToken,
+        };
+        axios
+          .post(
+            constants.baseUrl + `post/${this.$store.state.username}/`,
+            totalData
+          )
+          .then((res) => {
+            this.$router.push({
+              name: constants.URL_TYPE.POST.POST,
+              params: {
+                id: this.$store.state.username,
+                pid: res.data.object.pid,
+              },
+            });
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
+    },
+    handleUploadImage(event, insertImage, files) {
+      const formData = new FormData();
+      formData.append("files", files[0]);
 
       axios
-        .post(
-          constants.baseUrl + `post/${this.$store.state.username}/`,
-          postData
-        )
+        .post(constants.baseUrl + "file/upload/", formData)
         .then((res) => {
-          console.log(res.data.object.pid);
-          this.$router.push({
-            name: constants.URL_TYPE.POST.POST,
-            params: {
-              id: this.$store.state.username,
-              pid: res.data.object.pid,
-            },
+          console.log(res.data);
+          this.imageList.push(res.data.object);
+          insertImage({
+            url: `${constants.baseUrl}${res.data.object.path}`,
+            desc: res.data.object.iname,
           });
         })
         .catch((err) => {
@@ -154,5 +193,14 @@ export default {
   width: 30%;
   border-bottom: 1px solid;
   margin: 1vh 5px;
+}
+.tagBtn {
+  background-color: #e8eaf6;
+  border: none;
+  cursor: auto;
+  border-radius: 16px;
+  padding: 7px;
+  margin: 7px 3px;
+  color: #0ca678;
 }
 </style>

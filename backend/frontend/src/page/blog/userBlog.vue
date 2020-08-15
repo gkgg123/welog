@@ -20,9 +20,10 @@
         <div class="tagbar">
           <h2>태그목록</h2>
           <ul class="tagItem">
-            <li>tag1</li>
-            <li>tag2</li>
-            <li>tag3</li>
+            <li>전체보기(13)</li>
+            <li>tag1(6)</li>
+            <li>tag2(5)</li>
+            <li>tag3(2)</li>
           </ul>
         </div>
         <div class="postBox">
@@ -41,6 +42,12 @@
                 params: { id: $route.params.id },
               }"
             >소개글</router-link>
+          </div>
+          <div class="smallTagbar">
+            <span class="smallTagItem">전체보기(13)</span>
+            <span class="smallTagItem">tag1(6)</span>
+            <span class="smallTagItem">tag2(5)</span>
+            <span class="smallTagItem">tag3(2)</span>
           </div>
           <div class="postView">
             <router-view></router-view>

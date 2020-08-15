@@ -1,26 +1,31 @@
 <template>
-  <section class="post-list col-12 col-md-9">
-    <div class="w-100 col-xl-4 col-sm-6 col-12" v-for="article in articles" :key="article.pid">
+  <section class="post-list">
+    <div class="post-card-box" v-for="article in articles" :key="article.pid">
       <div class="post-card">
         <router-link
-          :to="{name :constants.URL_TYPE.POST.POST, params :{id : article.author, pid:article.pid}}"
+          :to="{
+            name: constants.URL_TYPE.POST.POST,
+            params: { id: article.author, pid: article.pid },
+          }"
         >
           <div
-            :style="{
-                    backgroundImage:
-                      'url(https://www.ipcc.ch/site/assets/uploads/sites/3/2019/10/img-placeholder.png)',
-                  }"
-            class="post-img"
+            v-if="!article.imageList.length"
+            :class="{ 'post-img': !article.imageList.length }"
           />
+          <div
+            v-else
+            :style="{
+              'background-image': `url(
+                ${constants.baseUrl + article.imageList[0].path}
+              )`,
+            }"
+            style="background-size:auto 170px;
+                  background-repeat : no-repeat;
+                  height : 170px;"
+          ></div>
 
           <div class="contents">
             <h3>{{ article.title }}</h3>
-            <div v-for="tag in article.tags" :key="tag">
-              <span>
-                <a href="#">{{ tag }}</a>
-              </span>
-            </div>
-            <hr />
             <span class="date">
               {{ article.createDate.slice(0, 4) }}년
               {{ article.createDate.slice(5, 7) }}월
@@ -32,26 +37,29 @@
 
         <div class="writer-wrap">
           <router-link
-            :to="{name:constants.URL_TYPE.POST.BLOG , params : {id : article.author}}"
-          >{{ article.author }}</router-link>
-          <span>♥ 2</span>
+            :to="{
+              name: constants.URL_TYPE.POST.BLOG,
+              params: { id: article.author },
+            }"
+            >{{ article.author }}</router-link
+          >
+          <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>
     </div>
-    <div id="bottomSensor"></div>
-    <button @click="getArticles">더보기</button>
+    <div id="bottomSensor" style="height:10px"></div>
   </section>
 </template>
 
 <script>
 import "@/assets/css/post.scss";
 import constants from "@/lib/constants";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "recommandList",
   created() {
-    this.getArticles("post/popularity");
+    this.getArticles({ location: "post/popularity" });
   },
   data: () => {
     return {
@@ -60,6 +68,7 @@ export default {
   },
   computed: {
     ...mapState(["articles", "nextPage", "pageLimit"]),
+    ...mapGetters(["isreceived"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
@@ -68,16 +77,31 @@ export default {
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
         setTimeout(() => {
-          this.attachArticles();
+          if (this.isreceived) {
+            this.attachArticles();
+          }
         }, 500);
       });
+    },
+    loadUntilVieportIsFull() {
+      const bottomSensor = document.querySelector("#bottomSensor");
+      const watcher = scrollMonitor.create(bottomSensor);
+      if (watcher.isFullyInViewport) {
+        setTimeout(() => {
+          if (this.isreceived) {
+            this.attachArticles();
+          }
+        });
+      }
     },
   },
   mounted() {
     this.addScrollMonitor();
   },
+  updated() {
+    this.loadUntilVieportIsFull();
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

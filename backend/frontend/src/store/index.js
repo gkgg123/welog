@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import constants from "@/lib/constants";
 import router from "@/router";
+import _ from "lodash";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -14,12 +15,16 @@ export default new Vuex.Store({
     username: null,
     receiveArticleList: [],
     articles: [],
+    articleDetail: [],
+    updateArticle: [],
+    commentList: [],
     nextPage: 0,
     pageLimit: 0,
   },
   getters: {
     isLogined: (state) => !!state.authToken,
     pageLimitcalc: (state) => parseInt(state.receiveArticleList.length / 10),
+    isreceived: (state) => !!state.receiveArticleList.length,
   },
   mutations: {
     // Header의 이름을 바꿔주는 mutaion
@@ -63,7 +68,15 @@ export default new Vuex.Store({
     },
     // ARTICLES와 관련된 변수를 초기화 시켜주는 mutations
     RESET_ARTICLES(state) {
-      (state.receiveArticleList = []), (state.articles = []);
+      state.receiveArticleList = [];
+      state.articles = [];
+    },
+    SET_ARTICLEDETAIL(state, article) {
+      state.articleDetail = _.cloneDeep(article);
+      state.updateArticle = _.cloneDeep(article);
+    },
+    SET_COMMENTLIST(state, comment) {
+      state.commentList = comment;
     },
   },
   actions: {
@@ -81,6 +94,9 @@ export default new Vuex.Store({
             name: constants.URL_TYPE.POST.POSTITEMS,
             params: { id: data.username },
           });
+        })
+        .catch((err) => {
+          alert("아이디가 없거나 비밀번호가 틀렸습니다.");
         });
     },
     //Login 하는 함수
@@ -99,7 +115,6 @@ export default new Vuex.Store({
     },
     //UserName을 JWT TOKEN에서 decoding 하는 함수
     usernameCheck({ state, commit }) {
-      console.log(!!state.authToken);
       if (!!state.authToken) {
         const data = JSON.parse(atob(state.authToken.split(".")[1]));
         commit("SET_USERNAME", data.username);
@@ -116,30 +131,34 @@ export default new Vuex.Store({
       });
     },
     // Articles의 List를 불러오는 함수 //
-    getArticles({ state, commit, getters, dispatch }, location) {
-      /// 새 페이지에 들어갔을때 RESET하는 역할
+    async getArticles({ state, commit, getters, dispatch }, payload) {
       commit("RESET_PAGINATION");
       commit("RESET_ARTICLES");
-      axios
-        .get(constants.baseUrl + location)
+      await axios
+        .get(constants.baseUrl + payload.location, { params: payload.query })
         .then((res) => {
-          const temp = Object.values(res.data);
-          temp.forEach((item) => {
-            if (!!item.tags) {
-              item.tags = item.tags.split(",").filter((tag) => !!tag);
+          var receive = Object.values(res.data);
+          const temp = receive.map((item) => {
+            if (!!item.post.tags) {
+              item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
             } else {
-              item.tags = [];
+              item.post.tags = [];
             }
+            item.post.likeCount = item.likeCount;
+            item.post.liseuserlist = item.userlist;
+            item.post.imageList = item.images;
+            return item.post;
           });
           commit("SET_RECEIVEARTICLES", temp);
-          commit("SET_PAGELIMIT", getters.pageLimitcalc);
+          if (getters.isreceived) {
+            commit("SET_PAGELIMIT", getters.pageLimitcalc);
+            dispatch("attachArticles");
+          }
         })
-        .then(() => {
-          dispatch("attachArticles");
-          console.log(state.articles);
+        .catch((err) => {
+          console.log(err.respnose);
         });
     },
-
     // ReceiveArticles에서 필요한만큼 더 붙이는 과정.
     attachArticles({ state, commit }) {
       const currentPage = state.nextPage;
@@ -149,11 +168,59 @@ export default new Vuex.Store({
           currentPage * 10,
           (currentPage + 1) * 10
         );
+        console.log(nextArticles, currentPage, "최초");
         commit("SET_ARTICLES", nextArticles);
-      } else {
+      } else if (currentPage === state.pageLimit) {
         const nextArticles = state.receiveArticleList.slice(currentPage * 10);
         commit("SET_ARTICLES", nextArticles);
       }
+    },
+    /// ArticleDetail 정보를 불러오는 곳
+    async carryArticle({ commit }, location) {
+      return await axios.get(constants.baseUrl + location).then((res) => {
+        const receive = [res.data];
+        const temp = receive.map((item) => {
+          if (!!item.post.tags) {
+            item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
+          } else {
+            item.post.tags = [];
+          }
+          item.post.likeCount = item.likeCount;
+          item.post.likeuserlist = item.userlist;
+          item.post.imageList = item.images;
+          return item.post;
+        });
+        commit("SET_ARTICLEDETAIL", temp[0]);
+      });
+    },
+
+    ///삭제하는 곳
+    deletePost({ state }) {
+      if (state.username === state.articleDetail.author) {
+        axios
+          .delete(
+            constants.baseUrl +
+              `post/${state.articleDetail.author}/${state.articleDetail.pid}`,
+            {
+              data: {
+                token: state.authToken,
+              },
+            }
+          )
+          .then((res) => {
+            router.push({
+              name: constants.URL_TYPE.POST.BLOG,
+              params: { id: state.articleDetail.author },
+            });
+          });
+      }
+    },
+
+    //CommentList 가져오는 방법
+    carryComment({ commit }, location) {
+      return axios.get(constants.baseUrl + location).then((res) => {
+        commit("SET_COMMENTLIST", res.data);
+      });
     },
   },
   modules: {},

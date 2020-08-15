@@ -4,32 +4,9 @@
   margin: 40px 30px 0px 30px;
   height: 80vh;
 }
-@media only screen and (min-width: 770px) {
-  #personalUser {
-    margin-top: 60px;
-    display: flex;
-    width: 100%;
-    height: 15vh;
-    justify-content: center;
-  }
-  .userInfo {
-    width: 40vw;
-  }
-}
-@media only screen and (max-width: 770px) {
-  #personalUser {
-    margin-top: 60px;
-    display: flex;
-    width: 100%;
-    height: 15vh;
-    justify-content: left;
-  }
-  .userInfo {
-    width: 100%;
-  }
-}
 
 .userBar {
+  margin-top: 20px;
   padding-bottom: 20px;
   display: flex;
   border-bottom: solid thin #aaaa;
@@ -37,6 +14,7 @@
 .userImage {
   width: 100px;
   height: 100px;
+  border-radius: 70%;
   background-color: #aaaa;
   margin: 0px 30px 0px 20px;
 }
@@ -52,12 +30,35 @@
     display: flex;
     justify-content: center;
     .title {
-      font-size: 40px;
-      margin-top: 100px;
-      padding-bottom: 30px;
-      width: 1050px;
+      font-size: 30px;
+      margin: 100px 0px 50px 0px;
+      padding-bottom: 15px;
+      width: 45vw;
       border-bottom: solid 1.5px #00796b;
     }
+    .written {
+      margin-top: 20px;
+      p {
+        font-size: 18px;
+      }
+      .written-tag {
+        padding: 10px 0px 20px 0px;
+        span {
+          font-size: 17px;
+          background-color: #e8eaf6;
+          border: none;
+          border-radius: 16px;
+          padding: 7px;
+          margin: 10px 12px 10px 0px;
+          color: #0ca678;
+        }
+      }
+    }
+  }
+  .v-md-editor {
+    width: 47vw;
+    margin: auto;
+    height: 100vh;
   }
   .aside-left {
     width: 60px;
@@ -66,8 +67,8 @@
     justify-content: center;
     .left-side {
       position: fixed;
-      top: 350px;
-      left: 100px;
+      top: 35vh;
+      left: 15vw;
       font-size: 40px;
       .floating-bar {
         flex-direction: row;
@@ -90,6 +91,60 @@
     position: fixed;
     .title-anchor {
       border-left: solid 4px #e1e2e1;
+    }
+  }
+  /// 수정 모달 페이지
+
+  /// 수정 삭제 버튼
+  .post-update {
+    text-align: center;
+    .update-button {
+      font-size: 20px;
+      margin: 5px 15px;
+      padding: 8px 13px;
+      background-color: #48a999;
+      color: white;
+      border-radius: 8px;
+    }
+  }
+
+  .modal.fade {
+    .modal-dialog.modal-fullsize {
+      min-width: 80%;
+      height: 80%;
+      margin: 4% 10%;
+      padding: 0;
+    }
+    .modal-content.modal-fullsize {
+      min-height: 80%;
+      border-radius: 0;
+    }
+    .modal-header {
+      border: none;
+      .modal-title {
+        font-size: 28px;
+        width: 80%;
+      }
+    }
+    .modal-tags {
+      display: flex;
+      height: 63px;
+      padding: 16px;
+      border-bottom: solid 1px #dee2e6;
+      input {
+        margin-left: 8px;
+        width: 16%;
+      }
+    }
+    .modal-footer {
+      button {
+        font-size: 20px;
+        margin: 5px 15px;
+        padding: 8px 13px;
+        background-color: #48a999;
+        color: white;
+        border-radius: 8px;
+      }
     }
   }
 
@@ -122,33 +177,117 @@
     margin: 2px 0px;
     border-color: #555;
   }
-  .comment {
+  .commentBox {
     display: flex;
     justify-content: center;
-    margin-bottom: 50px;
-    padding: 5px;
-    align-items: center;
-    textarea {
-      width: 50%;
-      height: 50px;
-      padding: 10px 10px;
-      background-color: #f5f5f6;
-      border-radius: 10px;
-    }
-    button {
-      background-color: #00796b;
-      color: #eee;
-      height: 40px;
-      padding: 12px 15px 10px 15px;
-      margin-left: 20px;
-      border: none;
-      border-radius: 10px;
+    .commentBox2 {
+      margin: 100px 0px 50px 0px;
+      padding-bottom: 15px;
+      width: 46%;
+      .comment-label {
+        width: 97%;
+        justify-content: center;
+        margin: auto;
+        font-size: 20px;
+      }
+      .comment {
+        margin-bottom: 80px;
+        padding: 5px;
+        align-items: center;
+        textarea {
+          width: 100%;
+          margin-top: 10px;
+          height: 130px;
+          padding: 10px 10px;
+          background-color: #f5f5f6;
+          border-radius: 10px;
+        }
+        .comment-underbar {
+          display: flex;
+          float: right;
+          margin-top: 15px;
+          span {
+            margin-top: 7px;
+            font-size: 14px;
+          }
+          .secret-button {
+            cursor: pointer;
+            margin-right: 6px;
+            .fa-lock {
+              margin-left: 10px;
+              margin-bottom: 3px;
+              font-size: 32px;
+            }
+            .fa-unlock {
+              margin-left: 10px;
+              margin-bottom: 3px;
+              font-size: 32px;
+              color: #aaaa;
+            }
+          }
+          button {
+            font-size: 17px;
+            background-color: #48a999;
+            color: white;
+            padding: 5px 8px;
+            margin-left: 20px;
+            border: none;
+            border-radius: 7px;
+          }
+        }
+      }
+      .comment-list {
+        // margin: auto;
+        padding: 10px 10px 30px 10px;
+        align-items: center;
+        border-bottom: solid 1px #aaaa;
+        width: 100%;
+        > div {
+          > textarea {
+            width: 100%;
+          }
+        }
+        .comment-profile {
+          display: flex;
+          margin: 10px;
+          vertical-align: middle;
+          .profile-img {
+            font-size: 50px;
+            margin-right: 40px;
+          }
+          .writer-info {
+            .writer-id {
+              font-weight: bold;
+            }
+            .written-day {
+              color: #aaaa;
+            }
+          }
+          .comment-button {
+            display: block;
+            width: 80%;
+            cursor: pointer;
+            p {
+              float: right;
+              margin-right: 10px;
+              color: #aaaa;
+            }
+          }
+        }
+        .comment-content {
+          margin: 30px 10px 30px 10px;
+        }
+      }
     }
   }
 }
 
-.post-items {
+.personal-intro {
+  text-align: center;
+}
+#post-items {
   .post-item {
+    text-align: center;
     h3 {
       margin-bottom: 15px;
     }
@@ -169,29 +308,32 @@
     }
     .article-content {
       font-size: 20px;
-      margin: 10px 20px 30px 20px;
+      padding: 5px 0px 15px 0px;
+      margin: 10px 20px 10px 20px;
       text-align: left;
     }
     .article-tag {
-      background-color: #ddd;
-      border: none;
-      cursor: auto;
-      border-radius: 16px;
-      padding: 7px;
-      margin: 7px 3px;
-      color: #0ca678;
+      margin: 0px 13px;
+      padding: 20px 0px;
+      span {
+        background-color: #e8eaf6;
+        border: none;
+        border-radius: 16px;
+        padding: 7px;
+        margin: 7px 5px;
+        color: #0ca678;
+      }
     }
     .article-day {
-      display: inline;
       font-size: 15px;
-      margin: 10px 10px 10px 20px;
+      margin: 20px 10px 10px 20px;
       float: left;
     }
     .article-comment {
       display: inline;
       font-size: 15px;
       margin: 10px 0px;
-      float: left;
+      // float: left;
     }
   }
 }
@@ -210,22 +352,24 @@
     }
     ul {
       list-style-type: square;
-      margin: 30px;
+      margin: 30px 15px;
       li {
         margin: 0px 0px 10px 20px;
       }
     }
   }
   .postBox {
-    float: left;
-    width: 80%;
+    margin: auto;
+    width: 60%;
     .postBar {
       display: flex;
       justify-content: center;
       margin-top: 60px;
       .postLink {
+        width: 12%;
+        text-align: center;
         font-size: 32px;
-        margin: 0px 15px;
+        margin: 0px 30px;
         padding: 15px;
         color: #00796b;
       }
@@ -234,38 +378,109 @@
       }
     }
     .postView {
-      width: 55vw;
+      width: 100%;
       margin: auto;
       margin-top: 70px;
       padding: 30px 100px;
       height: 50vh;
-      text-align: center;
+    }
+    .smallTagbar {
+      display: none;
     }
   }
 }
-@media only screen and (max-width: 500px) {
+
+@media only screen and (max-width: 767px) {
+  #detail {
+    .post-title {
+      .title {
+        width: 90%;
+      }
+    }
+    .v-md-editor {
+      width: 90%;
+    }
+    .aside-left {
+      .left-side {
+        display: none;
+      }
+    }
+    .aside-right {
+      display: none;
+    }
+    .commentBox {
+      .commentBox2 {
+        width: 90%;
+      }
+    }
+  }
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: left;
+  }
+  .userInfo {
+    width: 100%;
+  }
   #personalPost {
     width: 100%;
     .tagbar {
       display: none;
     }
     .postBox {
-      float: left;
+      margin: auto;
       width: 100%;
       .postBar {
         display: flex;
         justify-content: center;
         margin-top: 30px;
         .postLink {
-          width: 45%;
+          width: 50%;
           text-align: center;
           font-size: 32px;
-          margin: 0px 15px;
+          margin: 30px 15px;
           padding: 15px;
           color: #00796b;
+        }
+        .postLink:focus {
           border-bottom: solid #00796b;
         }
       }
+      .postView {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      .smallTagbar {
+        display: block;
+        padding-bottom: 30px;
+        .smallTagItem {
+          background-color: #e8eaf6;
+          border: none;
+          border-radius: 16px;
+          padding: 7px;
+          margin: 7px 5px;
+          color: #0ca678;
+        }
+        .smallTagItem:hover {
+          background-color: #00796b;
+          color: #e8eaf6;
+        }
+      }
     }
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #personalUser {
+    margin-top: 60px;
+    display: flex;
+    width: 100%;
+    height: 15vh;
+    justify-content: center;
+  }
+  .userInfo {
+    width: 600px;
   }
 }

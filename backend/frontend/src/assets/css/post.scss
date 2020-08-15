@@ -79,9 +79,9 @@
 
 .post {
   width: 90%;
-  height: 100vh;
-  margin-left: 70px;
-  margin-right: 30px;
+  height: 120vh;
+  margin-left: 5%;
+  margin-right: 5%;
   .main-post-bar {
     cursor: pointer;
     display: flex;
@@ -139,10 +139,14 @@
   }
   .post-list {
     @include wrap;
+    display: block;
+    width: 1300px;
     > div {
+      width: 25%;
       float: left;
+      height: 361px;
       // margin-right:30px;
-      // margin-bottom:30px;
+      margin-bottom: 20px;
       padding: 15px;
       //   width: 285px;
       // &:nth-child(3n) {
@@ -150,25 +154,30 @@
       // }
       .post-card {
         @include wrap;
+        height: 370px;
         text-align: left;
+        border: 2px solid #fafafa;
+        border-radius: 10px;
+        transition: 0.3s ease;
         .post-img {
           @include wrap;
           @include background-img;
-          border: 1px solid #000;
-          height: 200px;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          height: 170px;
+          background-image: url("../../../public/img/no_image.png");
           box-sizing: border-box;
         }
         .contents {
           @include wrap;
           padding: 20px;
           box-sizing: border-box;
-          border: 1px solid #000;
-          border-top: none;
           h3 {
             @include ellipsis;
-            font-size: 1em;
+            font-size: 17px;
             font-weight: $f600;
-            height: 1.5em;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #aaa;
           }
           p.content {
             @include ellipsisMulti(2);
@@ -176,11 +185,12 @@
             height: 3.5em;
           }
           span {
+            padding-top: 10px;
             float: left;
             font-size: $font-size__3;
           }
           // div > span > a {
-          //   background-color: #ddd;
+          //   background-color: #e8eaf6;
           //   border: none;
           //   cursor: auto;
           //   border-radius: 16px;
@@ -192,9 +202,8 @@
         .writer-wrap {
           @include wrap;
           padding: 10px 20px;
-          border: 1px solid #000;
           box-sizing: border-box;
-          border-top: none;
+
           * {
             font-size: $font-size__3;
             cursor: pointer;
@@ -206,6 +215,9 @@
             float: right;
           }
         }
+      }
+      .post-card:hover {
+        transform: translateY(-5px);
       }
     }
   }
@@ -351,6 +363,7 @@
 }
 
 .tag-list-wrap {
+  display: block;
   position: fixed;
   text-align: center;
   left: 80%;
@@ -383,8 +396,65 @@
     }
   }
 }
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 1919px) {
   .post {
+    .post-list {
+      width: 975px;
+      .post-card-box {
+        width: 33%;
+      }
+    }
+  }
+  .tag-list-wrap {
+    left: 1125px;
+  }
+}
+@media only screen and (max-width: 1439px) {
+  .post {
+    .post-list {
+      width: 650px;
+      .post-card-box {
+        width: 50%;
+      }
+    }
+  }
+  .tag-list-wrap {
+    left: 750px;
+  }
+}
+@media only screen and (max-width: 944px) {
+  .post {
+    .post-list {
+      width: 100%;
+      .post-card-box {
+        width: 50%;
+        height: 454px;
+        .post-card {
+          .post-img {
+            height: 293px;
+          }
+        }
+      }
+    }
+    .tag-list-wrap {
+      display: none;
+    }
+  }
+}
+@media only screen and (max-width: 767px) {
+  .post {
+    .post-list {
+      width: 100%;
+      .post-card-box {
+        width: 100%;
+        height: 561px;
+        .post-card {
+          .post-img {
+            height: 400px;
+          }
+        }
+      }
+    }
     .tag-list-wrap {
       display: none;
     }

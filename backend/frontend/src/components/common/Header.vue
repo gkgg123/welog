@@ -1,14 +1,30 @@
 <template>
   <div id="header" v-if="isHeader">
-    <h1>
+    <div class="header-logo">
       <router-link
+        v-if="headerPathName !== constants.URL_TYPE.MAIN.MAIN"
+        :to="{ name: constants.URL_TYPE.MAIN.MAIN }"
+      >
+        <img class="small-logo" src="/img/small_home_logo.png" />
+      </router-link>
+      <router-link
+        v-if="headerPathName !== constants.URL_TYPE.MAIN.MAIN"
         :to="{ name: headerPathName, params: { id: headerPathParams } }"
-      >{{ headerTitle }}</router-link>
-    </h1>
-    <div class="right">
+      >
+        <div class="header-name">{{ headerTitle }}</div>
+      </router-link>
+
+      <router-link v-else :to="{ name: headerPathName, params: { id: headerPathParams } }">
+        <img class="home-logo" src="/img/home_logo.png" />
+      </router-link>
+    </div>
+    <div class="right d-flex">
+      <select class="select-box" v-model="selected">
+        <option v-for="option in options" :value="option.value" :key="option.text">{{ option.text }}</option>
+      </select>
       <div class="search-input">
         <i class="fas fa-search"></i>
-        <input v-model="keyword" type="text" />
+        <input v-model="keyword" type="text" @keyup.enter="search" />
       </div>
 
       <router-link
@@ -16,12 +32,41 @@
         :to="{ name: constants.URL_TYPE.USER.LOGIN }"
         class="login-btn"
       >로그인</router-link>
-      <router-link
-        v-else
-        v-bind:to="{ name: constants.URL_TYPE.USER.LOGOUT }"
-        class="login-btn"
-      >로그아웃</router-link>
+
       <router-link v-if="isLogined" to="/create" class="login-btn">새 글쓰기</router-link>
+      <div class="dropdown-box" v-if="isLogined">
+        <a
+          class="nav-link dropdown-toggle"
+          href="#"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <i class="far fa-smile"></i>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <router-link
+            class="dropdown-item"
+            :to="{
+              name: constants.URL_TYPE.POST.POSTITEMS,
+              params: { id: username },
+            }"
+          >내 블로그 가기</router-link>
+          <router-link class="dropdown-item" :to="{ name: constants.URL_TYPE.USER.LOGOUT }">로그아웃</router-link>
+          <div class="dropdown-divider"></div>
+          <router-link
+            class="dropdown-item"
+            :to="{
+            name : constants.URL_TYPE.USER.PROFILECONFIG,
+            params : {
+              username : username
+            }
+            }"
+          >내 프로필</router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,15 +79,37 @@ export default {
   components: {},
   props: ["isHeader", "isLogined"],
   computed: {
-    ...mapState(["headerTitle", "headerPathName", "headerPathParams"]),
+    ...mapState([
+      "headerTitle",
+      "headerPathName",
+      "headerPathParams",
+      "username",
+    ]),
   },
   watch: {},
   created() {},
-  methods: {},
+  methods: {
+    search() {
+      this.$router.push({
+        name: constants.URL_TYPE.MAIN.SEARCH,
+        query: {
+          type: this.selected,
+          search: this.keyword,
+        },
+      });
+    },
+  },
   data: function () {
     return {
       constants,
       keyword: "",
+      selected: "title",
+      options: [
+        { text: "제목", value: "title" },
+        { text: "내용", value: "content" },
+        { text: "제목+내용", value: "text" },
+        { text: "태그", value: "tag" },
+      ],
     };
   },
 };

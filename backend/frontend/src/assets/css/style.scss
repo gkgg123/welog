@@ -1,15 +1,18 @@
 @charset "utf-8";
 @import "./common";
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap");
+@font-face {
+  font-family: "NanumSquareRoundR";
+  src: url(../../../public/font/NanumSquareRoundR.ttf) format("truetype");
+}
+
 * {
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: NanumSquareRoundR;
   word-break: keep-all;
   padding: 0;
   margin: 0;
   outline: 0;
 }
-
 /* reset */
 html,
 body,
@@ -241,7 +244,7 @@ body {
   overflow-x: auto;
   line-height: 1;
   overflow-y: auto;
-  min-width: 1024px;
+  min-width: 480px;
   text-align: left;
 }
 
@@ -321,19 +324,44 @@ h2 {
   position: fixed;
   left: 0;
   top: 0;
-  height: 60px;
+  min-height: 85px;
+  max-height: 85px;
   border-bottom: 3px solid #00796b;
-  padding: 12px 30px;
+  padding: 0px 30px;
   background-color: #fff;
   z-index: 9;
-  h1 {
+  display: table;
+  .header-logo {
+    width: 400px;
     float: left;
     font-weight: $f600;
+    display: flex;
     a {
-      font-size: 1.5em;
+      font-size: 40px;
+      .home-logo {
+        margin-top: 12px;
+        height: 56px;
+      }
+      .small-logo {
+        margin-top: 12px;
+        height: 56px;
+        margin-right: 20px;
+      }
+      .header-name {
+        margin-top: 20px;
+      }
     }
   }
   .right {
+    float: right;
+    margin-top: 18px;
+    .select-box {
+      margin-top: 6px;
+      max-height: 36px;
+      width: 110px;
+      border: solid 3px #dddddd;
+      border-radius: 5px;
+    }
     .search-input {
       position: relative;
       width: 270px;
@@ -360,6 +388,16 @@ h2 {
       }
       input:focus {
         box-shadow: 2px 2px 12px 2px #00796b;
+      }
+    }
+
+    .dropdown-box {
+      text-align: center;
+      > a {
+        font-size: 24px;
+        > i {
+          font-size: 32px;
+        }
       }
     }
 
@@ -431,12 +469,11 @@ h2 {
 }
 
 /* media query */
-@media (max-width: 1024px) {
-  .hejhome {
-    .header {
-      .user-info-wrap {
-        h3 {
-        }
+@media only screen and (max-width: 950px) {
+  #header {
+    .right {
+      .search-input {
+        width: 100px;
       }
     }
   }
