@@ -78,11 +78,14 @@ public class ModifyRequestController {
   }
 
   @GetMapping("/comment/{cid}")
-  @ApiOperation(value = "특정 코멘트만 가져옴")
+  @ApiOperation(value = "특정 코멘트만 가져옴, 해당 글을 읽었을 시 ischecked 는 true로")
   public ResponseEntity<ModifyRequestComment> getComment(@PathVariable int cid, @RequestBody String jsonObj){
     ModifyRequestComment comment = repository.findByCid(cid);
-    comment.isIschecked();
-    return new ResponseEntity<ModifyRequestComment>(repository.findByCid(cid),HttpStatus.OK);
+
+    comment.setIschecked(true);
+    repository.save(comment);
+
+    return new ResponseEntity<ModifyRequestComment>(comment,HttpStatus.OK);
 
   }
 
