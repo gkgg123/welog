@@ -25,8 +25,6 @@ import javax.validation.ConstraintViolationException;
 @RestController
 public class AccountController {
   @Autowired
-  TokenUtils tokenUtils;
-  @Autowired
   AccountService accountService;
 
   @RequestMapping(value = "/signup", method = RequestMethod.POST)
