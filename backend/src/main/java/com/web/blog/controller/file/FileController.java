@@ -38,7 +38,7 @@ public class FileController {
         //String currentPath = System.getProperty("user.dir");
         String currentPath = "/home/ubuntu/tmp/git/s03p13c106/backend";
         System.out.println(currentPath);
-        String path = currentPath + "/src/main/static/img/";
+        String path = currentPath + "/src/main/webapp/static/img/";
         SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
         String time = format.format(System.currentTimeMillis());
         for(MultipartFile file : files) {
