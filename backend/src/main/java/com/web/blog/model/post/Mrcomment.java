@@ -31,8 +31,8 @@ public class Mrcomment {
 
   private boolean ischecked;
 
-  private boolean willModify;
+  private boolean willmodify;
 
-  private boolean isModified;
+  private boolean ismodified;
 
 }

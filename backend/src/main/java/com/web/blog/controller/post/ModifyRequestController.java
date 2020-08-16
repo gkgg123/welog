@@ -9,7 +9,7 @@ import com.web.blog.model.post.repository.ModifyRequestCommentRepository;
 import com.web.blog.service.post.ModifyRequestService;
 import com.web.blog.utils.TokenUtils;
 import io.swagger.annotations.*;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
