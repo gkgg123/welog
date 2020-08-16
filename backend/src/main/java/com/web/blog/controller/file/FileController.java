@@ -36,7 +36,7 @@ public class FileController {
     public Object upload(@RequestPart List<MultipartFile> files){
         BasicResponse result = new BasicResponse();
         //String currentPath = System.getProperty("user.dir");
-        String currentPath = "/home/ubuntu/tmp/git/s03p13c106/backend/";
+        String currentPath = "/home/ubuntu/tmp/git/s03p13c106/backend";
         System.out.println(currentPath);
         String path = currentPath + "/src/main/resources/static/img/";
         SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
