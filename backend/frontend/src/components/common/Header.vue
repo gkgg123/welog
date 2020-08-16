@@ -14,13 +14,21 @@
         <div class="header-name">{{ headerTitle }}</div>
       </router-link>
 
-      <router-link v-else :to="{ name: headerPathName, params: { id: headerPathParams } }">
+      <router-link
+        v-else
+        :to="{ name: headerPathName, params: { id: headerPathParams } }"
+      >
         <img class="home-logo" src="/img/home_logo.png" />
       </router-link>
     </div>
     <div class="right d-flex">
       <select class="select-box" v-model="selected">
-        <option v-for="option in options" :value="option.value" :key="option.text">{{ option.text }}</option>
+        <option
+          v-for="option in options"
+          :value="option.value"
+          :key="option.text"
+          >{{ option.text }}</option
+        >
       </select>
       <div class="search-input">
         <i class="fas fa-search"></i>
@@ -31,9 +39,12 @@
         v-if="!isLogined"
         :to="{ name: constants.URL_TYPE.USER.LOGIN }"
         class="login-btn"
-      >로그인</router-link>
+        >로그인</router-link
+      >
 
-      <router-link v-if="isLogined" to="/create" class="login-btn">새 글쓰기</router-link>
+      <router-link v-if="isLogined" to="/create" class="login-btn"
+        >새 글쓰기</router-link
+      >
       <div class="dropdown-box" v-if="isLogined">
         <a
           class="nav-link dropdown-toggle"
@@ -50,21 +61,26 @@
           <router-link
             class="dropdown-item"
             :to="{
-              name: constants.URL_TYPE.POST.POSTITEMS,
-              params: { id: username },
+              name: constants.URL_TYPE.USER.PROFILECONFIG,
+              params: {
+                username: username,
+              },
             }"
-          >내 블로그 가기</router-link>
-          <router-link class="dropdown-item" :to="{ name: constants.URL_TYPE.USER.LOGOUT }">로그아웃</router-link>
-          <div class="dropdown-divider"></div>
+            >내 프로필</router-link
+          >
           <router-link
             class="dropdown-item"
             :to="{
-            name : constants.URL_TYPE.USER.PROFILECONFIG,
-            params : {
-              username : username
-            }
+              name: constants.URL_TYPE.POST.POSTITEMS,
+              params: { id: username },
             }"
-          >내 프로필</router-link>
+            >내 블로그</router-link
+          >
+          <router-link
+            class="dropdown-item"
+            :to="{ name: constants.URL_TYPE.USER.LOGOUT }"
+            >로그아웃</router-link
+          >
         </div>
       </div>
     </div>
@@ -99,7 +115,7 @@ export default {
       });
     },
   },
-  data: function () {
+  data: function() {
     return {
       constants,
       keyword: "",
@@ -124,5 +140,18 @@ export default {
 }
 .search-input {
   margin: 7px;
+}
+.dropdown-menu {
+  padding: 12px 0px;
+}
+.dropdown-item {
+  text-align: center;
+  font-size: 18px;
+  padding: 8px 16px;
+  margin: 8px 0px;
+}
+.dropdown-item:hover {
+  background-color: #00796b;
+  color: white;
 }
 </style>
