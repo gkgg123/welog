@@ -1,9 +1,7 @@
 package com.web.blog.model.account;
 
 import com.web.blog.enums.AccountGrade;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
@@ -32,6 +30,23 @@ public class Account implements Serializable {
   private String username;
 
   private boolean isEnable;
+
+  @Getter
+  @Setter
+  private String provider;
+
+  @Getter
+  @Setter
+  private String realname;
+
+  @Getter
+  @Setter
+  private String profileUrl;
+
+  @Getter
+  @Setter
+  private String userDescription;
+
 
   public boolean isEnable() {
     return isEnable;
