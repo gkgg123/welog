@@ -59,7 +59,7 @@ public class ModifyRequestController {
 
     JSONParser jsonParser = new JSONParser();
     JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
-
+    System.out.println(object.toJSONString());
     String jwt = (String) object.get("Authorization");
     String strcomment = (String) object.get("comment");
     String rString = (String) object.get("requiredString");
@@ -68,6 +68,7 @@ public class ModifyRequestController {
     comment.setPid(pid);
     comment.setPwriter(postRepository.findByPid(pid).getAuthor());
     comment.setCwriter(tokenUtils.getUserNameFromToken(jwt));
+    comment.setRstring(rString);
     comment.setRcomment(strcomment);
 
     service.createNew(comment);
