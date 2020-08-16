@@ -335,5 +335,33 @@
         }
       }
     }
+    .update-request {
+      width: 80%;
+      .table {
+        border-top: 3px solid #00796b;
+      }
+      .table tr:hover {
+        background-color: #c6e5d9;
+      }
+      .table tr {
+      }
+      .table th {
+        font-size: 18px;
+        height: 70px;
+        color: white;
+        background: #48a999;
+        text-align: center;
+        padding: 10px;
+        border: 2px solid #3b8686;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .table td {
+        font-size: 16px;
+        padding: 10px;
+        border: 2px solid #3b8686;
+        text-align: center;
+      }
+    }
   }
 }
