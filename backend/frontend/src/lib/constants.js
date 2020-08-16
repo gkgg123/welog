@@ -1,6 +1,6 @@
-export default {
+﻿export default {
   TITLE: "SSAFY 개발블로그",
-  baseUrl: "http://127.0.0.1:8080/",
+  baseUrl: "http://i3c106.p.ssafy.io:8081/",
   ERROR: {
     FRONT_ERROR: "FE00",
   },
