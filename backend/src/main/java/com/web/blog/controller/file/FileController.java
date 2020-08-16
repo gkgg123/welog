@@ -35,7 +35,7 @@ public class FileController {
     public Object upload(@RequestPart List<MultipartFile> files){
         BasicResponse result = new BasicResponse();
         String currentPath = System.getProperty("user.dir");
-        String path = currentPath + "/src/main/webapp/static/img/";
+        String path = currentPath + "/src/main/resources/static/img/";
         SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
         String time = format.format(System.currentTimeMillis());
         for(MultipartFile file : files) {
