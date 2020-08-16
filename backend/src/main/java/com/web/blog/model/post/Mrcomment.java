@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class ModifyRequestComment {
+public class Mrcomment {
   @Id  @GeneratedValue
   private Integer cid;
 

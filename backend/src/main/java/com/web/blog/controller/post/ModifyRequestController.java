@@ -4,7 +4,7 @@ import com.web.blog.model.BasicResponse;
 
 
 import com.web.blog.model.account.repository.PostRepository;
-import com.web.blog.model.post.ModifyRequestComment;
+import com.web.blog.model.post.Mrcomment;
 import com.web.blog.model.post.repository.ModifyRequestCommentRepository;
 import com.web.blog.service.post.ModifyRequestService;
 import com.web.blog.utils.TokenUtils;
@@ -43,8 +43,8 @@ public class ModifyRequestController {
 
   @GetMapping("/post/{pid}")
   @ApiOperation("해당 pid의 모든 comment 호출")
-  public ResponseEntity<List<ModifyRequestComment>> getCommentsByPost(@PathVariable int pid){
-    return new ResponseEntity<List<ModifyRequestComment>>(repository.findAllByPid(pid),HttpStatus.OK);
+  public ResponseEntity<List<Mrcomment>> getCommentsByPost(@PathVariable int pid){
+    return new ResponseEntity<List<Mrcomment>>(repository.findAllByPid(pid),HttpStatus.OK);
   }
 
   @PostMapping("/post/{pid}")
@@ -64,7 +64,7 @@ public class ModifyRequestController {
     String strcomment = (String) object.get("comment");
     String rString = (String) object.get("requiredString");
 
-    ModifyRequestComment comment = new ModifyRequestComment();
+    Mrcomment comment = new Mrcomment();
     comment.setPid(pid);
     comment.setPwriter(postRepository.findByPid(pid).getAuthor());
     comment.setCwriter(tokenUtils.getUserNameFromToken(jwt));
@@ -79,25 +79,25 @@ public class ModifyRequestController {
 
   @GetMapping("/comment/{cid}")
   @ApiOperation(value = "특정 코멘트만 가져옴, 해당 글을 읽었을 시 ischecked 는 true로")
-  public ResponseEntity<ModifyRequestComment> getComment(@PathVariable int cid, @RequestBody String jsonObj){
-    ModifyRequestComment comment = repository.findByCid(cid);
+  public ResponseEntity<Mrcomment> getComment(@PathVariable int cid, @RequestBody String jsonObj){
+    Mrcomment comment = repository.findByCid(cid);
 
     comment.setIschecked(true);
     repository.save(comment);
 
-    return new ResponseEntity<ModifyRequestComment>(comment,HttpStatus.OK);
+    return new ResponseEntity<Mrcomment>(comment,HttpStatus.OK);
 
   }
 
   @GetMapping("/author")
   @ApiOperation(value = "블로그 주인의 모든 수정 요청을 불러옴")
-  public ResponseEntity<List<ModifyRequestComment>> getCommentList(@RequestBody String jsonObj) throws ParseException {
+  public ResponseEntity<List<Mrcomment>> getCommentList(@RequestBody String jsonObj) throws ParseException {
     JSONParser jsonParser = new JSONParser();
     JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
 
     String jwt = (String) object.get("Authorization");
 
-    return new ResponseEntity<List<ModifyRequestComment>>
+    return new ResponseEntity<List<Mrcomment>>
             (repository.findAllByPwriter(tokenUtils.getUserNameFromToken(jwt)),HttpStatus.OK);
   }
 
