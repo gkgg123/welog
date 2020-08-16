@@ -36,7 +36,8 @@ public class FileController {
     public Object upload(@RequestPart List<MultipartFile> files){
         BasicResponse result = new BasicResponse();
         String currentPath = System.getProperty("user.dir");
-        String path = currentPath + "\\src\\main\\resources\\static\\img\\";
+        System.out.println(currentPath);
+        String path = currentPath + "/src/main/resources/static/img/";
         SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
         String time = format.format(System.currentTimeMillis());
         for(MultipartFile file : files) {
@@ -51,7 +52,7 @@ public class FileController {
                 file.transferTo(dest);
                 image.setIid(iid);
                 image.setIname(fileName);
-                image.setPath("static\\img\\"+iid);
+                image.setPath("static/img/"+iid);
                 imageRepository.save(image);
 
                 result.data = "success";
