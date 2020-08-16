@@ -5,24 +5,18 @@
       <img class="login-image" src="img\Logo.png" alt="logo-image" />
       <div class="middle">
         <div class="input-wrap">
-          <input
-            class="input-wrap rounded-lg"
-            v-model="email"
-            id="email"
-            placeholder="이메일을 입력해주세요"
-            type="text"
-          />
+          <i class="fas fa-user"></i>
+          <input v-model="email" id="email" type="text" required />
+          <label for="email">email을 입력해주세요</label>
         </div>
         <div class="input-wrap">
-          <input
-            class="input-wrap rounded-lg"
-            v-model="password"
-            type="password"
-            id="password"
-            placeholder="비밀번호를 입력해주세요"
-          />
+          <i class="fas fa-key"></i>
+          <input v-model="password" type="password" id="password" required />
+          <label for="password">비밀번호를 입력해주세요</label>
         </div>
-        <button class="btn btn--back btn--login rounded-lg mb-2" @click="login">로그인 하기</button>
+        <button class="btn btn--back btn--login rounded-lg mb-2" @click="login">
+          로그인 하기
+        </button>
 
         <button class="btn btn--google-login rounded-lg mb-2">
           <i class="fab fa-google-plus-g fa-2x"></i>
@@ -41,7 +35,11 @@
         <div class="add-option">
           <div class="wrap">
             <p>아직 회원이 아니신가요?</p>
-            <router-link v-bind:to="{name:constants.URL_TYPE.USER.JOIN}" class="btn--text">회원가입</router-link>
+            <router-link
+              v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
+              class="btn--text"
+              >회원가입</router-link
+            >
           </div>
         </div>
       </div>

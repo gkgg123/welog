@@ -12,7 +12,7 @@
     align-items: center;
   }
   .middle {
-    width: 300px;
+    width: 330px;
   }
   .logo-welcome {
     margin: 10px 0px 20px 0px;
@@ -23,36 +23,48 @@
     margin: 10px 0px 40px 0px;
   }
   .input-wrap {
-    @include wrap;
-
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     position: relative;
-    input {
-      @include wrap;
-      margin: 0;
-      border-radius: 5px;
-      border: 1px solid #5ac2ab;
-      padding: 10px 15px;
-      box-sizing: border-box;
+    display: flex;
+
+    .fa-user {
+      color: #5ac2ab;
+      font-size: 30px;
+      margin: 20px 17px 0px 2px;
     }
+    .fa-key {
+      color: #5ac2ab;
+      font-size: 30px;
+      margin: 20px 15px 0px 0px;
+    }
+    input {
+      display: inline-block;
+      margin: 0;
+      width: 80%;
+      font-size: 20px;
+      border-bottom: 5px solid #5ac2ab;
+      padding: 25px 5px 5px 5px;
+    }
+    label {
+      position: absolute;
+      color: #aaaaaa;
+      top: 30px;
+      left: 50px;
+      font-size: 20px;
+      transition: 0.2s ease all;
+      opacity: 1;
+    }
+    input:focus ~ label,
+    input:not(:focus):valid ~ label {
+      top: 8px;
+      left: 45px;
+      font-size: 12px;
+    }
+
     &.password-wrap {
       input {
         padding-right: 30px;
       }
-    }
-
-    span {
-      position: absolute;
-      right: 9px;
-      top: 11px;
-      opacity: 0.3;
-      &.active {
-        opacity: 1;
-      }
-    }
-    .error-text {
-      @include wrap;
-      margin-top: 5px;
     }
   }
 
