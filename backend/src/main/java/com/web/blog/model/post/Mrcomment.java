@@ -35,4 +35,7 @@ public class Mrcomment {
 
   private boolean ismodified;
 
+  @NonNull
+  private String posttitle;
+
 }
