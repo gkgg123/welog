@@ -54,8 +54,8 @@ public class FileController {
                 image.setIid(iid);
                 image.setIname(fileName);
                 image.setPath("static/img/"+iid);
-
-                imageRepository.save(image);
+                System.out.println(image);
+                System.out.println(imageRepository.save(image));
 
                 result.data = "success";
                 result.status = true;
