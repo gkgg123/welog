@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -35,7 +36,7 @@ public class FileController {
     public Object upload(@RequestPart List<MultipartFile> files){
         BasicResponse result = new BasicResponse();
         String currentPath = System.getProperty("user.dir");
-        String path = currentPath + "/src/main/resources/static/img/";
+        String path = currentPath + "\\src\\main\\resources\\static\\img\\";
         SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
         String time = format.format(System.currentTimeMillis());
         for(MultipartFile file : files) {
@@ -43,7 +44,7 @@ public class FileController {
             String fileName = file.getOriginalFilename();
             String iid = time + fileName;
             path = path + iid;
-
+            System.out.println(path);
             File dest = new File(path);
 
             try {
