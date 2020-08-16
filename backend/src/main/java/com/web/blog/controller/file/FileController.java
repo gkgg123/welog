@@ -37,7 +37,7 @@ public class FileController {
         BasicResponse result = new BasicResponse();
         //String currentPath = System.getProperty("user.dir");
         String currentPath = "/home/ubuntu/tmp/git/s03p13c106/backend";
-        String path = currentPath + "/src/main/resources/image/";
+        String path = currentPath + "/src/main/webapp/static/img/";
         SimpleDateFormat format = new SimpleDateFormat("yyMMddHHmmss");
         String time = format.format(System.currentTimeMillis());
         for(MultipartFile file : files) {
@@ -52,7 +52,7 @@ public class FileController {
                 file.transferTo(dest);
                 image.setIid(iid);
                 image.setIname(fileName);
-                image.setPath("resources/image/"+iid);
+                image.setPath("static/img/"+iid);
                 System.out.println(image);
                 System.out.println(imageRepository.save(image));
 
