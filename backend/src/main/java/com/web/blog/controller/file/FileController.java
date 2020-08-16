@@ -51,7 +51,7 @@ public class FileController {
                 file.transferTo(dest);
                 image.setIid(iid);
                 image.setIname(fileName);
-                image.setPath("static/img/"+iid);
+                image.setPath("static\\img\\"+iid);
                 imageRepository.save(image);
 
                 result.data = "success";
