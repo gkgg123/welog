@@ -40,7 +40,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit"]),
+    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),

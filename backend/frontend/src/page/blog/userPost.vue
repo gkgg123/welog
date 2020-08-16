@@ -6,9 +6,11 @@
         <div class="written">
           <p>{{ articleDetail.author }} 작성일 {{ articleDetail.title }}</p>
           <div class="written-tag">
-            <span v-for="(tag, index) in articleDetail.tags" :key="index">{{
+            <span v-for="(tag, index) in articleDetail.tags" :key="index">
+              {{
               tag
-            }}</span>
+              }}
+            </span>
           </div>
         </div>
       </div>
@@ -59,23 +61,13 @@
         v-if="checkAuthorLogin"
         data-toggle="modal"
         data-target="#update"
-      >
-        수정
-      </button>
-      <button
-        class="update-button"
-        v-if="checkAuthorLogin"
-        @click="confirmDelete"
-      >
-        삭제
-      </button>
+      >수정</button>
+      <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
     </div>
     <userPostUpdate />
     <div id="context-menu" class="context-menu">
-      <div class="item" data-toggle="modal" data-target="#example">
-        수정요청
-      </div>
-      <div class="item">나가기</div>
+      <div class="item" data-toggle="modal" data-target="#example" @click="closeCofirmmenu">수정요청</div>
+      <div class="item" @click="closeCofirmmenu">나가기</div>
     </div>
     <div class="commentBox">
       <div class="commentBox2">
@@ -83,23 +75,14 @@
           <p>{{ commentNumber }}개의 댓글</p>
         </div>
         <div class="comment">
-          <textarea
-            placeholder="댓글을 남겨주세요"
-            v-model="commentContents"
-          ></textarea>
+          <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
           <div class="comment-underbar">
             <span>비밀글</span>
             <div class="secret-button">
-              <i
-                class="fas fa-lock"
-                v-if="isSecret"
-                @click="isSecret = !isSecret"
-              ></i>
+              <i class="fas fa-lock" v-if="isSecret" @click="isSecret = !isSecret"></i>
               <i class="fas fa-unlock" v-else @click="isSecret = !isSecret"></i>
             </div>
-            <button @click="commentSubmit">
-              댓글 작성
-            </button>
+            <button @click="commentSubmit">댓글 작성</button>
           </div>
         </div>
         <commentListItems />
@@ -117,26 +100,24 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <h5 class="modal-title" id="exampleModalLabel">수정요청</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">{{ confirmText }}</div>
+
+          <textarea
+            class="border"
+            name="confirmComment"
+            id="confirmComment"
+            cols="30"
+            rows="10"
+            v-model="confirmComment"
+          ></textarea>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary" @click="modifyrequestPost">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -156,6 +137,7 @@ export default {
   data() {
     return {
       confirmText: "",
+      confirmComment: "",
       titles: [],
       commentContents: "",
       constants,
@@ -195,10 +177,14 @@ export default {
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
-      creatediv.addEventListener("click", function() {
+      creatediv.addEventListener("click", function () {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
+    },
+    closeCofirmmenu() {
+      var contextElement = document.getElementById("context-menu");
+      contextElement.classList.remove("active");
     },
 
     ///  댓글 작성
@@ -237,6 +223,26 @@ export default {
         }
       }
     },
+    modifyrequestPost() {
+      const totalData = {
+        comment: this.confirmComment,
+        Authorization: this.authToken,
+      };
+
+      axios
+        .post(
+          constants.baseUrl + `modfrequest/post/${this.articleDetail.pid}`,
+          totalData
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+
+    /// 앵커 만드는 거
     anchorCreate() {
       const anchors = this.$refs.editor.$el.querySelectorAll(
         ".v-md-editor-preview h1,h2,h3,h4"
