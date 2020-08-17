@@ -46,4 +46,21 @@ public class AccountService implements UserDetailsService {
     return accountDetails;
   }
 
+  public boolean checkPassword(String str1, String str2, String username){
+    Account account = accountRepository.findByUsername(username);
+
+    System.out.println(username);
+    System.out.println("DDD" + str1 + " : " +account.getPassword());
+
+
+    if(!passwordEncoder.matches(str1, account.getPassword())){
+      return false;
+    } else {
+      account.setPassword(str2);
+      account.encodePassword(passwordEncoder);
+      this.accountRepository.save(account);
+    }
+
+    return true;
+  }
 }
