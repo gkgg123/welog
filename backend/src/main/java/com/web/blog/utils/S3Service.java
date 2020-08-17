@@ -1,4 +1,4 @@
-package com.web.blog.config;
+package com.web.blog.utils;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Service
-@Component
 public class S3Service {
     private AmazonS3 s3Client;
 
