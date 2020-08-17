@@ -1,24 +1,39 @@
 <template>
-  <div>
-    <h1>여기는 프로필 수정을 만들 페이지입니다.</h1>
-    <div class="col-12">
-      <div class="row">
-        <div class="col-3" style="height: 170px;">
-          <div style="background-color:gray;height: 170px;">여기는 프로필 이미지</div>
-          <button>프로필 수정</button>
-        </div>
-        <div class="col-9">
-          <label for="nickname">닉네임 :</label>
-          <input name="nickname" type="text" :value="username" disabled title="닉네임은 수정 불가입니다." />
-          <div></div>
-          <label for="email">이메일 :</label>
-          <input name="email" type="text" :value="username" disabled title="닉네임은 수정 불가입니다." />
-        </div>
+  <div class="profile-contents">
+    <div class="user-info">
+      <div class="user-img">
+        <img src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt />
+        <button class="button-update">이미지 변경</button>
+        <button class="button-delete">이미지 삭제</button>
       </div>
-      <div class="col-12 mt-5">한줄 소개</div>
-
-      <button class="btn btn-primary">수정</button>
-      <button class="btn btn-primary">닫기</button>
+      <div class="user-intro">
+        <div class="user-name">사용자 이름</div>
+        <textarea class="intro-content">자기소개</textarea>
+        <button>수정</button>
+      </div>
+    </div>
+    <div class="user-active">
+      <div class="user-award">
+        <img src="../../../../public/img/trophy.png" alt />
+        <div>나의 활동 내역</div>
+      </div>
+      <div class="active-item1">
+        <i class="fas fa-pencil-alt"></i>
+        내가 작성한 포스트 수
+        <span>1</span>
+      </div>
+      <div class="active-item2">
+        <i class="fas fa-heart"></i>내가 받은 좋아요 수
+        <span>1</span>
+      </div>
+      <div class="active-item3">
+        <i class="far fa-clipboard"></i>내가 좋아요 한 포스트 수
+        <span>1</span>
+      </div>
+      <div class="active-item4">
+        <img src="../../../../public/img/heart-icon.png" alt /> 가장 많은 좋아요 수
+        <span>1</span>
+      </div>
     </div>
   </div>
 </template>
@@ -33,5 +48,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
