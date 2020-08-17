@@ -1,7 +1,9 @@
 package com.web.blog.controller.post;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -33,12 +35,12 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiOperation;
 
-@ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
+@ApiResponses(value = {@ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
         @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
         @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
-        @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
+        @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class)})
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = {"http://localhost:3000"})
 @RequestMapping("/post")
 @RestController
 public class PostController {
@@ -57,51 +59,51 @@ public class PostController {
 
     @GetMapping("/latest")
     @ApiOperation(value = "최신 글 조회")
-    public ResponseEntity<List<PostInfo>> retrievePostbyLatest(){
+    public ResponseEntity<List<PostInfo>> retrievePostbyLatest() {
         List<Post> post = postRepository.findAll(Sort.by("createDate").descending());
         List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
         List<Image> images;
-        for(Post p : post ){
+        for (Post p : post) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
+            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/popularity")
     @ApiOperation(value = "인기 글 조회")
-    public ResponseEntity<List<PostInfo>> retrievePostbyPopularity(){
+    public ResponseEntity<List<PostInfo>> retrievePostbyPopularity() {
         List<Post> post = postRepository.findAll(Sort.by("count").descending());
         List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
         List<Image> images;
-        for(Post p : post ){
+        for (Post p : post) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
+            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/{author}")
     @ApiOperation(value = "해당 유저 전체 글 조회")
-    public ResponseEntity<Object> retrievePost(@PathVariable String author) throws Exception{
+    public ResponseEntity<Object> retrievePost(@PathVariable String author) throws Exception {
         Account account = accountRepository.findByUsername(author);
-        if(account == null){
+        if (account == null) {
             String msg = "not found";
-            return new ResponseEntity<>(msg ,HttpStatus.CONFLICT);
+            return new ResponseEntity<>(msg, HttpStatus.CONFLICT);
         }
         List<Post> post = postRepository.getPostByAuthor(author);
 
         List<PostInfo> postInfo = new ArrayList<>();
         List<String> userlist;
         List<Image> images;
-        for(Post p : post ){
+        for (Post p : post) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
+            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -109,9 +111,9 @@ public class PostController {
 
     @GetMapping("/{author}/{pid}")
     @ApiOperation(value = "글 조회")
-    public Object ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception{
-        Post post = postRepository.getPostByAuthorAndPid(author,pid);
-        post.setCount(post.getCount()+1);
+    public Object ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception {
+        Post post = postRepository.getPostByAuthorAndPid(author, pid);
+        post.setCount(post.getCount() + 1);
         postRepository.save(post);
 
         List<String> userlist = likeRepository.findByPid(pid);
@@ -119,7 +121,7 @@ public class PostController {
         List<Image> images = imageRepository.findByPid(pid);
         PostInfo postInfo = new PostInfo(post, likeCount, userlist, images);
 
-        return new ResponseEntity<>(postInfo,HttpStatus.OK);
+        return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
     @PostMapping("/{author}")
@@ -131,7 +133,7 @@ public class PostController {
         JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
 
         String token = (String) obj.get("token");
-        if(!author.equals(tokenUtils.getUserNameFromToken(token))){
+        if (!author.equals(tokenUtils.getUserNameFromToken(token))) {
             result.status = false;
             result.data = "fail";
             return new ResponseEntity<>(result, HttpStatus.CONFLICT);
@@ -147,11 +149,11 @@ public class PostController {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
-        post.setPostno(postRepository.findByAuthor(author)+1);
+        post.setPostno(postRepository.findByAuthor(author) == null ? 0 : postRepository.findByAuthor(author) + 1);
         post.setAuthor(author);
         post.setTags(tags);
         postRepository.save(post);
-        for(Object object : imageArray){
+        for (Object object : imageArray) {
             JSONObject imageObject = (JSONObject) object;
             String str = (String) imageObject.get("image");
             Image image = imageRepository.findByIid(str);
@@ -174,7 +176,7 @@ public class PostController {
         JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
 
         String token = (String) obj.get("token");
-        if(!author.equals(tokenUtils.getUserNameFromToken(token))){
+        if (!author.equals(tokenUtils.getUserNameFromToken(token))) {
             result.status = false;
             result.data = "fail";
             return new ResponseEntity<>(result, HttpStatus.CONFLICT);
@@ -194,11 +196,11 @@ public class PostController {
 
         postRepository.save(post);
         List<Image> images = imageRepository.findByPid(pid);
-        for(Image image : images){
+        for (Image image : images) {
             image.setPid(0);
             imageRepository.save(image);
         }
-        if(!imageArray.isEmpty()) {
+        if (!imageArray.isEmpty()) {
             for (Object object : imageArray) {
                 JSONObject imageObject = (JSONObject) object;
                 String str = (String) imageObject.get("image");
@@ -207,7 +209,7 @@ public class PostController {
                 imageRepository.save(image);
             }
         }
-        
+
         result.status = true;
         result.data = SUCCESS;
         result.object = post;
@@ -224,7 +226,7 @@ public class PostController {
         JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
 
         String token = (String) obj.get("token");
-        if((findPost != null) &&(tokenUtils.getUserNameFromToken(token).equals(author))){
+        if ((findPost != null) && (tokenUtils.getUserNameFromToken(token).equals(author))) {
             postRepository.delete(findPost);
             result.data = SUCCESS;
             result.status = true;
@@ -236,10 +238,9 @@ public class PostController {
     }
 
 
-
     @GetMapping("/{author}/{pid}/likeit")
-    @ApiOperation(value= "좋아요인지 아닌지")
-    public int likeIt(@PathVariable String author, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException{
+    @ApiOperation(value = "좋아요인지 아닌지")
+    public int likeIt(@PathVariable String author, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
         JSONParser jsonParse = new JSONParser();
         JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
 
@@ -251,19 +252,20 @@ public class PostController {
 
     @PostMapping("/{author}/{pid}/likeit")
     @ApiOperation(value = "좋아요 클릭 / 0 : 좋아요x / 1 : 좋아요")
-    public Object clickLike(@PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
+    public Object clickLike(@PathVariable String author, @PathVariable int pid, @RequestBody String jsonObj) throws ParseException {
         JSONParser jsonParse = new JSONParser();
         JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
 
         String token = (String) obj.get("token");
         String userName = tokenUtils.getUserNameFromToken(token);
         LikeInfo likeInfo = likeRepository.findByPidAndUsername(pid, userName);
-        if(likeInfo == null) {
+        if (likeInfo == null) {
             likeInfo = new LikeInfo();
             likeInfo.setPid(pid);
             likeInfo.setUsername(userName);
             likeInfo.setLikeit(1);
-        }else {
+            likeInfo.setPostusername(author);
+        } else {
             likeInfo.setLikeit(likeInfo.getLikeit() == 0 ? 1 : 0);
         }
         likeRepository.save(likeInfo);
@@ -277,11 +279,11 @@ public class PostController {
 
     @GetMapping("/search/title")
     @ApiOperation(value = "제목 검색")
-    public ResponseEntity<Object> searchTitle(@RequestParam String title){
+    public ResponseEntity<Object> searchTitle(@RequestParam String title) {
         BasicResponse result = new BasicResponse();
         List<Post> postList = postRepository.findByTitleContaining(title);
         List<PostInfo> postInfo = new ArrayList<>();
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             result.object = postInfo;
             result.status = false;
             result.data = "fail";
@@ -289,21 +291,21 @@ public class PostController {
         }
         List<String> userlist;
         List<Image> images;
-        for(Post p : postList ){
+        for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
+            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/search/content")
     @ApiOperation(value = "내용 검색")
-    public ResponseEntity<Object> searchContent(@RequestParam String content){
+    public ResponseEntity<Object> searchContent(@RequestParam String content) {
         BasicResponse result = new BasicResponse();
         List<Post> postList = postRepository.findByContentContaining(content);
         List<PostInfo> postInfo = new ArrayList<>();
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             result.object = postInfo;
             result.status = false;
             result.data = "fail";
@@ -311,21 +313,21 @@ public class PostController {
         }
         List<String> userlist;
         List<Image> images;
-        for(Post p : postList ){
+        for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
+            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/search/text")
     @ApiOperation(value = "제목 + 내용 검색")
-    public ResponseEntity<Object> searchPost(@RequestParam String text){
+    public ResponseEntity<Object> searchPost(@RequestParam String text) {
         BasicResponse result = new BasicResponse();
-        List<Post> postList = postRepository.findByTitleContainingOrContentContaining(text,text);
+        List<Post> postList = postRepository.findByTitleContainingOrContentContaining(text, text);
         List<PostInfo> postInfo = new ArrayList<>();
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             result.object = postInfo;
             result.status = false;
             result.data = "fail";
@@ -333,21 +335,21 @@ public class PostController {
         }
         List<String> userlist;
         List<Image> images;
-        for(Post p : postList ){
+        for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
+            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
 
     @GetMapping("/search/tag")
     @ApiOperation(value = "태그 검색")
-    public ResponseEntity<Object> retrievePostbyTags(@RequestParam String tag){
+    public ResponseEntity<Object> retrievePostbyTags(@RequestParam String tag) {
         BasicResponse result = new BasicResponse();
-        List<Post> postList = postRepository.findByTagsContaining(","+tag+",");
+        List<Post> postList = postRepository.findByTagsContaining("," + tag + ",");
         List<PostInfo> postInfo = new ArrayList<>();
-        if(postList.isEmpty()){
+        if (postList.isEmpty()) {
             result.object = postInfo;
             result.status = false;
             result.data = "fail";
@@ -355,12 +357,24 @@ public class PostController {
         }
         List<String> userlist;
         List<Image> images;
-        for(Post p : postList ){
+        for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p,userlist.size(), userlist, images));
+            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
+    }
+
+    @GetMapping("/{author}/achivement")
+    public ResponseEntity<Object> getAchivement(@PathVariable String author) {
+        Map<String, Integer> map = new HashMap<>();
+
+        map.put("postCount", postRepository.getPostByAuthor(author).size());
+        map.put("likemeCount", likeRepository.getLikeMeCount(author) == null ? 0 : likeRepository.getLikeMeCount(author));
+        map.put("likeCount", likeRepository.getLikePostCount(author) == null ? 0 : likeRepository.getLikePostCount(author));
+        map.put("mostLike", likeRepository.getMostLikes(author) == null ? 0 : likeRepository.getMostLikes(author));
+
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
 

@@ -32,3 +32,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/java/com/web/blog/config/KEY.java
