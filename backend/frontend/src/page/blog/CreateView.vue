@@ -5,10 +5,17 @@
         <p id="newPost">새 글 쓰기</p>
       </div>
 
-      <input placeholder="제목을 입력하세요" class="titleInput" v-model="title" type="text" />
+      <input
+        placeholder="제목을 입력하세요"
+        class="titleInput"
+        v-model="title"
+        type="text"
+      />
 
       <div id="tag" class="flex-column">
-        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
+        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">
+          {{ tag }}
+        </button>
       </div>
       <input
         placeholder="Tag를 입력하고 Enter를 누르세요"
@@ -28,7 +35,7 @@
         @upload-image="handleUploadImage"
         @copy-code-success="handleCopyCodeSuccess"
       />
-      <button @click="checkCreate">제출</button>
+      <button class="submit" @click="checkCreate">제출</button>
     </div>
   </div>
 </template>
@@ -175,9 +182,13 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  max-width: 1600px;
+}
 #newPost {
   font-size: 40px;
-  border-bottom: #ddd solid 4px;
+  padding: 3px 8px 3px 5px;
+  border-bottom: #48a999 solid 4px;
   display: inline;
 }
 .titleInput {
@@ -189,8 +200,8 @@ export default {
   font-size: 17px;
   padding-bottom: 4px;
   padding-left: 6px;
-  width: 30%;
-  border-bottom: 1px solid;
+  width: 20%;
+  border-bottom: 1px solid #aaaaaa;
   margin: 1vh 5px;
 }
 .tagBtn {
@@ -201,5 +212,14 @@ export default {
   padding: 7px;
   margin: 7px 3px;
   color: #0ca678;
+}
+
+.submit {
+  font-size: 20px;
+  margin: 5px 15px;
+  padding: 8px 13px;
+  background-color: #48a999;
+  color: white;
+  border-radius: 8px;
 }
 </style>

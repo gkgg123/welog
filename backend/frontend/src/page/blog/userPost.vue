@@ -169,14 +169,14 @@
               class="btn btn-primary"
               @click="modifyrequestPost"
             >
-              Save changes
+              수정
             </button>
             <button
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
             >
-              Close
+              취소
             </button>
           </div>
         </div>

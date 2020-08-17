@@ -6,21 +6,22 @@
           <li class="article-title">
             <router-link
               :to="{
-              name: 'userPost',
-              params: { id: $route.params.id, pid: article.pid },
-            }"
-            >{{ article.title }}</router-link>
+                name: 'userPost',
+                params: { id: $route.params.id, pid: article.pid },
+              }"
+              >{{ article.title }}</router-link
+            >
           </li>
           <div class="article-content">{{ article.content }}</div>
-          <!--  <div v-for="tag in articles.tags" :key="tag"> -->
           <div class="article-tag">
             <span v-for="tag in article.tags" :key="tag">
               <router-link
-                :to="{name : constants.URL_TYPE.MAIN.SEARCH, query :{ type : 'tag', search : tag}}"
+                :to="{
+                  name: constants.URL_TYPE.MAIN.SEARCH,
+                  query: { type: 'tag', search: tag },
+                }"
               >
-                {{
-                tag
-                }}
+                {{ tag }}
               </router-link>
             </span>
           </div>
