@@ -8,6 +8,7 @@ import java.util.List;
 public interface ModifyRequestCommentRepository extends JpaRepository<Mrcomment, Integer> {
   Mrcomment findByCid(int cid);
   Mrcomment findByPid(int pid);
-  List<Mrcomment> findAllByPwriter(String pauthor);
+  List<Mrcomment> findAllByPwriter(String pwriter);
+  List<Mrcomment> findAllByCwriter(String cwriter);
   List<Mrcomment> findAllByPid(int pid);
 }
