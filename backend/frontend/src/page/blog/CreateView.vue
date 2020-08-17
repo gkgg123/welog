@@ -153,7 +153,6 @@ export default {
     handleUploadImage(event, insertImage, files) {
       const formData = new FormData();
       formData.append("files", files[0]);
-
       axios
         .post(constants.baseUrl + "file/upload/", formData)
         .then((res) => {

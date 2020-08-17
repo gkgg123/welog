@@ -3,12 +3,20 @@
     <div class="post-title">
       <div class="title">
         <h2>{{ articleDetail.title }}</h2>
-        <div class="written">
-          <p>{{ articleDetail.author }} 작성일 {{ articleDetail.title }}</p>
+        <div class="title-item">
+          <p class="author">{{ articleDetail.author }}</p>
+          <p class="written-date">• 작성일</p>
           <div class="written-tag">
-            <span v-for="(tag, index) in articleDetail.tags" :key="index">{{
-              tag
-            }}</span>
+            <span v-for="(tag, index) in articleDetail.tags" :key="index">
+              <router-link
+                :to="{
+                  name: constants.URL_TYPE.MAIN.SEARCH,
+                  query: { type: 'tag', search: tag },
+                }"
+              >
+                {{ tag }}
+              </router-link>
+            </span>
           </div>
         </div>
       </div>
@@ -71,11 +79,31 @@
       </button>
     </div>
     <userPostUpdate />
+
+    <div class="post-userBar">
+      <div class="userBar">
+        <img
+          class="userImage"
+          src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png"
+          alt="profileImage"
+        />
+        <div class="userIntro">
+          <h2 class="box">{{ articleDetail.author }}</h2>
+          <p class="box">유저 한줄 소개</p>
+        </div>
+      </div>
+    </div>
+
     <div id="context-menu" class="context-menu">
-      <div class="item" data-toggle="modal" data-target="#example">
+      <div
+        class="item"
+        data-toggle="modal"
+        data-target="#example"
+        @click="closeCofirmmenu"
+      >
         수정요청
       </div>
-      <div class="item">나가기</div>
+      <div class="item" @click="closeCofirmmenu">나가기</div>
     </div>
     <div class="commentBox">
       <div class="commentBox2">
@@ -97,9 +125,7 @@
               ></i>
               <i class="fas fa-unlock" v-else @click="isSecret = !isSecret"></i>
             </div>
-            <button @click="commentSubmit">
-              댓글 작성
-            </button>
+            <button @click="commentSubmit">댓글 작성</button>
           </div>
         </div>
         <commentListItems />
@@ -117,7 +143,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalLabel">수정요청</h5>
             <button
               type="button"
               class="close"
@@ -128,7 +154,23 @@
             </button>
           </div>
           <div class="modal-body">{{ confirmText }}</div>
+
+          <textarea
+            class="border"
+            name="confirmComment"
+            id="confirmComment"
+            cols="30"
+            rows="10"
+            v-model="confirmComment"
+          ></textarea>
           <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="modifyrequestPost"
+            >
+              Save changes
+            </button>
             <button
               type="button"
               class="btn btn-secondary"
@@ -136,7 +178,6 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -156,6 +197,7 @@ export default {
   data() {
     return {
       confirmText: "",
+      confirmComment: "",
       titles: [],
       commentContents: "",
       constants,
@@ -200,6 +242,10 @@ export default {
         contextElement.classList.remove("active");
       });
     },
+    closeCofirmmenu() {
+      var contextElement = document.getElementById("context-menu");
+      contextElement.classList.remove("active");
+    },
 
     ///  댓글 작성
     commentSubmit() {
@@ -237,6 +283,28 @@ export default {
         }
       }
     },
+    modifyrequestPost() {
+      const totalData = {
+        comment: this.confirmComment,
+        Authorization: this.authToken,
+        requiredString: this.confirmText,
+      };
+      console.log(totalData, "보낸데이터");
+
+      axios
+        .post(
+          constants.baseUrl + `modfrequest/post/${this.articleDetail.pid}`,
+          totalData
+        )
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+
+    /// 앵커 만드는 거
     anchorCreate() {
       const anchors = this.$refs.editor.$el.querySelectorAll(
         ".v-md-editor-preview h1,h2,h3,h4"

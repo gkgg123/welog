@@ -9,7 +9,7 @@
             alt="profileImage"
           />
           <div class="userIntro">
-            <h2 class="box">유저 아이디</h2>
+            <h2 class="box">{{blogusername}}</h2>
             <p class="box">유저 한줄 소개</p>
           </div>
         </div>
@@ -71,9 +71,17 @@ export default {
     return {
       constants,
       postImg: whiteboardUrl,
+      blogusername: "",
     };
   },
-  created() {},
+  methods: {
+    getblogusername() {
+      this.blogusername = this.$route.params.id;
+    },
+  },
+  created() {
+    this.getblogusername();
+  },
 };
 </script>
 

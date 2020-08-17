@@ -50,21 +50,20 @@
           <router-link
             class="dropdown-item"
             :to="{
-              name: constants.URL_TYPE.POST.POSTITEMS,
-              params: { id: username },
+              name: constants.URL_TYPE.USER.PROFILECONFIG,
+              params: {
+                username: username,
+              },
             }"
-          >내 블로그 가기</router-link>
-          <router-link class="dropdown-item" :to="{ name: constants.URL_TYPE.USER.LOGOUT }">로그아웃</router-link>
-          <div class="dropdown-divider"></div>
+          >내 프로필</router-link>
           <router-link
             class="dropdown-item"
             :to="{
-            name : constants.URL_TYPE.USER.PROFILECONFIG,
-            params : {
-              username : username
-            }
+              name: constants.URL_TYPE.POST.POSTITEMS,
+              params: { id: username },
             }"
-          >내 프로필</router-link>
+          >내 블로그</router-link>
+          <router-link class="dropdown-item" :to="{ name: constants.URL_TYPE.USER.LOGOUT }">로그아웃</router-link>
         </div>
       </div>
     </div>
@@ -90,11 +89,15 @@ export default {
   created() {},
   methods: {
     search() {
+      const keyword = this.keyword;
+      const selected = this.selected;
+      this.keyword = "";
+      this.selected = "title";
       this.$router.push({
         name: constants.URL_TYPE.MAIN.SEARCH,
         query: {
-          type: this.selected,
-          search: this.keyword,
+          type: selected,
+          search: keyword,
         },
       });
     },
@@ -124,5 +127,18 @@ export default {
 }
 .search-input {
   margin: 7px;
+}
+.dropdown-menu {
+  padding: 12px 0px;
+}
+.dropdown-item {
+  text-align: center;
+  font-size: 18px;
+  padding: 8px 16px;
+  margin: 8px 0px;
+}
+.dropdown-item:hover {
+  background-color: #00796b;
+  color: white;
 }
 </style>
