@@ -6,6 +6,7 @@ import com.web.blog.model.BasicResponse;
 import com.web.blog.model.account.repository.PostRepository;
 import com.web.blog.model.post.Mrcomment;
 import com.web.blog.model.post.repository.ModifyRequestCommentRepository;
+import com.web.blog.property.JwtProperties;
 import com.web.blog.service.post.ModifyRequestService;
 import com.web.blog.utils.TokenUtils;
 import io.swagger.annotations.*;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
@@ -80,7 +82,7 @@ public class ModifyRequestController {
 
   @GetMapping("/comment/{cid}")
   @ApiOperation(value = "특정 코멘트만 가져옴, 해당 글을 읽었을 시 ischecked 는 true로")
-  public ResponseEntity<Mrcomment> getComment(@PathVariable int cid, @RequestBody String jsonObj){
+  public ResponseEntity<Mrcomment> getComment(@PathVariable int cid, HttpServletRequest request){
     Mrcomment comment = repository.findByCid(cid);
 
     comment.setIschecked(true);
@@ -91,17 +93,23 @@ public class ModifyRequestController {
   }
 
   @GetMapping("/author")
-  @ApiOperation(value = "블로그 주인의 모든 수정 요청을 불러옴")
-  public ResponseEntity<List<Mrcomment>> getCommentList(@RequestBody String jsonObj) throws ParseException {
-    JSONParser jsonParser = new JSONParser();
-    JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
+  @ApiOperation(value = "로그인한 ")
+  public ResponseEntity<List<Mrcomment>> getCommentListbyPwriter(HttpServletRequest request) throws ParseException {
+    String jwtinheader = request.getHeader(JwtProperties.HEADER_STRING);
 
-    String jwt = (String) object.get("Authorization");
 
     return new ResponseEntity<List<Mrcomment>>
-            (repository.findAllByPwriter(tokenUtils.getUserNameFromToken(jwt)),HttpStatus.OK);
+            (repository.findAllByPwriter(tokenUtils.getUserNameFromToken(jwtinheader)),HttpStatus.OK);
   }
 
+  @GetMapping("/commentwriter")
+  @ApiOperation(value = "로그인한 계정이 작성한 모든 수정 요청을 불러옴")
+  public ResponseEntity<List<Mrcomment>> getCommentListbyCwriter(HttpServletRequest request){
+    String jwtinheader = request.getHeader(JwtProperties.HEADER_STRING);
+
+    return new ResponseEntity<List<Mrcomment>>
+            (repository.findAllByCwriter(tokenUtils.getUserNameFromToken(jwtinheader)),HttpStatus.OK);
+  }
 
 
 }
