@@ -156,7 +156,10 @@ export default new Vuex.Store({
           }
         })
         .catch((err) => {
-          console.log(err.respnose);
+          if (err.response.data.data === "fail") {
+            commit("SET_ARTICLES", []);
+            console.log(state.articles);
+          }
         });
     },
     // ReceiveArticles에서 필요한만큼 더 붙이는 과정.
