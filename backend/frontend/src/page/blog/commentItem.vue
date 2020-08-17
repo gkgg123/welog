@@ -59,9 +59,24 @@
         </button>
       </div>
     </div>
-    <div v-if="!checkSecret">
-      ---------------------------- &nbsp;&nbsp;&nbsp;비밀댓글입니다.
-      -----------------------------
+    <div class="comment-list" v-if="!checkSecret">
+      <div class="comment-profile">
+        <div class="profile-img">
+          <i class="far fa-smile"></i>
+        </div>
+        <div class="writer-info">
+          <p class="writer-id">{{ comment.name }}</p>
+          <p class="written-day">작성 날짜</p>
+        </div>
+        <div class="comment-button" v-if="checkAuthorLogin">
+          <p @click="popUp">수정</p>
+          <p @click="deleteComment">삭제</p>
+        </div>
+      </div>
+      <div class="comment-content-secret">
+        <img class="secret-img" src="../../../public/img/lock.png" alt="" />
+        <span>비밀 댓글입니다.</span>
+      </div>
     </div>
   </div>
 </template>

@@ -15,6 +15,20 @@
         <td>2020-08-15</td>
         <td>reject</td>
       </tr>
+      <tr>
+        <td>1</td>
+        <td>welog 잘만들었다</td>
+        <td>김영환</td>
+        <td>2020-08-15</td>
+        <td>reject</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>welog 잘만들었다</td>
+        <td>김영환</td>
+        <td>2020-08-15</td>
+        <td>reject</td>
+      </tr>
     </div>
   </div>
 </template>
@@ -25,5 +39,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
