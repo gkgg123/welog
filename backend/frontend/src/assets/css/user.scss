@@ -339,12 +339,12 @@
       width: 80%;
       .table {
         border-top: 3px solid #00796b;
+        height: auto;
       }
       .table tr:hover {
         background-color: #c6e5d9;
       }
-      .table tr {
-      }
+
       .table th {
         font-size: 18px;
         height: 70px;
@@ -353,13 +353,16 @@
         text-align: center;
         padding: 10px;
         border: 2px solid #3b8686;
+        border-bottom: 3px solid #3b8686;
         text-align: center;
         vertical-align: middle;
       }
       .table td {
         font-size: 16px;
         padding: 10px;
-        border: 2px solid #3b8686;
+        border-left: 2px solid #3b8686;
+        border-right: 2px solid #3b8686;
+        border-bottom: 2px solid #3b8686;
         text-align: center;
       }
     }
