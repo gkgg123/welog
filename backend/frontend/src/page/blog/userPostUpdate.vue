@@ -124,20 +124,17 @@ export default {
         this.imageList = this.imageList.filter((item) => {
           return this.updateArticle.content.includes(item.iid);
         });
-        console.log(this.imageList);
         const images = this.imageList.map((image) => {
           const data = {};
           data.image = image.iid;
           return data;
         });
 
-        console.log(images);
         const totalData = {
           post: [putData],
           images: images,
           token: this.authToken,
         };
-        console.log(totalData);
         axios
           .put(
             constants.baseUrl +
@@ -163,6 +160,7 @@ export default {
           console.log(res.data);
           this.imageList.push(res.data.object);
           insertImage({
+            // 고쳐야할 부분
             url: `${constants.baseUrl}${res.data.object.path}`,
             desc: res.data.object.iname,
           });

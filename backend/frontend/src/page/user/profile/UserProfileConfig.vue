@@ -7,7 +7,7 @@
         <button class="button-delete">이미지 삭제</button>
       </div>
       <div class="user-intro">
-        <div class="user-name">사용자 이름</div>
+        <div class="user-name">{{username}}</div>
         <textarea class="intro-content">자기소개</textarea>
         <button>수정</button>
       </div>

@@ -14,7 +14,15 @@
           <div class="article-content">{{ article.content }}</div>
           <!--  <div v-for="tag in articles.tags" :key="tag"> -->
           <div class="article-tag">
-            <span v-for="tag in article.tags" :key="tag">{{tag}}</span>
+            <span v-for="tag in article.tags" :key="tag">
+              <router-link
+                :to="{name : constants.URL_TYPE.MAIN.SEARCH, query :{ type : 'tag', search : tag}}"
+              >
+                {{
+                tag
+                }}
+              </router-link>
+            </span>
           </div>
           <li class="article-day">{{ article.createDate }}</li>
         </div>

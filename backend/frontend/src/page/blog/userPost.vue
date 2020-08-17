@@ -7,9 +7,13 @@
           <p>{{ articleDetail.author }} 작성일 {{ articleDetail.title }}</p>
           <div class="written-tag">
             <span v-for="(tag, index) in articleDetail.tags" :key="index">
-              {{
-              tag
-              }}
+              <router-link
+                :to="{name : constants.URL_TYPE.MAIN.SEARCH, query :{ type : 'tag', search : tag}}"
+              >
+                {{
+                tag
+                }}
+              </router-link>
             </span>
           </div>
         </div>
@@ -227,7 +231,9 @@ export default {
       const totalData = {
         comment: this.confirmComment,
         Authorization: this.authToken,
+        requiredString: this.confirmText,
       };
+      console.log(totalData, "보낸데이터");
 
       axios
         .post(

@@ -1,9 +1,7 @@
 <template>
   <div>
     <h1>안녕하세요 여기는 Search입니다.</h1>
-    <h1>
-      {{ options[this.$route.query.type] }} : {{ this.$route.query.search }}
-    </h1>
+    <h1>{{ options[this.$route.query.type] }} : {{ this.$route.query.search }}</h1>
     <div class="post-card-box" v-for="article in articles" :key="article.pid">
       <div class="post-card">
         <router-link
@@ -34,8 +32,7 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-            >{{ article.author }}</router-link
-          >
+          >{{ article.author }}</router-link>
           <span>♥ 2</span>
         </div>
       </div>
@@ -93,11 +90,19 @@ export default {
         });
       }
     },
+    headerInit() {
+      this.$store.commit("SET_header", "welog"),
+        this.$store.commit("SET_headerPath", {
+          PathName: constants.URL_TYPE.MAIN.MAIN,
+          PathParams: null,
+        });
+    },
   },
   mounted() {
     this.addScrollMonitor();
   },
   created() {
+    this.headerInit();
     const target = this.$route.query.type;
     this.getArticles({
       location: `post/search/${this.$route.query.type}`,
