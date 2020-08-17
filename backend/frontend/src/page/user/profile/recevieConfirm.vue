@@ -30,12 +30,43 @@
         <td>reject</td>
       </tr>
     </div>
+    <button class="btn btn-primary" @click="getReceiveMrcomment">요청</button>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import constants from "@/lib/constants.js";
+import { mapState } from "vuex";
 export default {
   name: "recevieConfirm",
+  computed: {
+    ...mapState(["authToken"]),
+  },
+  data() {
+    return {
+      constants,
+    };
+  },
+  methods: {
+    getReceiveMrcomment() {
+      const totalData = {
+        Authorization: this.authToken,
+      };
+      axios
+        .get(constants.baseUrl + "modfrequest/author", {
+          headers: {
+            Authorization: this.authToken,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+  },
 };
 </script>
 

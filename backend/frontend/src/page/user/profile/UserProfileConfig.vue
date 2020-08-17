@@ -3,13 +3,16 @@
     <div class="user-info">
       <div class="user-img">
         <img src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt />
-        <button class="button-update">이미지 변경</button>
-        <button class="button-delete">이미지 삭제</button>
+        <div class="filebox">
+          <label for="ex_file">이미지 수정</label>
+          <input type="file" id="ex_file" ref="profileimg" @change="updateprofile" />
+        </div>
+        <button class="button-delete" @click="deleteprofile">이미지 삭제</button>
       </div>
       <div class="user-intro">
         <div class="user-name">{{username}}</div>
-        <textarea class="intro-content">자기소개</textarea>
-        <button>수정</button>
+        <textarea class="intro-content" v-model="lineintro"></textarea>
+        <button @click="updateDescription">수정</button>
       </div>
     </div>
     <div class="user-active">
@@ -40,12 +43,82 @@
 
 <script>
 import { mapState } from "vuex";
+import axios from "axios";
+import constants from "@/lib/constants.js";
 export default {
   name: "UserProfileConfig",
   computed: {
     ...mapState(["username"]),
   },
+  methods: {
+    updateprofile(event) {
+      const formData = new FormData();
+      formData.append("files", event.target.files[0]);
+      axios
+        .post(constants.baseUrl + `user/${this.username}/profile`, formData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    deleteprofile() {
+      axios
+        .delete(constants.baseUrl + `user/${this.username}/profile`)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+    updateDescription() {
+      const description = {
+        description: this.lineintro,
+      };
+      axios
+        .post(constants.baseUrl + `user/${this.username}/`)
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    },
+  },
+  data() {
+    return {
+      constants,
+      lineintro: "",
+    };
+  },
 };
 </script>
 
-<style></style>
+<style scoped>
+.filebox label {
+  display: inline-block;
+  padding: 0.5em 0.75em;
+  color: #999;
+  font-size: inherit;
+  line-height: normal;
+  vertical-align: middle;
+  background-color: #fdfdfd;
+  cursor: pointer;
+  border: 1px solid #ebebeb;
+  border-bottom-color: #e2e2e2;
+  border-radius: 0.25em;
+}
+.filebox input[type="file"] {
+  /* 파일 필드 숨기기 */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>

@@ -2,40 +2,45 @@
   <div>
     <h1>안녕하세요 여기는 Search입니다.</h1>
     <h1>{{ options[this.$route.query.type] }} : {{ this.$route.query.search }}</h1>
-    <div class="post-card-box" v-for="article in articles" :key="article.pid">
-      <div class="post-card">
-        <router-link
-          v-if="article.pid"
-          :to="{
+    <div v-if="!!articles.length">
+      <div class="post-card-box" v-for="article in articles" :key="article.pid">
+        <div class="post-card">
+          <router-link
+            v-if="article.pid"
+            :to="{
             name: constants.URL_TYPE.POST.POST,
             params: { id: article.author, pid: article.pid },
           }"
-        >
-          <div class="post-img" />
+          >
+            <div class="post-img" />
 
-          <div class="contents">
-            <h3>{{ article.title }}</h3>
+            <div class="contents">
+              <h3>{{ article.title }}</h3>
 
-            <span class="date">
-              {{ article.createDate.slice(0, 4) }}년
-              {{ article.createDate.slice(5, 7) }}월
-              {{ article.createDate.slice(8, 10) }}일ㆍ
-            </span>
-            <span class="comment">댓글 0개</span>
-          </div>
-        </router-link>
+              <span class="date">
+                {{ article.createDate.slice(0, 4) }}년
+                {{ article.createDate.slice(5, 7) }}월
+                {{ article.createDate.slice(8, 10) }}일ㆍ
+              </span>
+              <span class="comment">댓글 0개</span>
+            </div>
+          </router-link>
 
-        <div class="writer-wrap">
-          <router-link
-            v-if="article.author"
-            :to="{
+          <div class="writer-wrap">
+            <router-link
+              v-if="article.author"
+              :to="{
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-          >{{ article.author }}</router-link>
-          <span>♥ 2</span>
+            >{{ article.author }}</router-link>
+            <span>♥ 2</span>
+          </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <h1>검색결과가 없습니다.</h1>
     </div>
     <div id="bottomSensor"></div>
   </div>
