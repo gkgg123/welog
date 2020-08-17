@@ -18,11 +18,13 @@ public enum ErrorCode {
   EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
   NICKNAME_DUPLICATION(400, "M001", "Nickname is Duplication"),
   LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
-
+  PASSWORD_NOT_MATCHED(400,"M003", "Entered Password is incorrect"),
 
   // Coupon
   COUPON_ALREADY_USE(400, "CO001", "Coupon was already used"),
   COUPON_EXPIRE(400, "CO002", "Coupon was already expired")
+
+
 
   ;
   private final String code;

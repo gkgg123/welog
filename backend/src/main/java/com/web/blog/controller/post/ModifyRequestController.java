@@ -62,7 +62,7 @@ public class ModifyRequestController {
     JSONParser jsonParser = new JSONParser();
     JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
     System.out.println(object.toJSONString());
-    String jwt = (String) object.get("Authorization");
+    String jwt = (String) object.get(JwtProperties.HEADER_STRING);
     String strcomment = (String) object.get("comment");
     String rString = (String) object.get("requiredString");
 
@@ -89,14 +89,12 @@ public class ModifyRequestController {
     repository.save(comment);
 
     return new ResponseEntity<Mrcomment>(comment,HttpStatus.OK);
-
   }
 
   @GetMapping("/author")
   @ApiOperation(value = "로그인한 ")
   public ResponseEntity<List<Mrcomment>> getCommentListbyPwriter(HttpServletRequest request) throws ParseException {
     String jwtinheader = request.getHeader(JwtProperties.HEADER_STRING);
-
 
     return new ResponseEntity<List<Mrcomment>>
             (repository.findAllByPwriter(tokenUtils.getUserNameFromToken(jwtinheader)),HttpStatus.OK);
@@ -110,6 +108,4 @@ public class ModifyRequestController {
     return new ResponseEntity<List<Mrcomment>>
             (repository.findAllByCwriter(tokenUtils.getUserNameFromToken(jwtinheader)),HttpStatus.OK);
   }
-
-
 }
