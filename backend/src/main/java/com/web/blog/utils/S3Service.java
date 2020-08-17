@@ -1,4 +1,4 @@
-package com.web.blog.config;
+package com.web.blog.utils;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -9,13 +9,6 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.transfer.TransferManager;
-import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +20,7 @@ import java.io.IOException;
 public class S3Service {
     private AmazonS3 s3Client;
 
-    private String accessKey=KEY.accessKey;
+    private String accessKey= KEY.accessKey;
 
     private String secretKey=KEY.secretKey;
 
@@ -35,7 +28,6 @@ public class S3Service {
     private Regions region = Regions.AP_NORTHEAST_2;
 
     public S3Service() {
-        System.out.println(accessKey);
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 
         s3Client = AmazonS3ClientBuilder.standard()

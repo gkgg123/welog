@@ -1,6 +1,6 @@
 package com.web.blog.controller.account;
 
-import com.web.blog.config.S3Service;
+import com.web.blog.utils.S3Service;
 import com.web.blog.enums.AccountGrade;
 import com.web.blog.model.BasicResponse;
 
@@ -9,13 +9,9 @@ import com.web.blog.model.account.repository.AccountRepository;
 import com.web.blog.model.file.Image;
 import com.web.blog.model.file.repository.ImageRepository;
 import com.web.blog.service.account.AccountService;
-import com.web.blog.utils.TokenUtils;
 import io.swagger.annotations.ApiOperation;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +20,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintViolationException;
 import java.io.IOException;
 import java.util.List;
 
