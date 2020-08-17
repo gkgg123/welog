@@ -27,9 +27,9 @@ import java.io.IOException;
 public class S3Service {
     private AmazonS3 s3Client;
 
-    private String accessKey="accesKey";
+    private String accessKey=KEY.accessKey;
 
-    private String secretKey="secretKey";
+    private String secretKey=KEY.secretKey;
 
     private String bucket = "javaimg";
     private Regions region = Regions.AP_NORTHEAST_2;

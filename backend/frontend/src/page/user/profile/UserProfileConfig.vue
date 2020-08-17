@@ -1,37 +1,110 @@
 <template>
-  <div>
-    <h1>여기는 프로필 수정을 만들 페이지입니다.</h1>
-    <div class="col-12">
-      <div class="row">
-        <div class="col-3" style="height: 170px;">
-          <div style="background-color:gray;height: 170px;">여기는 프로필 이미지</div>
-          <button>프로필 수정</button>
+  <div class="profile-contents">
+    <div class="user-info">
+      <div class="user-img">
+        <img src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt />
+        <div class="filebox">
+          <label for="ex_file">이미지 수정</label>
+          <input type="file" id="ex_file" ref="profileimg" @change="updateprofile" />
         </div>
-        <div class="col-9">
-          <label for="nickname">닉네임 :</label>
-          <input name="nickname" type="text" :value="username" disabled title="닉네임은 수정 불가입니다." />
-          <div></div>
-          <label for="email">이메일 :</label>
-          <input name="email" type="text" :value="username" disabled title="닉네임은 수정 불가입니다." />
-        </div>
+        <button class="button-delete" @click="deleteprofile">이미지 삭제</button>
       </div>
-      <div class="col-12 mt-5">한줄 소개</div>
-
-      <button class="btn btn-primary">수정</button>
-      <button class="btn btn-primary">닫기</button>
+      <div class="user-intro">
+        <div class="user-name">{{username}}</div>
+        <textarea class="intro-content">자기소개</textarea>
+        <button>수정</button>
+      </div>
     </div>
+<!--    <div class="user-active">-->
+<!--      <div class="user-award">-->
+<!--        <img src="../../../../public/img/trophy.png" alt />-->
+<!--        <div>나의 활동 내역</div>-->
+<!--      </div>-->
+<!--      <div class="active-item1">-->
+<!--        <i class="fas fa-pencil-alt"></i>-->
+<!--        내가 작성한 포스트 수-->
+<!--        <span>1</span>-->
+<!--      </div>-->
+<!--      <div class="active-item2">-->
+<!--        <i class="fas fa-heart"></i>내가 받은 좋아요 수-->
+<!--        <span>1</span>-->
+<!--      </div>-->
+<!--      <div class="active-item3">-->
+<!--        <i class="far fa-clipboard"></i>내가 좋아요 한 포스트 수-->
+<!--        <span>1</span>-->
+<!--      </div>-->
+<!--      <div class="active-item4">-->
+<!--        <img src="../../../../public/img/heart-icon.png" alt /> 가장 많은 좋아요 수-->
+<!--        <span>1</span>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-export default {
-  name: "UserProfileConfig",
-  computed: {
-    ...mapState(["username"]),
-  },
-};
+  import { mapState } from "vuex";
+  import axios from "axios";
+  import constants from "@/lib/constants.js"
+  export default {
+    name: "UserProfileConfig",
+    computed: {
+      ...mapState(["username"]),
+    },
+    methods: {
+      updateprofile(event) {
+        const formData = new FormData();
+        formData.append("files", event.target.files[0]);
+        axios
+                .post(constants.baseUrl + `user/${this.username}/profile`, formData)
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((err) => {
+                  console.log(err.response);
+                });
+      },
+      deleteprofile() {
+        axios
+                .delete(constants.baseUrl + `user/${this.username}/profile`)
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((err) => {
+                  console.log(err.response);
+                });
+      },
+    },
+    data() {
+      return {
+        constants
+      };
+    },
+  };
 </script>
 
-<style>
+<style scoped>
+  .filebox label {
+    display: inline-block;
+    padding: 0.5em 0.75em;
+    color: #999;
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: 0.25em;
+  }
+  .filebox input[type="file"] {
+    /* 파일 필드 숨기기 */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
 </style>

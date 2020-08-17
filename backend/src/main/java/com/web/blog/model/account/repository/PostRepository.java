@@ -17,7 +17,7 @@ public interface PostRepository extends JpaRepository<Post, String> {
     List<Post> findByTitleContainingOrContentContaining(String title, String content);
     Post findByPid(int pid);
     @Query("SELECT max(p.postno) from Post p where p.author = :author")
-    int findByAuthor(String author);
+    Integer findByAuthor(String author);
     //Optional<Post> findPostByEmailAndPassword(String email, String password);
 
 }

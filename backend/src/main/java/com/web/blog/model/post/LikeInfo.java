@@ -21,11 +21,21 @@ public class LikeInfo {
 
     private int likeit;
 
+    private String postusername;
+
     public int getLikeit() {
         return likeit;
     }
 
     public void setLikeit(int likeit) {
         this.likeit = likeit;
+    }
+
+    public String getPostusername() {
+        return postusername;
+    }
+
+    public void setPostusername(String postusername) {
+        this.postusername = postusername;
     }
 }
