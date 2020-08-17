@@ -160,19 +160,20 @@ export default new Vuex.Store({
         });
     },
     // ReceiveArticles에서 필요한만큼 더 붙이는 과정.
-    attachArticles({ state, commit }) {
-      const currentPage = state.nextPage;
-      commit("INCREASE_NEXTPAGE");
-      if (currentPage <= state.pageLimit - 1) {
-        const nextArticles = state.receiveArticleList.slice(
-          currentPage * 10,
-          (currentPage + 1) * 10
-        );
-        console.log(nextArticles, currentPage, "최초");
-        commit("SET_ARTICLES", nextArticles);
-      } else if (currentPage === state.pageLimit) {
-        const nextArticles = state.receiveArticleList.slice(currentPage * 10);
-        commit("SET_ARTICLES", nextArticles);
+    attachArticles({ state, getters, commit }) {
+      if (getters.isreceived) {
+        const currentPage = state.nextPage;
+        commit("INCREASE_NEXTPAGE");
+        if (currentPage <= state.pageLimit - 1) {
+          const nextArticles = state.receiveArticleList.slice(
+            currentPage * 10,
+            (currentPage + 1) * 10
+          );
+          commit("SET_ARTICLES", nextArticles);
+        } else if (currentPage === state.pageLimit) {
+          const nextArticles = state.receiveArticleList.slice(currentPage * 10);
+          commit("SET_ARTICLES", nextArticles);
+        }
       }
     },
     /// ArticleDetail 정보를 불러오는 곳
