@@ -4,7 +4,9 @@
       <span>{{intro}}</span>
     </p>
     <p v-else>소개 페이지입니다.</p>
-    <button class="updateBtn" v-if="isCheckAuthor" @click="openTextarea">수정하기</button>
+    <div class="button-layout">
+      <button class="updateBtn" v-if="isCheckAuthor" @click="openTextarea">수정하기</button>
+    </div>
     <div id="introConfirm" style="display:none;">
       <textarea class="intro-box" v-model="introConfirm"></textarea>
       <div class="btn-box">
@@ -42,12 +44,16 @@ export default {
     openTextarea() {
       this.introConfirm = this.intro;
       var confirmTextarea = document.querySelector("#introConfirm");
+      var confirmUpdateButton = document.querySelector(".updateBtn");
       confirmTextarea.setAttribute("style", "display:block;  height:30vh;");
+      confirmUpdateButton.setAttribute("style", "display:none;");
     },
     closeTextarea() {
       this.introConfirm = "";
       var confirmTextarea = document.querySelector("#introConfirm");
+      var confirmUpdateButton = document.querySelector(".updateBtn");
       confirmTextarea.setAttribute("style", "display:none;");
+      confirmUpdateButton.setAttribute("style", "display:block;");
     },
     updateIntro() {
       const author = this.$route.params.id;
@@ -69,6 +75,8 @@ export default {
         .catch((err) => {
           console.log(err.response);
         });
+      var confirmUpdateButton = document.querySelector(".updateBtn");
+      confirmUpdateButton.setAttribute("style", "display:block;");
     },
   },
   created() {
