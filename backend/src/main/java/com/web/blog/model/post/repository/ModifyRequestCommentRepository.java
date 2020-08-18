@@ -11,4 +11,5 @@ public interface ModifyRequestCommentRepository extends JpaRepository<Mrcomment,
   List<Mrcomment> findAllByPwriter(String pwriter);
   List<Mrcomment> findAllByCwriter(String cwriter);
   List<Mrcomment> findAllByPid(int pid);
+  Integer countByPwriter(String pwriter);
 }
