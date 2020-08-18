@@ -329,6 +329,31 @@
 
 .personal-intro {
   text-align: center;
+  // position: relative;
+  .updateBtn {
+    // position: relative;
+    margin-left: 80%;
+    margin-bottom: 15px;
+    background-color: #00796b;
+    color: white;
+    padding: 10px;
+  }
+  #introConfirm {
+    > textarea {
+      width: 100%;
+      height: 150px;
+    }
+    #updateConfirmBtn {
+      margin-left: 60%;
+      margin-right: 5px;
+    }
+    .updateConfirmBtn {
+      margin-top: 10px;
+      background-color: #00796b;
+      color: white;
+      padding: 10px;
+    }
+  }
 }
 #post-items {
   .post-item {
@@ -438,7 +463,11 @@
     }
   }
 }
-
+@media only screen and (max-width: 1024px) {
+  #personalUser {
+    margin-top: 60px;
+  }
+}
 @media only screen and (max-width: 767px) {
   #detail {
     .post-title {

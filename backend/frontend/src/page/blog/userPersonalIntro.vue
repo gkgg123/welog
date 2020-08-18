@@ -1,21 +1,14 @@
 <template>
   <div class="personal-intro">
-    소개 페이지입니다.
-    <span>{{intro}}</span>
-    <button class="btn btn-primary" v-if="isCheckAuthor" @click="openTextarea">수정</button>
-
-    <div id="introConfirm" style="display:none;" class="border border-primary">
-      <textarea
-        class="border border-primary"
-        v-model="introConfirm"
-        name
-        id
-        cols="20"
-        rows="10"
-        style="width:35vw; height:25vh"
-      ></textarea>
-      <button class="btn btn-primary" @click="updateIntro">수정완료</button>
-      <button class="btn btn-primary" @click="closeTextarea">닫기</button>
+    <button class="updateBtn" v-if="isCheckAuthor" @click="openTextarea">수정하기</button>
+    <p v-if="intro">
+      <span>{{intro}}</span>
+    </p>
+    <p v-else>소개 페이지입니다.</p>
+    <div id="introConfirm" style="display:none;">
+      <textarea class="border border-primary" v-model="introConfirm" name id cols="20" rows="10"></textarea>
+      <button id="updateConfirmBtn" class="updateConfirmBtn" @click="updateIntro">수정완료</button>
+      <button class="updateConfirmBtn" @click="closeTextarea">닫기</button>
     </div>
   </div>
 </template>
