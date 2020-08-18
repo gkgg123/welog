@@ -1,17 +1,19 @@
 <template>
   <div class="update-request">
-    <select v-model="category" name id>
-      <option value="all">전체</option>
-      <option value="read">읽음</option>
-      <option value="unread">읽지않음</option>
-      <option value="middlestate">고려 중</option>
-    </select>
+    <div class="select-bar">
+      <select v-model="category" name id>
+        <option value="all">전체</option>
+        <option value="read">읽음</option>
+        <option value="unread">읽지않음</option>
+        <option value="middlestate">대기 중</option>
+      </select>
+    </div>
     <div class="table">
       <tr>
         <th>No.</th>
         <th>수정 요청 글</th>
-        <th>요청한 유저</th>
-        <th>읽은 상태</th>
+        <th>보낸 사람</th>
+        <th>읽음 상태</th>
         <th>처리 상태</th>
         <th>처리 결과</th>
       </tr>
@@ -53,7 +55,9 @@
         </div>
       </tr>
     </div>
-    <button class="btn btn-primary" @click="getReceiveMrcomment">요청</button>
+    <div class="table-under">
+      <button @click="getReceiveMrcomment">요청</button>
+    </div>
   </div>
 </template>
 
@@ -115,7 +119,7 @@ export default {
             if (item.willmodify === -1) {
               item.state = "수정 거절";
             } else if (item.willmodify === 0) {
-              item.state = "고려중";
+              item.state = "고려 중";
             } else {
               item.state = "수정 승인";
             }

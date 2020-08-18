@@ -23,11 +23,7 @@
           name="commentUpdate"
           v-model="cofirmComment"
         ></textarea>
-        <div
-          class="secretcheckboxclose"
-          id="isSecret"
-          :data-checkbox="comment.cid"
-        >
+        <div class="secretcheckboxclose" id="isSecret" :data-checkbox="comment.cid">
           <i
             class="fas fa-lock"
             v-if="isSecret"
@@ -43,20 +39,8 @@
             @click="isSecret = !isSecret"
           ></i>
         </div>
-        <button
-          class="btn close closedisplay"
-          :data-set="comment.cid"
-          @click="confirmCMT"
-        >
-          수정
-        </button>
-        <button
-          class="btn close closedisplay"
-          :data-set="comment.cid"
-          @click="closepop"
-        >
-          취소
-        </button>
+        <button class="btn close closedisplay" :data-set="comment.cid" @click="confirmCMT">수정</button>
+        <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">취소</button>
       </div>
     </div>
     <div class="comment-list" v-if="!checkSecret">
@@ -74,7 +58,7 @@
         </div>
       </div>
       <div class="comment-content-secret">
-        <img class="secret-img" src="../../../public/img/lock.png" alt="" />
+        <img class="secret-img" src="img/lock.png" alt />
         <span>비밀 댓글입니다.</span>
       </div>
     </div>
@@ -167,13 +151,13 @@ export default {
       const Btns = document.querySelectorAll(
         `[data-set="${this.comment.cid}"]`
       );
-      setTimeout(function() {
+      setTimeout(function () {
         Btns.forEach((Btn) => {
           Btn.classList.add("close");
           Btn.classList.remove("open");
         });
       }, 0);
-      setTimeout(function() {
+      setTimeout(function () {
         Btns.forEach((Btn) => {
           Btn.classList.add("closedisplay");
         });

@@ -13,11 +13,58 @@
         <div class="user-name">{{username}}</div>
         <textarea class="intro-content" v-model="lineintro"></textarea>
         <button @click="updateDescription">수정</button>
+        <div class="password-update">
+          <div>비밀번호 변경</div>
+          <p
+            class="password-button"
+            type="button"
+            data-toggle="modal"
+            data-target="#staticBackdrop"
+          >변경하기</p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="staticBackdrop"
+      data-backdrop="static"
+      data-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <p class="modal-title" id="staticBackdropLabel">비밀번호 변경</p>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <label for="password-now">현재 비밀번호 :</label>
+              <input id="password-now" type="password" />
+            </div>
+            <div>
+              <label for="password-new1">새 비밀번호 :</label>
+              <input id="password-new1" type="password" />
+            </div>
+            <div>
+              <label for="password-new2">새 비밀번호 확인 :</label>
+              <input id="password-new2" type="password" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" data-dismiss="modal">취소</button>
+            <button type="button">변경</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="user-active">
       <div class="user-award">
-        <img src="../../../../public/img/trophy.png" alt />
+        <img src="img/trophy.png" alt />
         <div>나의 활동 내역</div>
       </div>
       <div class="active-item1">
@@ -34,7 +81,7 @@
         <span>1</span>
       </div>
       <div class="active-item4">
-        <img src="../../../../public/img/heart-icon.png" alt /> 가장 많은 좋아요 수
+        <img src="img/heart-icon.png" alt /> 가장 많은 좋아요 수
         <span>1</span>
       </div>
     </div>
