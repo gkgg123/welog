@@ -2,7 +2,7 @@
   <div class="profile-contents">
     <div class="user-info">
       <div class="user-img">
-        <img src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png" alt />
+        <img :src="userprofile" alt />
         <div class="filebox">
           <label for="ex_file">이미지 수정</label>
           <input type="file" id="ex_file" ref="profileimg" @change="updateprofile" />
@@ -42,15 +42,25 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 import axios from "axios";
 import constants from "@/lib/constants.js";
 export default {
   name: "UserProfileConfig",
   computed: {
-    ...mapState(["username"]),
+    ...mapState([
+      "username",
+      "userintro",
+      "userprofile",
+      "defalutprofileimg",
+      "userintro",
+    ]),
   },
   methods: {
+    ...mapMutations(["SET_USERPROFILE", "SET_USERDESCRIPTION"]),
+    setIntro() {
+      this.lineintro = this.userintro;
+    },
     updateprofile(event) {
       const formData = new FormData();
       formData.append("files", event.target.files[0]);
@@ -58,6 +68,9 @@ export default {
         .post(constants.baseUrl + `user/${this.username}/profile`, formData)
         .then((res) => {
           console.log(res);
+          var receiveimg = constants.imageUrl + res.data.object.iid;
+
+          this.SET_USERPROFILE(receiveimg);
         })
         .catch((err) => {
           console.log(err.response);
@@ -67,7 +80,7 @@ export default {
       axios
         .delete(constants.baseUrl + `user/${this.username}/profile`)
         .then((res) => {
-          console.log(res);
+          this.SET_USERPROFILE(this.defalutprofileimg);
         })
         .catch((err) => {
           console.log(err.response);
@@ -78,9 +91,12 @@ export default {
         description: this.lineintro,
       };
       axios
-        .post(constants.baseUrl + `user/${this.username}/`)
+        .post(constants.baseUrl + `user/${this.username}/description`, {
+          description: this.lineintro,
+        })
         .then((res) => {
-          console.log(res.data);
+          this.lineintro = res.data.object.userDescription;
+          this.SET_USERDESCRIPTION(res.data.object.userDescription);
         })
         .catch((err) => {
           console.log(err.response);
@@ -92,6 +108,9 @@ export default {
       constants,
       lineintro: "",
     };
+  },
+  mounted() {
+    this.setIntro();
   },
 };
 </script>

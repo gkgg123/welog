@@ -13,6 +13,11 @@ export default new Vuex.Store({
     headerPathParams: null,
     authToken: sessionStorage.getItem("auth-token"),
     username: null,
+    userintro: null,
+    userprofile: null,
+    defalutprofileimg:
+      "https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png",
+    s3url: "https://javaimg.s3.ap-northeast-2.amazonaws.com/",
     receiveArticleList: [],
     articles: [],
     articleDetail: [],
@@ -44,6 +49,14 @@ export default new Vuex.Store({
     // state의 username을 변경해주는 mutation
     SET_USERNAME(state, username) {
       state.username = username;
+    },
+    // state의 USERDESCRITION을 변경해주는 mutation
+    SET_USERDESCRIPTION(state, description) {
+      state.userintro = description;
+    },
+    SET_USERPROFILE(state, profileUrl) {
+      console.log(profileUrl);
+      state.userprofile = profileUrl;
     },
     // RECEVIE_ARTICLES를 변경하는 함수
     SET_RECEIVEARTICLES(state, reciveArticleList) {
@@ -81,7 +94,7 @@ export default new Vuex.Store({
   },
   actions: {
     // 로그인 Axios 요청하는 과정
-    postAuthData({ commit }, info) {
+    async postAuthData({ commit, dispatch }, info) {
       axios
         .post(constants.baseUrl + info.location, info.data)
 
@@ -90,6 +103,7 @@ export default new Vuex.Store({
           const data = JSON.parse(atob(token.split(".")[1]));
           commit("SET_USERNAME", data.username);
           commit("SET_TOKEN", token);
+          dispatch("getUserDetailinfo");
           router.push({
             name: constants.URL_TYPE.POST.POSTITEMS,
             params: { id: data.username },
@@ -98,6 +112,21 @@ export default new Vuex.Store({
         .catch((err) => {
           alert("아이디가 없거나 비밀번호가 틀렸습니다.");
         });
+    },
+    // user의 정확한 정보를 가져오는 곳
+    getUserDetailinfo({ state, commit }) {
+      axios.get(constants.baseUrl + `user/${state.username}`).then((res) => {
+        commit("SET_USERDESCRIPTION", res.data.userDescription);
+        if (res.data.profileUrl === "no_img") {
+          commit("SET_USERPROFILE", state.defalutprofileimg);
+        } else {
+          const profileurl = res.data.profileUrl.replace(
+            state.s3url,
+            constants.imageUrl
+          );
+          commit("SET_USERPROFILE", profileurl);
+        }
+      });
     },
     //Login 하는 함수
     login({ dispatch }, loginData) {
@@ -112,6 +141,8 @@ export default new Vuex.Store({
       commit("SET_TOKEN", null);
       sessionStorage.removeItem("auth-token");
       commit("SET_USERNAME", null);
+      commit("SET_USERPROFILE", state.defalutprofileimg);
+      commit("SET_USERDESCRIPTION", null);
     },
     //UserName을 JWT TOKEN에서 decoding 하는 함수
     usernameCheck({ state, commit }) {

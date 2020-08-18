@@ -9,18 +9,15 @@
             params: { id: article.author, pid: article.pid },
           }"
         >
-          <div
-            v-if="!article.imageList.length"
-            :class="{ 'post-img': !article.imageList.length }"
-          />
+          <div v-if="!article.imageList.length" :class="{ 'post-img': !article.imageList.length }" />
           <div
             v-else
             :style="{
               'background-image': `url(
-                ${constants.baseUrl + article.imageList[0].path}
+                ${constants.imageUrl + article.imageList[0].iid}
               )`,
             }"
-            style="background-size:auto 170px;
+            style="background-size: 100% 170px;
                   background-repeat : no-repeat;
                   height : 170px;"
           ></div>
@@ -42,8 +39,7 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-            >{{ article.author }}</router-link
-          >
+          >{{ article.author }}</router-link>
           <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>

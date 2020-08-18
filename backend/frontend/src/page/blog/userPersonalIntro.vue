@@ -15,7 +15,7 @@
         style="width:35vw; height:25vh"
       ></textarea>
       <button class="btn btn-primary" @click="updateIntro">수정완료</button>
-      <button class="btn btn-primary">닫기</button>
+      <button class="btn btn-primary" @click="closeTextarea">닫기</button>
     </div>
   </div>
 </template>
@@ -48,6 +48,11 @@ export default {
       this.introConfirm = this.intro;
       var confirmTextarea = document.querySelector("#introConfirm");
       confirmTextarea.setAttribute("style", "display:block;  height:30vh;");
+    },
+    closeTextarea() {
+      this.introConfirm = "";
+      var confirmTextarea = document.querySelector("#introConfirm");
+      confirmTextarea.setAttribute("style", "display:none;");
     },
     updateIntro() {
       const author = this.$route.params.id;

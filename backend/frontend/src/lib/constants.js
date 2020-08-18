@@ -1,6 +1,7 @@
 ﻿export default {
   TITLE: "SSAFY 개발블로그",
   baseUrl: "http://127.0.0.1:8080/",
+  imageUrl: "https://d3v9ilm5vhs4go.cloudfront.net/",
   ERROR: {
     FRONT_ERROR: "FE00",
   },

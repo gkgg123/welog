@@ -12,6 +12,8 @@ import com.web.blog.model.file.Image;
 import com.web.blog.model.file.repository.ImageRepository;
 import com.web.blog.service.account.AccountService;
 import io.swagger.annotations.ApiOperation;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.web.blog.property.JwtProperties;
@@ -93,11 +95,12 @@ public class AccountController {
     public Object deleteProfile(@PathVariable String author) {
         BasicResponse result = new BasicResponse();
         Account account = accountRepository.findByUsername(author);
-
         Image image = imageRepository.findByPath(account.getProfileUrl());
         if (image != null)
             imageRepository.delete(image);
         account.setProfileUrl("no_img");
+
+        accountRepository.save(account);
         result.data = "success";
         result.status = true;
         result.object = null;
@@ -106,9 +109,11 @@ public class AccountController {
     }
 
     @PostMapping(value = "/{author}/description")
-    public Object inputDescription(@PathVariable String author, @RequestBody String description) {
+    public Object inputDescription(@PathVariable String author, @RequestBody String jsonObj) throws ParseException{
         BasicResponse result = new BasicResponse();
-
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+        String description = (String) obj.get("description");
         Account account = accountRepository.findByUsername(author);
         account.setUserDescription(description);
         accountRepository.save(account);

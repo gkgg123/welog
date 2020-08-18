@@ -44,7 +44,13 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <i class="far fa-smile"></i>
+          <!-- <i class="far fa-smile"></i> -->
+          <img
+            :src="userprofile"
+            width="32px"
+            height="32px"
+            style="border-radius:70%;background-color: #cfe0f4;"
+          />
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <router-link
@@ -83,6 +89,7 @@ export default {
       "headerPathName",
       "headerPathParams",
       "username",
+      "userprofile",
     ]),
   },
   watch: {},

@@ -5,17 +5,10 @@
         <p id="newPost">새 글 쓰기</p>
       </div>
 
-      <input
-        placeholder="제목을 입력하세요"
-        class="titleInput"
-        v-model="title"
-        type="text"
-      />
+      <input placeholder="제목을 입력하세요" class="titleInput" v-model="title" type="text" />
 
       <div id="tag" class="flex-column">
-        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">
-          {{ tag }}
-        </button>
+        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{ tag }}</button>
       </div>
       <input
         placeholder="Tag를 입력하고 Enter를 누르세요"
@@ -166,7 +159,7 @@ export default {
           console.log(res.data);
           this.imageList.push(res.data.object);
           insertImage({
-            url: `${constants.baseUrl}${res.data.object.path}`,
+            url: `${constants.imageUrl}${res.data.object.iid}`,
             desc: res.data.object.iname,
           });
         })

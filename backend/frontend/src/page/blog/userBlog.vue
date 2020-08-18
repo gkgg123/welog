@@ -3,14 +3,10 @@
     <div id="personalUser">
       <div class="userInfo">
         <div class="userBar">
-          <img
-            class="userImage"
-            src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png"
-            alt="profileImage"
-          />
+          <img class="userImage" :src="blogprofile" alt="profileImage" />
           <div class="userIntro">
             <h2 class="box">{{blogusername}}</h2>
-            <p class="box">유저 한줄 소개</p>
+            <p class="box">{{bloglineintro}}</p>
           </div>
         </div>
       </div>
@@ -61,6 +57,8 @@
 <script>
 import "../../assets/css/personal.scss";
 import constants from "@/lib/constants.js";
+import axios from "axios";
+import { mapState } from "vuex";
 
 const whiteboardUrl = "@/assets/img/whiteboard.png";
 
@@ -72,12 +70,31 @@ export default {
       constants,
       postImg: whiteboardUrl,
       blogusername: "",
+      blogprofile: "",
+      bloglineintro: "",
     };
   },
   methods: {
     getblogusername() {
+      axios
+        .get(constants.baseUrl + `user/${this.$route.params.id}`)
+        .then((res) => {
+          this.blogusername = res.data.username;
+          this.bloglineintro = res.data.userDescription;
+          if (res.data.profileUrl === "no_img") {
+            this.blogprofile = this.defalutprofileimg;
+          } else {
+            this.blogprofile = res.data.profileUrl.replace(
+              this.s3url,
+              constants.imageUrl
+            );
+          }
+        });
       this.blogusername = this.$route.params.id;
     },
+  },
+  computed: {
+    ...mapState(["defalutprofileimg", "s3url"]),
   },
   created() {
     this.getblogusername();
