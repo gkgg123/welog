@@ -1,7 +1,7 @@
 <template>
   <div id="create" class="container">
     <div class="row">
-      <div class="col-12 p-0" style="text-align:left; margin:5vh 0px 3vh 0px;">
+      <div class="col-12 p-0" style="text-align:left; margin:3vh 0px 3vh 0px;">
         <p id="newPost">새 글 쓰기</p>
       </div>
 
@@ -176,7 +176,8 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 1600px;
+  max-width: 90%;
+  margin-bottom: 50px;
 }
 #newPost {
   font-size: 40px;

@@ -3,16 +3,17 @@
     <div v-if="articles.length" v-cloak>
       <div class="post-articles" v-for="article in articles" :key="article.pid">
         <div class="post-article">
+          <div class="article-img">
+            <img src="img/no_image.png" alt />
+          </div>
           <li class="article-title">
             <router-link
               :to="{
                 name: 'userPost',
                 params: { id: $route.params.id, pid: article.pid },
               }"
-              >{{ article.title }}</router-link
-            >
+            >{{ article.title }}</router-link>
           </li>
-          <div class="article-content">{{ article.content }}</div>
           <div class="article-tag">
             <span v-for="tag in article.tags" :key="tag">
               <router-link
@@ -20,9 +21,7 @@
                   name: constants.URL_TYPE.MAIN.SEARCH,
                   query: { type: 'tag', search: tag },
                 }"
-              >
-                {{ tag }}
-              </router-link>
+              >{{ tag }}</router-link>
             </span>
           </div>
           <li class="article-day">{{ article.createDate }}</li>

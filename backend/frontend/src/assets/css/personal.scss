@@ -346,21 +346,25 @@
     padding-bottom: 50px;
     margin-bottom: 60px;
     border-bottom: solid 1px #aaaa;
-    .article-title {
-      margin: 0px 20px 20px 20px;
-      text-align: left;
-      font-size: 48px;
+    .article-img {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      img {
+        width: 80%;
+        height: 45vh;
+        background-color: #aaaaaa;
+      }
     }
-    .article-content {
-      font-size: 20px;
-      padding: 5px 0px 15px 0px;
-      margin: 10px 20px 10px 20px;
+    .article-title {
+      margin: 20px;
       text-align: left;
+      font-size: 32px;
     }
     .article-tag {
       margin: 0px 13px;
       padding: 20px 0px;
-      span {
+      span a {
         background-color: #e8eaf6;
         border: none;
         border-radius: 16px;

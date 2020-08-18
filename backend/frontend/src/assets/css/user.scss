@@ -180,7 +180,7 @@
     height: 100vh;
     .side-bar {
       position: fixed;
-      padding: 80px 0 0 55px;
+      padding: 80px 0 0 3%;
       height: 100vh;
       width: 15%;
       background-color: #48a999;
@@ -188,7 +188,7 @@
         a {
           color: white;
         }
-        font-size: 24px;
+        font-size: 1.2rem;
         font-weight: bold;
         i {
           margin-right: 10px;
@@ -264,7 +264,7 @@
           }
         }
         .user-active {
-          margin: 8% 4% 4% 18%;
+          margin: 6% 4% 4% 16%;
           .user-award {
             width: 100%;
             img {
@@ -282,11 +282,11 @@
             }
           }
           .active-item1 {
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 600;
             padding: 20px;
             display: inline-block;
-            width: 45%;
+            width: 50%;
             color: white;
             background-color: #48a999;
             i {
@@ -294,33 +294,33 @@
             }
           }
           .active-item2 {
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 600;
             padding: 20px;
             display: inline-block;
-            width: 45%;
+            width: 50%;
             color: #48a999;
             i {
               margin-right: 10px;
             }
           }
           .active-item3 {
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 600;
             padding: 20px;
             display: inline-block;
-            width: 45%;
+            width: 50%;
             color: #48a999;
             i {
               margin-right: 10px;
             }
           }
           .active-item4 {
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 600;
             padding: 20px;
             display: inline-block;
-            width: 45%;
+            width: 50%;
             color: white;
             background-color: #48a999;
             img {
