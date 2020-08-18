@@ -238,11 +238,13 @@ export default {
         }
       }
     },
+    /// 댓글 수정 ///
     modifyrequestPost() {
       const totalData = {
         comment: this.confirmComment,
-        Authorization: this.authToken,
         requiredString: this.confirmText,
+        postTitle: this.articleDetail.title,
+        Authorization: this.authToken,
       };
       console.log(totalData, "보낸데이터");
 

@@ -56,9 +56,6 @@
       <div class="profile-view">
         <router-view />
       </div>
-      <div class="profile-view">
-        <router-view />
-      </div>
     </div>
   </div>
 </template>

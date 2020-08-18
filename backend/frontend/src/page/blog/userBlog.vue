@@ -99,6 +99,11 @@ export default {
   created() {
     this.getblogusername();
   },
+  watch: {
+    $route(to, from) {
+      this.getblogusername();
+    },
+  },
 };
 </script>
 

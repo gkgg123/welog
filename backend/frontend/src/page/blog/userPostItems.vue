@@ -1,6 +1,11 @@
 <template>
   <div id="post-items">
-    <div v-if="articles.length" v-cloak>
+    <div v-if="state === -100" class="spin-box">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div v-else-if="state === true" v-cloak>
       <div class="post-articles" v-for="article in articles" :key="article.pid">
         <div class="post-article">
           <div class="article-img">
@@ -52,6 +57,7 @@ export default {
   data() {
     return {
       constants,
+      state: -100,
     };
   },
   computed: {
@@ -68,12 +74,22 @@ export default {
         }, 500);
       });
     },
+    async totalCreate() {
+      await this.getArticles({ location: `post/${this.$route.params.id}/` });
+      this.state = !!this.getArticles;
+    },
   },
   created() {
-    this.getArticles({ location: `post/${this.$route.params.id}/` });
+    this.totalCreate();
   },
   mounted() {
     this.addScrollMonitor();
+  },
+  watch: {
+    $route(to, from) {
+      const target = this.$route.query.type;
+      this.getArticles({ location: `post/${this.$route.params.id}/` });
+    },
   },
 };
 </script>

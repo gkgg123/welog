@@ -365,6 +365,23 @@
   }
 }
 #post-items {
+  .spin-box {
+    width: 60%;
+    height: 400px;
+    margin: 0 20%;
+    .spinner-border {
+      margin: auto;
+      display: inline-block;
+      width: 500px;
+      height: 500px;
+      vertical-align: text-bottom;
+      border: 1em solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      -webkit-animation: spinner-border 1s linear infinite;
+      animation: spinner-border 1s linear infinite;
+    }
+  }
   .post-item {
     text-align: center;
     h3 {
