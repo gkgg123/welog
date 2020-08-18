@@ -473,6 +473,13 @@
   .tag-list-wrap {
     left: 80%;
   }
+  .search {
+    .search-box {
+      > input {
+        width: calc(100% - 70px);
+      }
+    }
+  }
 }
 @media only screen and (max-width: 1439px) {
   .post {
@@ -530,5 +537,10 @@
     .tag-list-wrap {
       display: none;
     }
+  }
+  .search {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }

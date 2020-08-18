@@ -195,6 +195,9 @@
         }
       }
     }
+    .small-sidebar {
+      display: none;
+    }
     .profile-view {
       display: flex;
       justify-content: center;
@@ -453,6 +456,118 @@
           padding: 8px;
           margin: 10px;
           color: white;
+        }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 1240px) {
+  #user-profile {
+    .row {
+      .side-bar {
+        width: 20%;
+        .side-item {
+          width: 150px;
+        }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 865px) {
+  #user-profile {
+    .row {
+      .profile-view {
+        margin-top: 30px;
+        .profile-contents {
+          .user-info {
+            .user-img {
+              width: 155px;
+            }
+          }
+        }
+      }
+      .side-bar {
+        width: 180px;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 767px) {
+  #user-profile {
+    .row {
+      .profile-view {
+        width: 100%;
+        margin-top: 85px;
+        margin-left: 10px;
+        padding-left: 0;
+        padding-right: 0;
+        .profile-contents {
+          margin: 0;
+          width: 100%;
+          .user-info {
+            .user-intro {
+              .intro-content {
+                width: 100%;
+              }
+            }
+          }
+          .user-active {
+            margin-left: 0;
+            margin-right: 0;
+          }
+        }
+      }
+      .side-bar {
+        display: none;
+      }
+      .small-side-bar {
+        position: fixed;
+        top: 150px;
+        display: block;
+        width: 100%;
+        height: 50px;
+        background-color: #48a999;
+        text-align: center;
+        padding-top: 5px;
+        .small-side-item {
+          float: left;
+          width: 33%;
+          a {
+            color: white;
+          }
+          font-size: 2.4rem;
+          font-weight: bold;
+          i {
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 480px) {
+  #user-profile {
+    .row {
+      .profile-view {
+        .profile-contents {
+          .user-active {
+            .active-item1 {
+              width: 100%;
+            }
+            .active-item2 {
+              width: 100%;
+            }
+            .active-item3 {
+              width: 100%;
+              color: white;
+              background-color: #48a999;
+            }
+            .active-item4 {
+              width: 100%;
+              color: #48a999;
+              background-color: white;
+            }
+          }
         }
       }
     }
