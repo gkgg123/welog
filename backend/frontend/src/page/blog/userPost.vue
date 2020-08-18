@@ -72,14 +72,10 @@
 
     <div class="post-userBar">
       <div class="userBar">
-        <img
-          class="userImage"
-          src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png"
-          alt="profileImage"
-        />
+        <img class="userImage" :src="articleDetail.profileUrl" alt="profileImage" />
         <div class="userIntro">
           <h2 class="box">{{ articleDetail.author }}</h2>
-          <p class="box">유저 한줄 소개</p>
+          <p class="box">{{articleDetail.lineintro}}</p>
         </div>
       </div>
     </div>

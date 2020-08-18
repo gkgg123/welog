@@ -134,6 +134,8 @@ public class AccountController {
 
         JSONParser jsonParser = new JSONParser();
         JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
+        System.out.println(object);
+        System.out.println("-------");
         String originPw = (String) object.get("originalPassword");
         String chgPw = (String) object.get("changePassword");
 

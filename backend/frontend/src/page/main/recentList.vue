@@ -28,7 +28,7 @@
               {{ article.createDate.slice(5, 7) }}월
               {{ article.createDate.slice(8, 10) }}일ㆍ
             </span>
-            <span class="comment">댓글 0개</span>
+            <span class="comment">댓글 {{article.commentCount}}개</span>
           </div>
         </router-link>
 

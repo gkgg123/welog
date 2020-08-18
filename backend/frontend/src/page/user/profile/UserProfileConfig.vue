@@ -44,20 +44,20 @@
           <div class="modal-body">
             <div>
               <label for="password-now">현재 비밀번호 :</label>
-              <input id="password-now" type="password" />
+              <input id="password-now" v-model="currentPassword" type="password" />
             </div>
             <div>
               <label for="password-new1">새 비밀번호 :</label>
-              <input id="password-new1" type="password" />
+              <input id="password-new1" v-model="newPassword1" type="password" />
             </div>
             <div>
               <label for="password-new2">새 비밀번호 확인 :</label>
-              <input id="password-new2" type="password" />
+              <input id="password-new2" v-model="newPassword2" type="password" />
             </div>
           </div>
           <div class="modal-footer">
+            <button type="button" @click="updatePassword">변경</button>
             <button type="button" data-dismiss="modal">취소</button>
-            <button type="button">변경</button>
           </div>
         </div>
       </div>
@@ -101,12 +101,32 @@ export default {
       "userprofile",
       "defalutprofileimg",
       "userintro",
+      "authToken",
     ]),
   },
   methods: {
     ...mapMutations(["SET_USERPROFILE", "SET_USERDESCRIPTION"]),
     setIntro() {
       this.lineintro = this.userintro;
+    },
+    updatePassword() {
+      const totalData = {
+        originalPassword: this.currentPassword,
+        changePassword: this.newPassword1,
+      };
+      console.log(totalData);
+      axios
+        .put(constants.baseUrl + `user/pwchange`, totalData, {
+          headers: {
+            Authorization: this.authToken,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
     },
     updateprofile(event) {
       const formData = new FormData();
@@ -154,6 +174,9 @@ export default {
     return {
       constants,
       lineintro: "",
+      currentPassword: "",
+      newPassword1: "",
+      newPassword2: "",
     };
   },
   mounted() {

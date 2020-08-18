@@ -9,17 +9,15 @@ import javax.validation.Valid;
 
 import com.web.blog.model.ErrorResponse;
 import com.web.blog.model.account.Account;
+import com.web.blog.model.account.repository.CommentRepository;
 import com.web.blog.model.account.repository.LikeRepository;
 import com.web.blog.model.account.repository.PostRepository;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.account.repository.AccountRepository;
 import com.web.blog.model.file.Image;
 import com.web.blog.model.file.repository.ImageRepository;
-import com.web.blog.model.post.LikeInfo;
-import com.web.blog.model.post.Post;
+import com.web.blog.model.post.*;
 
-import com.web.blog.model.post.PostInfo;
-import com.web.blog.model.post.UserAndPost;
 import com.web.blog.utils.TokenUtils;
 import io.swagger.annotations.Api;
 import org.json.simple.JSONArray;
@@ -57,6 +55,8 @@ public class PostController {
     TokenUtils tokenUtils;
     @Autowired
     ImageRepository imageRepository;
+    @Autowired
+    CommentRepository commentRepository;
 
     @GetMapping("/latest")
     @ApiOperation(value = "최신 글 조회")
@@ -68,7 +68,8 @@ public class PostController {
         for (Post p : post) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
+            int commentCnt = commentRepository.getCommentByPid(p.getPid()).size();
+            postInfo.add(new PostInfo(p, userlist.size(), commentCnt, userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
@@ -83,7 +84,8 @@ public class PostController {
         for (Post p : post) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
+            int commentCnt = commentRepository.getCommentByPid(p.getPid()).size();
+            postInfo.add(new PostInfo(p, userlist.size(), commentCnt, userlist, images));
         }
         return new ResponseEntity<List<PostInfo>>(postInfo, HttpStatus.OK);
     }
@@ -104,7 +106,8 @@ public class PostController {
         for (Post p : post) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
+            int commentCnt = commentRepository.getCommentByPid(p.getPid()).size();
+            postInfo.add(new PostInfo(p, userlist.size(), commentCnt, userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -120,8 +123,9 @@ public class PostController {
 
         List<String> userlist = likeRepository.findByPid(pid);
         int likeCount = userlist.size();
+        int commentCount = commentRepository.getCommentByPid(post.getPid()).size();
         List<Image> images = imageRepository.findByPid(pid);
-        PostInfo postInfo = new PostInfo(post, likeCount, userlist, images);
+        PostInfo postInfo = new PostInfo(post, likeCount, commentCount, userlist, images);
         UserAndPost userAndPost = new UserAndPost(postInfo, account);
         return new ResponseEntity<>(userAndPost, HttpStatus.OK);
     }
@@ -296,7 +300,8 @@ public class PostController {
         for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
+            int commentCnt = commentRepository.getCommentByPid(p.getPid()).size();
+            postInfo.add(new PostInfo(p, userlist.size(), commentCnt, userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -318,7 +323,8 @@ public class PostController {
         for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
+            int commentCnt = commentRepository.getCommentByPid(p.getPid()).size();
+            postInfo.add(new PostInfo(p, userlist.size(), commentCnt, userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -340,7 +346,8 @@ public class PostController {
         for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
+            int commentCnt = commentRepository.getCommentByPid(p.getPid()).size();
+            postInfo.add(new PostInfo(p, userlist.size(), commentCnt, userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }
@@ -362,7 +369,8 @@ public class PostController {
         for (Post p : postList) {
             userlist = likeRepository.findByPid(p.getPid());
             images = imageRepository.findByPid(p.getPid());
-            postInfo.add(new PostInfo(p, userlist.size(), userlist, images));
+            int commentCnt = commentRepository.getCommentByPid(p.getPid()).size();
+            postInfo.add(new PostInfo(p, userlist.size(), commentCnt, userlist, images));
         }
         return new ResponseEntity<>(postInfo, HttpStatus.OK);
     }

@@ -137,7 +137,7 @@ export default new Vuex.Store({
       dispatch("postAuthData", info);
     },
     //Logout 하는 함수
-    logout({ commit }) {
+    logout({ state, commit }) {
       commit("SET_TOKEN", null);
       sessionStorage.removeItem("auth-token");
       commit("SET_USERNAME", null);
@@ -168,6 +168,7 @@ export default new Vuex.Store({
       await axios
         .get(constants.baseUrl + payload.location, { params: payload.query })
         .then((res) => {
+          console.log(res.data);
           var receive = Object.values(res.data);
           const temp = receive.map((item) => {
             if (!!item.post.tags) {
@@ -178,6 +179,7 @@ export default new Vuex.Store({
             item.post.likeCount = item.likeCount;
             item.post.liseuserlist = item.userlist;
             item.post.imageList = item.images;
+            item.post.commentCount = item.commentCount;
             return item.post;
           });
           commit("SET_RECEIVEARTICLES", temp);
@@ -211,20 +213,34 @@ export default new Vuex.Store({
       }
     },
     /// ArticleDetail 정보를 불러오는 곳
-    async carryArticle({ commit }, location) {
+    async carryArticle({ state, commit }, location) {
       return await axios.get(constants.baseUrl + location).then((res) => {
+        console.log(res.data);
         const receive = [res.data];
         const temp = receive.map((item) => {
-          if (!!item.post.tags) {
-            item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
+          if (!!item.postInfo.post.tags) {
+            item.postInfo.post.tags = item.postInfo.post.tags
+              .split(",")
+              .filter((tag) => !!tag);
           } else {
-            item.post.tags = [];
+            item.postInfo.post.tags = [];
           }
-          item.post.likeCount = item.likeCount;
-          item.post.likeuserlist = item.userlist;
-          item.post.imageList = item.images;
-          return item.post;
+          item.postInfo.post.likeCount = item.postInfo.likeCount;
+          item.postInfo.post.likeuserlist = item.postInfo.userlist;
+          item.postInfo.post.imageList = item.postInfo.images;
+          if (item.account.profileUrl === "no_img") {
+            item.postInfo.post.profileUrl = state.defalutprofileimg;
+          } else {
+            const profileurl = item.account.profileUrl.replace(
+              state.s3url,
+              constants.imageUrl
+            );
+            item.postInfo.post.profileUrl = profileurl;
+          }
+          item.postInfo.post.lineintro = item.account.userDescription;
+          return item.postInfo.post;
         });
+        console.log(temp);
         commit("SET_ARTICLEDETAIL", temp[0]);
       });
     },
@@ -252,9 +268,22 @@ export default new Vuex.Store({
     },
 
     //CommentList 가져오는 방법
-    carryComment({ commit }, location) {
+    carryComment({ state, commit }, location) {
       return axios.get(constants.baseUrl + location).then((res) => {
-        commit("SET_COMMENTLIST", res.data);
+        const temp = res.data.map((item) => {
+          var userProfile = item.profileUrl;
+          if (userProfile === "no_img") {
+            userProfile = state.defalutprofileimg;
+          } else {
+            userProfile = item.profileUrl.replace(
+              state.s3url,
+              constants.imageUrl
+            );
+          }
+          item.comment.userProfile = userProfile;
+          return item.comment;
+        });
+        commit("SET_COMMENTLIST", temp);
       });
     },
   },

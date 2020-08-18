@@ -49,10 +49,6 @@ public class AccountService implements UserDetailsService {
   public boolean checkPassword(String str1, String str2, String username){
     Account account = accountRepository.findByUsername(username);
 
-    System.out.println(username);
-    System.out.println("DDD" + str1 + " : " +account.getPassword());
-
-
     if(!passwordEncoder.matches(str1, account.getPassword())){
       return false;
     } else {

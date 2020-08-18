@@ -1,13 +1,17 @@
 package com.web.blog.controller.post;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import com.web.blog.model.account.Account;
+import com.web.blog.model.account.repository.AccountRepository;
 import com.web.blog.model.account.repository.CommentRepository;
 import com.web.blog.model.BasicResponse;
 
 import com.web.blog.model.post.Comment;
+import com.web.blog.model.post.CommentInfo;
 import com.web.blog.utils.TokenUtils;
 
 import org.json.JSONString;
@@ -38,12 +42,21 @@ public class CommentController {
     @Autowired
     CommentRepository commentRepository;
     @Autowired
+    AccountRepository accountRepository;
+    @Autowired
     TokenUtils tokenUtils;
 
     @GetMapping("/")
     @ApiOperation(value = "해당 글 모든 댓글 조회")
-    public ResponseEntity<List<Comment>> retrieveComment(@PathVariable int pid) throws Exception{
-        return new ResponseEntity<List<Comment>>(commentRepository.getCommentByPid(pid),HttpStatus.OK);
+    public Object retrieveComment(@PathVariable int pid) throws Exception{
+        List<CommentInfo> commentInfoList = new ArrayList<>();
+
+        List<Comment> comments = commentRepository.getCommentByPid(pid);
+        for(Comment c : comments){
+            Account account = accountRepository.findByUsername(c.getName());
+            commentInfoList.add(new CommentInfo(c, account.getProfileUrl()));
+        }
+        return new ResponseEntity<>(commentInfoList,HttpStatus.OK);
     }
 
     @PostMapping("/")
