@@ -4,7 +4,14 @@
       <div class="post-articles" v-for="article in articles" :key="article.pid">
         <div class="post-article">
           <div class="article-img">
-            <img src="img/no_image.png" alt />
+            <router-link
+              :to="{
+                name: 'userPost',
+                params: { id: $route.params.id, pid: article.pid },
+              }"
+            >
+              <img src="img/no_image.png" alt />
+            </router-link>
           </div>
           <li class="article-title">
             <router-link

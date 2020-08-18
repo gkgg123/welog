@@ -3,7 +3,7 @@
     <div class="comment-list" v-if="checkSecret">
       <div class="comment-profile">
         <div class="profile-img">
-          <i class="far fa-smile"></i>
+          <div class="img"></div>
         </div>
         <div class="writer-info">
           <p class="writer-id">{{ comment.name }}</p>

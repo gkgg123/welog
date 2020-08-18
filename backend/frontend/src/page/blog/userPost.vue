@@ -13,9 +13,7 @@
                   name: constants.URL_TYPE.MAIN.SEARCH,
                   query: { type: 'tag', search: tag },
                 }"
-              >
-                {{ tag }}
-              </router-link>
+              >{{ tag }}</router-link>
             </span>
           </div>
         </div>
@@ -28,7 +26,7 @@
         <div class="floating-bar">
           <div class="like">
             <i
-              class="far fa-heart"
+              class="fas fa-heart"
               :class="{ likeBtn: isLikeuser, unlikeBtn: !isLikeuser }"
               @click="likePost"
             ></i>
@@ -67,16 +65,8 @@
         v-if="checkAuthorLogin"
         data-toggle="modal"
         data-target="#update"
-      >
-        수정
-      </button>
-      <button
-        class="update-button"
-        v-if="checkAuthorLogin"
-        @click="confirmDelete"
-      >
-        삭제
-      </button>
+      >수정</button>
+      <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
     </div>
     <userPostUpdate />
 
@@ -95,14 +85,7 @@
     </div>
 
     <div id="context-menu" class="context-menu">
-      <div
-        class="item"
-        data-toggle="modal"
-        data-target="#example"
-        @click="closeCofirmmenu"
-      >
-        수정요청
-      </div>
+      <div class="item" data-toggle="modal" data-target="#example" @click="closeCofirmmenu">수정요청</div>
       <div class="item" @click="closeCofirmmenu">나가기</div>
     </div>
     <div class="commentBox">
@@ -111,18 +94,11 @@
           <p>{{ commentNumber }}개의 댓글</p>
         </div>
         <div class="comment">
-          <textarea
-            placeholder="댓글을 남겨주세요"
-            v-model="commentContents"
-          ></textarea>
+          <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
           <div class="comment-underbar">
             <span>비밀글</span>
             <div class="secret-button">
-              <i
-                class="fas fa-lock"
-                v-if="isSecret"
-                @click="isSecret = !isSecret"
-              ></i>
+              <i class="fas fa-lock" v-if="isSecret" @click="isSecret = !isSecret"></i>
               <i class="fas fa-unlock" v-else @click="isSecret = !isSecret"></i>
             </div>
             <button @click="commentSubmit">댓글 작성</button>
@@ -144,12 +120,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">수정요청</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -164,20 +135,8 @@
             v-model="confirmComment"
           ></textarea>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="modifyrequestPost"
-            >
-              수정
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              취소
-            </button>
+            <button type="button" class="btn btn-primary" @click="modifyrequestPost">수정</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
           </div>
         </div>
       </div>
@@ -237,7 +196,7 @@ export default {
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
-      creatediv.addEventListener("click", function() {
+      creatediv.addEventListener("click", function () {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
@@ -427,9 +386,11 @@ export default {
 
 <style scoped>
 .likeBtn {
-  color: red;
+  color: #f06292;
+  transition: 0.3s ease;
 }
 .unlikeBtn {
   color: black;
+  transition: 0.1s ease;
 }
 </style>
