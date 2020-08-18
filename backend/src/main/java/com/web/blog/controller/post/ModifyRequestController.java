@@ -65,6 +65,7 @@ public class ModifyRequestController {
     String jwt = (String) object.get(JwtProperties.HEADER_STRING);
     String strcomment = (String) object.get("comment");
     String rString = (String) object.get("requiredString");
+    String postTitle = (String) object.get("postTitle");
 
     Mrcomment comment = new Mrcomment();
     comment.setPid(pid);
@@ -72,6 +73,7 @@ public class ModifyRequestController {
     comment.setCwriter(tokenUtils.getUserNameFromToken(jwt));
     comment.setRstring(rString);
     comment.setRcomment(strcomment);
+    comment.setPosttitle(postTitle);
 
     service.createNew(comment);
 
