@@ -244,7 +244,7 @@ body {
   overflow-x: auto;
   line-height: 1;
   overflow-y: auto;
-  min-width: 480px;
+  min-width: 320px;
   text-align: left;
 }
 
@@ -427,6 +427,7 @@ h2 {
     }
 
     .login-btn {
+      width: 90px;
       font-size: 20px;
       padding: 8px 5px 5px 5px;
       border-radius: 4px;
