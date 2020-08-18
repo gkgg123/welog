@@ -12,11 +12,12 @@ import com.web.blog.model.file.Image;
 import com.web.blog.model.file.repository.ImageRepository;
 import com.web.blog.service.account.AccountService;
 import io.swagger.annotations.ApiOperation;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.web.blog.property.JwtProperties;
 import com.web.blog.utils.TokenUtils;
-import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -123,17 +124,15 @@ public class AccountController {
 
     @PutMapping("/pwchange")
     @ApiOperation(value = "패스워드 변경입니다. 헤더에 jwt토큰도 보내주세용")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "originalPassword", value = "원래 비밀번호", required = true,
-                    dataType = "string", paramType = "query", defaultValue = ""),
-            @ApiImplicitParam(name = "changePassowrd", value = "바꿀 비밀번호", required = true,
-                    dataType = "string", paramType = "query", defaultValue = "")
-    })
     public ResponseEntity<BasicResponse> changePassword(
-            @RequestParam(value = "originalPassword", required = true) String originPw,
-            @RequestParam(value = "changePassowrd", required = true) String chgPw,
+            @RequestBody(required = true) String jsonObj,
             @RequestHeader(value = JwtProperties.HEADER_STRING, required = true) String jwt) throws ParseException {
         BasicResponse response = new BasicResponse();
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
+        String originPw = (String) object.get("originalPassword");
+        String chgPw = (String) object.get("changePassword");
 
         if (!accountService.checkPassword(originPw, chgPw, tokenUtils.getUserNameFromToken(jwt))) {
             throw new PasswordNotMatchedException(ErrorCode.PASSWORD_NOT_MATCHED);
