@@ -100,7 +100,7 @@
             <button @click="commentSubmit">댓글 작성</button>
           </div>
         </div>
-        <commentListItems />
+        <commentListItems :wauthor="articleDetail.author" />
       </div>
     </div>
     <!-- 수정요청 -->

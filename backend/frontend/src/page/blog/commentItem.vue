@@ -3,10 +3,11 @@
     <div class="comment-list" v-if="checkSecret">
       <div class="comment-profile">
         <div class="profile-img">
-          <div class="img"></div>
+          <img :src="comment.userProfile" class="img" />
         </div>
         <div class="writer-info">
           <p class="writer-id">{{ comment.name }}</p>
+          <p v-if="checkAuthor">작성자</p>
           <p class="written-day">작성 날짜</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
@@ -46,10 +47,11 @@
     <div class="comment-list" v-if="!checkSecret">
       <div class="comment-profile">
         <div class="profile-img">
-          <i class="far fa-smile"></i>
+          <img :src="comment.userProfile" class="img" />
         </div>
         <div class="writer-info">
           <p class="writer-id">{{ comment.name }}</p>
+          <p v-if="checkAuthor">작성자</p>
           <p class="written-day">작성 날짜</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
@@ -83,6 +85,7 @@ export default {
   },
   props: {
     comment: Object,
+    wauthor: String,
   },
   computed: {
     ...mapState(["username", "articleDetail", "authToken"]),
@@ -104,6 +107,13 @@ export default {
         return false;
       } else {
         return true;
+      }
+    },
+    checkAuthor() {
+      if (this.comment.name == this.wauthor) {
+        return true;
+      } else {
+        return false;
       }
     },
   },

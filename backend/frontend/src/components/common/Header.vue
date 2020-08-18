@@ -35,7 +35,7 @@
 
       <router-link v-if="isLogined" to="/create" class="login-btn">새 글쓰기</router-link>
       <div class="request-alert" v-if="isLogined">
-        <div v-if="!request">
+        <div v-if="!1">
           <i class="far fa-bell"></i>
         </div>
         <div v-else>
