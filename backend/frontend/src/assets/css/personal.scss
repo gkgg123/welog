@@ -526,6 +526,16 @@
     .aside-right {
       display: none;
     }
+    .post-userBar {
+      margin: 0 30px;
+      width: calc(100% - 60px);
+      .userBar {
+        .userImage {
+          width: calc(100px - 3%);
+          height: calc(100px - 3%);
+        }
+      }
+    }
     .commentBox {
       .commentBox2 {
         width: 90%;
@@ -586,6 +596,15 @@
           background-color: #00796b;
           color: #e8eaf6;
         }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 480px) {
+  #detail {
+    .post-userBar {
+      h2 {
+        font-size: 20px;
       }
     }
   }
