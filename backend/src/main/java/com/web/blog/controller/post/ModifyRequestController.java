@@ -1,5 +1,7 @@
 package com.web.blog.controller.post;
 
+import com.web.blog.enums.ErrorCode;
+import com.web.blog.exception.account.CustomUserException;
 import com.web.blog.model.BasicResponse;
 
 
@@ -109,4 +111,42 @@ public class ModifyRequestController {
     return new ResponseEntity<List<Mrcomment>>
             (repository.findAllByCwriter(tokenUtils.getUserNameFromToken(jwtinheader)),HttpStatus.OK);
   }
+
+  @PutMapping("/option")
+  @ApiOperation(value = "변경한 옵션 반영")
+  public ResponseEntity<BasicResponse> changeOption(@RequestBody String jsonObj, HttpServletRequest request) throws ParseException {
+    BasicResponse response = new BasicResponse();
+
+    String jwt = request.getHeader(JwtProperties.HEADER_STRING);
+
+    String usernameFromJwt = tokenUtils.getUserNameFromToken(jwt);
+
+    JSONParser jsonParser = new JSONParser();
+    JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonObj);
+    String usernameFromJson = (String) jsonObject.get("pwriter");
+
+    if(!usernameFromJson.equals(usernameFromJwt)){
+      throw new CustomUserException(ErrorCode.INCORRECT_USER_ACCESS);
+    }
+    boolean opt1 = (boolean) jsonObject.get("ischecked");
+    int opt2 = (int) jsonObject.get("willmodify");
+    boolean opt3 = (boolean) jsonObject.get("ismodified");
+
+    Mrcomment mrcomment = repository.findByCid((int) jsonObject.get("cid"));
+
+    mrcomment.setIschecked(opt1);
+    mrcomment.setIsmodified(opt3);
+    mrcomment.setWillmodify(opt2);
+
+    repository.save(mrcomment);
+
+    response.status = true;
+    response.data = "Options apply successfully";
+
+    return new ResponseEntity<>(response,HttpStatus.OK);
+  }
+
+
+
+
 }
