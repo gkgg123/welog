@@ -292,17 +292,31 @@
             border: solid 3px #48a999;
             border-radius: 8px;
             .modal-header {
-              font-size: 24px;
-              font-weight: 600;
+              border: none;
+              p {
+                font-size: 24px;
+                font-weight: 800;
+                color: #48a999;
+              }
             }
             .modal-body {
+              margin: 0 5%;
               width: 90%;
-              height: 100px;
-              div {
-                vertical-align: middle;
-              }
-              input {
-                border: solid 1px #48a999;
+              height: 150px;
+              .input-label {
+                label {
+                  position: absolute;
+                  margin: 10px;
+                  text-align: end;
+                  width: 25%;
+                  font-weight: 600;
+                }
+                input {
+                  width: 45%;
+                  margin-left: 35%;
+                  height: 32px;
+                  border-bottom: solid 1px #48a999;
+                }
               }
             }
             .modal-footer {

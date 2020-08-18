@@ -42,17 +42,17 @@
             </button>
           </div>
           <div class="modal-body">
-            <div>
-              <label for="password-now">현재 비밀번호 :</label>
-              <input id="password-now" v-model="currentPassword" type="password" />
+            <div class="input-label">
+              <label for="password-now">현재 비밀번호</label>
+              <input id="password-now" type="password" />
             </div>
-            <div>
-              <label for="password-new1">새 비밀번호 :</label>
-              <input id="password-new1" v-model="newPassword1" type="password" />
+            <div class="input-label">
+              <label for="password-new1">새 비밀번호</label>
+              <input id="password-new1" type="password" />
             </div>
-            <div>
-              <label for="password-new2">새 비밀번호 확인 :</label>
-              <input id="password-new2" v-model="newPassword2" type="password" />
+            <div class="input-label">
+              <label for="password-new2">새 비밀번호 확인</label>
+              <input id="password-new2" type="password" />
             </div>
           </div>
           <div class="modal-footer">
