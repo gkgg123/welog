@@ -353,7 +353,6 @@ h2 {
     }
   }
   .right {
-    float: right;
     margin-top: 18px;
     .select-box {
       margin-top: 6px;
@@ -390,7 +389,21 @@ h2 {
         box-shadow: 2px 2px 12px 2px #00796b;
       }
     }
-
+    .request-alert {
+      margin: 0px 5px;
+      div {
+        vertical-align: middle;
+        font-size: 28px;
+        .fas {
+          margin-top: 9px;
+          color: #ffd54f;
+        }
+        .far {
+          margin-top: 9px;
+          color: #707070;
+        }
+      }
+    }
     .dropdown-box {
       text-align: center;
       > a {
@@ -417,7 +430,7 @@ h2 {
       font-size: 20px;
       padding: 8px 5px 5px 5px;
       border-radius: 4px;
-      margin: 10px 10px 15px 10px;
+      margin: 8px 10px 15px 10px;
 
       float: left;
     }
