@@ -19,6 +19,7 @@ import com.web.blog.model.post.LikeInfo;
 import com.web.blog.model.post.Post;
 
 import com.web.blog.model.post.PostInfo;
+import com.web.blog.model.post.UserAndPost;
 import com.web.blog.utils.TokenUtils;
 import io.swagger.annotations.Api;
 import org.json.simple.JSONArray;
@@ -113,6 +114,7 @@ public class PostController {
     @ApiOperation(value = "글 조회")
     public Object ClickPost(@PathVariable String author, @PathVariable int pid) throws Exception {
         Post post = postRepository.getPostByAuthorAndPid(author, pid);
+        Account account = accountRepository.findByUsername(author);
         post.setCount(post.getCount() + 1);
         postRepository.save(post);
 
@@ -120,8 +122,8 @@ public class PostController {
         int likeCount = userlist.size();
         List<Image> images = imageRepository.findByPid(pid);
         PostInfo postInfo = new PostInfo(post, likeCount, userlist, images);
-
-        return new ResponseEntity<>(postInfo, HttpStatus.OK);
+        UserAndPost userAndPost = new UserAndPost(postInfo, account);
+        return new ResponseEntity<>(userAndPost, HttpStatus.OK);
     }
 
     @PostMapping("/{author}")
@@ -149,7 +151,7 @@ public class PostController {
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
-        post.setPostno(postRepository.findByAuthor(author) == null ? 0 : postRepository.findByAuthor(author) + 1);
+        post.setPostno((postRepository.findByAuthor(author) == null ? 0 : postRepository.findByAuthor(author)) + 1);
         post.setAuthor(author);
         post.setTags(tags);
         postRepository.save(post);
