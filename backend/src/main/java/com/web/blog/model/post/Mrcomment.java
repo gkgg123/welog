@@ -31,7 +31,7 @@ public class Mrcomment {
 
   private boolean ischecked;
 
-  private boolean willmodify;
+  private int willmodify;
 
   private boolean ismodified;
 
