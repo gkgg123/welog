@@ -18,13 +18,18 @@
         <th class="state">처리 상태</th>
         <th class="result">처리 결과</th>
       </tr>
-      <tr v-for="(recevieConfirm, index) in recevieConfirmBystatus" :key="recevieConfirm.cid">
+      <tr
+        v-for="(recevieConfirm, index) in recevieConfirmBystatus"
+        :key="recevieConfirm.cid"
+      >
         <td class="num">{{ index + 1 }}</td>
         <td
           class="post-title title"
           data-toggle="modal"
           :data-target="'#receiveconfirm' + recevieConfirm.cid"
-        >{{ recevieConfirm.posttitle }}</td>
+        >
+          {{ recevieConfirm.posttitle }}
+        </td>
         <td class="send-user">{{ recevieConfirm.pwriter }}</td>
         <td class="read">{{ recevieConfirm.read }}</td>
         <td class="state">{{ recevieConfirm.state }}</td>
@@ -40,8 +45,15 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">글 제목 : {{ recevieConfirm.posttitle }}</p>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <p class="modal-title" id="exampleModalLabel">
+                  글 제목 : {{ recevieConfirm.posttitle }}
+                </p>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -55,17 +67,22 @@
                   <div>수정 요청 내역</div>
                   <p>- {{ recevieConfirm.rcomment }}</p>
                 </div>
-                <div
-                  style="display:inline-block; height:5vh; text-align: center; padding:10px"
-                >처리 상태 :</div>
-                <div
-                  style=" display:inline-block; border: solid;border-radius: 10%; height:5vh; padding:10px"
-                  :class="{reject : recevieConfirm.willmodify === -1, approve : recevieConfirm.willmodify === 1}"
-                >{{recevieConfirm.state}}</div>
-
-                <div v-if="recevieConfirm.willmodify == 1">
-                  <div>처리 상태</div>
-                  <div class="request-radio">
+                <div class="request-data">
+                  <div>
+                    처리 상태 :
+                  </div>
+                  <div
+                    class="result-data"
+                    :class="{
+                      reject: recevieConfirm.willmodify === -1,
+                      approve: recevieConfirm.willmodify === 1,
+                    }"
+                  >
+                    {{ recevieConfirm.state }}
+                  </div>
+                </div>
+                <div class="request-data" v-if="recevieConfirm.willmodify == 1">
+                  <div class="request-state">
                     <span v-if="recevieConfirm.ismodified">수정완료</span>
                     <span v-else>수정 中</span>
                   </div>
@@ -188,9 +205,9 @@ export default {
 
 <style scoped>
 .reject {
-  background-color: red;
+  color: red;
 }
 .approve {
-  background-color: blue;
+  color: blue;
 }
 </style>

@@ -89,10 +89,10 @@
                     <span>거절</span>
                   </label>
                 </div>
-                <div v-if="recevieConfirm.willmodify == 1">
-                  <div>처리 상태</div>
-                  <div class="request-radio">
-                    <label class="box-radio-input">
+                <div class="result-state" v-if="recevieConfirm.willmodify == 1">
+                  <div>처리 상태 :</div>
+                  <div>
+                    <label>
                       <input
                         type="checkbox"
                         name="cp_item"
