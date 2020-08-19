@@ -40,15 +40,17 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <p class="modal-title" id="exampleModalLabel">{{recevieConfirm.posttitle}}</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body">...</div>
+              <div class="modal-body">
+                <div>수락</div>
+              </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" data-dismiss="modal">취소</button>
+                <button type="button">완료</button>
               </div>
             </div>
           </div>
@@ -112,19 +114,19 @@ export default {
           this.recevieConfirmlist = res.data;
           this.recevieConfirmlist = this.recevieConfirmlist.map((item) => {
             if (item.ischecked === false) {
-              item.read = "읽지않음";
+              item.read = "읽지 않음";
             } else {
               item.read = "읽음";
             }
             if (item.willmodify === -1) {
               item.state = "수정 거절";
             } else if (item.willmodify === 0) {
-              item.state = "고려 중";
+              item.state = "대기 中";
             } else {
               item.state = "수정 승인";
             }
             if (item.ismodified === false) {
-              item.nextState = "수정 중";
+              item.nextState = "수정 中";
             } else {
               item.nextState = "수정완료";
             }

@@ -1,5 +1,10 @@
 <template>
   <section class="post-list" v-cloak>
+    <section>
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </section>
     <div class="post-card-box" v-for="article in articles" :key="article.pid">
       <div class="post-card">
         <router-link

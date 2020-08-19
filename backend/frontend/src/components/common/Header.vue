@@ -33,7 +33,7 @@
         class="login-btn"
       >로그인</router-link>
 
-      <router-link v-if="isLogined" to="/create" class="login-btn">새 글쓰기</router-link>
+      <router-link v-if="isLogined" to="/create" class="create-btn">새 글쓰기</router-link>
       <div class="request-alert" v-if="isLogined">
         <div v-if="!1">
           <i class="far fa-bell"></i>

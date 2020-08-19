@@ -425,17 +425,26 @@ h2 {
         border-left: 0.3em solid transparent;
       }
     }
-
     .login-btn {
+      font-size: 20px;
+      padding: 8px 5px 5px 5px;
+      border-radius: 4px;
+      margin: 8px 10px 15px 10px;
+      float: left;
+    }
+    .create-btn {
       width: 90px;
       font-size: 20px;
       padding: 8px 5px 5px 5px;
       border-radius: 4px;
       margin: 8px 10px 15px 10px;
-
       float: left;
     }
     .login-btn:hover {
+      color: #fff;
+      background-color: #00796b;
+    }
+    .create-btn:hover {
       color: #fff;
       background-color: #00796b;
     }

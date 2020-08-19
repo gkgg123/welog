@@ -67,8 +67,8 @@
         data-target="#update"
       >수정</button>
       <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
+      <userPostUpdate />
     </div>
-    <userPostUpdate />
 
     <div class="post-userBar">
       <div class="userBar">
@@ -105,7 +105,7 @@
     </div>
     <!-- 수정요청 -->
     <div
-      class="modal fade"
+      class="modal fade request-modal"
       id="example"
       tabindex="-1"
       role="dialog"
@@ -115,24 +115,22 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">수정요청</h5>
+            <p class="modal-title" id="exampleModalLabel">수정요청</p>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">{{ confirmText }}</div>
+          <div class="modal-body">
+            <p>
+              <i class="far fa-edit"></i> 수정 요청 내용
+            </p>
+            <div class="request-content">{{ confirmText }}</div>
+          </div>
 
-          <textarea
-            class="border"
-            name="confirmComment"
-            id="confirmComment"
-            cols="30"
-            rows="10"
-            v-model="confirmComment"
-          ></textarea>
+          <textarea name="confirmComment" id="confirmComment" v-model="confirmComment"></textarea>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" @click="modifyrequestPost">수정</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+            <button type="button" @click="modifyrequestPost">수정</button>
+            <button type="button" data-dismiss="modal" @click="confirmComment">취소</button>
           </div>
         </div>
       </div>
