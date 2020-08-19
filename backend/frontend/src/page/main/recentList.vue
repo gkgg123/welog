@@ -1,6 +1,6 @@
 <template>
   <section class="post-list" v-cloak>
-    <section v-if="state === '1'">
+    <section class="spin-box" v-if="state === '1'">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
       </div>
@@ -19,7 +19,10 @@
             params: { id: article.author, pid: article.pid },
           }"
         >
-          <div v-if="!article.imageList.length" :class="{ 'post-img': !article.imageList.length }" />
+          <div
+            v-if="!article.imageList.length"
+            :class="{ 'post-img': !article.imageList.length }"
+          />
           <div
             v-else
             :style="{
@@ -38,7 +41,7 @@
               {{ article.createDate.slice(5, 7) }}월
               {{ article.createDate.slice(8, 10) }}일ㆍ
             </span>
-            <span class="comment">댓글 {{article.commentCount}}개</span>
+            <span class="comment">댓글 {{ article.commentCount }}개</span>
           </div>
         </router-link>
 
@@ -49,7 +52,8 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-          >{{ article.author }}</router-link>
+            >{{ article.author }}</router-link
+          >
           <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>
