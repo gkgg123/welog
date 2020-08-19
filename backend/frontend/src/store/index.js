@@ -227,7 +227,6 @@ export default new Vuex.Store({
     /// ArticleDetail 정보를 불러오는 곳
     async carryArticle({ state, commit }, location) {
       return await axios.get(constants.baseUrl + location).then((res) => {
-        console.log(res.data);
         const receive = [res.data];
         const temp = receive.map((item) => {
           if (!!item.postInfo.post.tags) {

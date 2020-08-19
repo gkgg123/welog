@@ -1,11 +1,16 @@
 <template>
   <div id="detail" class="mt-5">
-    <div class="post-title">
+    <div class="post-title" v-if="state">
       <div class="title">
         <h2>{{ articleDetail.title }}</h2>
         <div class="title-item">
           <p class="author">{{ articleDetail.author }}</p>
-          <p class="written-date">• 작성일</p>
+          <p class="written-date">
+            • 작성일 {{ articleDetail.createDate.slice(0, 4) }}년
+            {{ articleDetail.createDate.slice(5, 7) }}월
+            {{ articleDetail.createDate.slice(8, 10) }}일
+            {{articleDetail.createDate.slice(11,13)}}시
+          </p>
           <div class="written-tag">
             <span v-for="(tag, index) in articleDetail.tags" :key="index">
               <router-link
@@ -56,6 +61,7 @@
       mode="preview"
       v-model="articleDetail.content"
       ref="editor"
+      style="position:relative;"
       @copy-code-success="handleCopyCodeSuccess"
     />
     <!-- 수정 삭제 버튼 -->
@@ -82,8 +88,10 @@
 
     <div id="context-menu" class="context-menu">
       <div class="item" data-toggle="modal" data-target="#example" @click="closeCofirmmenu">수정요청</div>
+      <div class="item" @click="copyString">복사하기</div>
       <div class="item" @click="closeCofirmmenu">나가기</div>
     </div>
+
     <div class="commentBox">
       <div class="commentBox2">
         <div class="comment-label">
@@ -145,6 +153,29 @@ import { mapState, mapActions, mapGetters } from "vuex";
 import constants from "@/lib/constants.js";
 import userPostUpdate from "@/page/blog/userPostUpdate.vue";
 import commentListItems from "@/page/blog/commentListItems.vue";
+function getPosition(e) {
+  var posx = 0;
+  var posy = 0;
+
+  if (!e) var e = window.event;
+
+  if (e.pageX || e.pageY) {
+    posx = e.pageX;
+    posy = e.pageY;
+  } else if (e.clientX || e.clientY) {
+    posx =
+      e.clientX +
+      document.body.scrollLeft +
+      document.documentElement.scrollLeft;
+    posy =
+      e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+  }
+
+  return {
+    x: posx,
+    y: posy,
+  };
+}
 export default {
   name: "userPost",
   data() {
@@ -157,6 +188,7 @@ export default {
       isSecret: false,
       isLikeuser: false,
       likecount: 0,
+      state: false,
     };
   },
   components: {
@@ -181,12 +213,16 @@ export default {
     //  오른쪽 버튼 Custom
     contextmenu(event) {
       const creatediv = document.querySelector(".v-md-editor__preview-wrapper");
-      this.confirmText = document.getSelection().toString();
       creatediv.addEventListener("contextmenu", (event) => {
         event.preventDefault();
         var contextElement = document.getElementById("context-menu");
-        contextElement.style.top = event.offsetY + 450 + "px";
-        contextElement.style.left = event.offsetX + 450 + "px";
+        var clickCoords = getPosition(event);
+        var clickCoordsX = clickCoords.x;
+        var clickCoordsY = clickCoords.y;
+        contextElement.style.left = clickCoordsX + "px";
+
+        contextElement.style.top = clickCoordsY + "px";
+
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
@@ -194,6 +230,20 @@ export default {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
+    },
+    copyToClipboard(val) {
+      var t = document.createElement("textarea");
+      document.body.appendChild(t);
+      t.value = val;
+      t.select();
+      document.execCommand("copy");
+      document.body.removeChild(t);
+    },
+    copyString(event) {
+      this.copyToClipboard(this.confirmText);
+      alert("복사되었습니다.");
+      var contextElement = document.getElementById("context-menu");
+      contextElement.classList.remove("active");
     },
     closeCofirmmenu() {
       var contextElement = document.getElementById("context-menu");
@@ -228,7 +278,9 @@ export default {
               totalData
             )
             .then((res) => {
-              this.$router.go();
+              this.totalCreate();
+              alert("댓글이 작성됬습니다.");
+              this.commentContents = "";
             })
             .catch((err) => {
               console.log(err.response);
@@ -292,6 +344,7 @@ export default {
       await this.carryComment(`post/${this.$route.params.pid}/comment/`);
       this.anchorCreate();
       this.isLike();
+      this.state = true;
       this.likecount = this.articleDetail.likeCount;
     },
 
@@ -375,7 +428,9 @@ export default {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   },
   mounted() {
-    this.contextmenu();
+    if (this.isLogined) {
+      this.contextmenu();
+    }
     this.totalCreate();
   },
 };

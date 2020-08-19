@@ -6,13 +6,17 @@
           <img :src="comment.userProfile" class="img" />
         </div>
         <div class="writer-info">
-          <p class="writer-id">{{ comment.name }}</p>
-          <p v-if="checkAuthor">작성자</p>
+          <span class="writer-id">{{ comment.name }}</span>
+          <span
+            v-if="checkAuthor"
+            style="margin:0px 5px; background:#69f0ae; padding:2.5px; border-radius:30%"
+          >작성자</span>
+
           <p class="written-day">작성 날짜</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
-          <p @click="popUp">수정</p>
           <p @click="deleteComment">삭제</p>
+          <p @click="popUp">수정</p>
         </div>
       </div>
       <div class="comment-content">{{ comment.content }}</div>
@@ -40,8 +44,8 @@
             @click="isSecret = !isSecret"
           ></i>
         </div>
-        <button class="btn close closedisplay" :data-set="comment.cid" @click="confirmCMT">수정</button>
         <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">취소</button>
+        <button class="btn close closedisplay" :data-set="comment.cid" @click="confirmCMT">수정</button>
       </div>
     </div>
     <div class="comment-list" v-if="!checkSecret">
@@ -55,8 +59,8 @@
           <p class="written-day">작성 날짜</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
-          <p @click="popUp">수정</p>
           <p @click="deleteComment">삭제</p>
+          <p @click="popUp">수정</p>
         </div>
       </div>
       <div class="comment-content-secret">
