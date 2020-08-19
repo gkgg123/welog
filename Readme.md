@@ -55,7 +55,7 @@
 
 - aws
 
-<img src="Readme.assets/aws-logo.png" alt="issue management" style="zoom:10%;" />
+<img src="Readme.assets/aws-logo.png" alt="issue management"/>
 
 
 
