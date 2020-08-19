@@ -102,6 +102,7 @@ export default new Vuex.Store({
         .post(constants.baseUrl + info.location, info.data)
 
         .then((res) => {
+          console.log(res);
           const token = res.headers.authorization.replace("Bearer", "");
           const data = JSON.parse(atob(token.split(".")[1]));
           commit("SET_USERNAME", data.username);
