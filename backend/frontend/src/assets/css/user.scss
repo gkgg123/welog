@@ -4,7 +4,6 @@
 .user {
   margin-top: 5%;
   height: 80vh;
-
   .wrapC {
     width: 750px;
     margin: 70px auto;
@@ -15,6 +14,10 @@
   .middle {
     width: 330px;
   }
+}
+
+// 로그인 페이지
+#login {
   .logo-welcome {
     margin: 10px 0px 20px 0px;
     height: 80px;
@@ -69,29 +72,17 @@
     }
   }
 
-  .btn {
+  button {
     @include wrap;
     border: none;
     border-radius: 5px;
     background-color: #5ac2ab;
     color: #fff;
-  }
-}
-
-// 로그인 페이지
-#login {
-  .sns-login {
-    @include wrap;
-    margin: 20px 0;
-    > div {
-      float: right;
-      margin-left: 10px;
-      img {
-        width: 55px;
-        height: 55px;
-        border-radius: 55px;
-      }
-    }
+    height: 45px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 600;
   }
   .add-option {
     @include wrap;
@@ -105,15 +96,7 @@
       float: right;
     }
   }
-  .btn--text {
-    color: #36cb45;
-  }
-  .btn--login {
-    height: 45px;
-  }
   .btn--facebook-login {
-    height: 45px;
-    padding-left: 20px;
     background-color: #3b5998;
     border-color: #3b5998;
     display: flex;
@@ -127,7 +110,6 @@
     }
   }
   .btn--naver-login {
-    height: 45px;
     background-color: #1ec800;
     border-color: #1ec800;
     display: flex;
@@ -143,14 +125,13 @@
     }
   }
   .btn--google-login {
-    height: 45px;
     background-color: #db4a39;
     border-color: #db4a39;
     display: flex;
     align-items: center;
     justify-content: center;
     .fab {
-      margin-left: 10px;
+      margin-left: 7px;
     }
     span {
       margin: auto;
@@ -159,6 +140,9 @@
 }
 
 #join {
+  .middle {
+    width: 400px;
+  }
   .signup-image {
     margin: 50px;
   }
@@ -166,6 +150,7 @@
     margin-top: 20px;
   }
   .go-term {
+    margin-right: 65px;
     float: right;
     opacity: 0.9;
     cursor: pointer;
@@ -181,6 +166,78 @@
   .term-span {
     color: #aaaaaa;
     margin: 0px 97px 0px 6px;
+  }
+
+  .logo-welcome {
+    margin: 10px 0px 20px 0px;
+    height: 80px;
+    width: 530px;
+  }
+  .login-image {
+    margin: 10px 0px 40px 0px;
+  }
+  .input-id {
+    margin-bottom: 5px;
+    position: relative;
+    input {
+      display: inline-block;
+      margin: 0;
+      width: 85%;
+      font-size: 18px;
+      border-bottom: 5px solid #5ac2ab;
+      padding: 25px 5px 5px 5px;
+    }
+    button {
+      position: absolute;
+      top: 10px;
+      left: 265px;
+      padding: 8px;
+      border: none;
+
+      border-radius: 5px;
+      background-color: #5ac2ab;
+      color: #fff;
+    }
+    p {
+      font-size: 13px;
+      color: red;
+    }
+  }
+  .input-wrap {
+    margin-bottom: 25px;
+    position: relative;
+    display: flex;
+    input {
+      display: inline-block;
+      margin: 0;
+      width: 85%;
+      font-size: 18px;
+      border-bottom: 5px solid #5ac2ab;
+      padding: 15px 5px 5px 5px;
+    }
+
+    &.password-wrap {
+      input {
+        padding-right: 30px;
+      }
+      i {
+        position: absolute;
+        top: 18px;
+        left: 310px;
+      }
+    }
+  }
+
+  .btn {
+    @include wrap;
+    border: none;
+    border-radius: 5px;
+    background-color: #5ac2ab;
+    color: #fff;
+    width: 85%;
+    font-size: 20px;
+    font-weight: 600;
+    height: 45px;
   }
 }
 

@@ -24,13 +24,10 @@
           />
           <label for="password">비밀번호를 입력해주세요</label>
         </div>
-        <button
-          class="btn btn--back btn--login rounded-lg mb-2"
-          @click="login(loginData)"
-        >
+        <button @click="login(loginData)">
           로그인 하기
         </button>
-        <button class="btn btn--google-login rounded-lg mb-2">
+        <button class="btn btn--google-login mb-2">
           <i class="fab fa-google-plus-g fa-2x"></i>
           <span>구글 아이디로 로그인</span>
         </button>

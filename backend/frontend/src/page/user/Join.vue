@@ -4,13 +4,15 @@
       <img class="signup-image" src="img\signup.png" alt />
       <div class="middle">
         <div class="form-wrap">
-          <div class="input-wrap">
+          <div class="input-id">
             <input
               v-model="nickName"
               id="nickname"
               placeholder="닉네임을 입력해주세요"
               type="text"
             />
+            <button>중복확인</button>
+            <p>* 닉네임 설정 후 변경불가</p>
           </div>
 
           <div class="input-wrap">
@@ -119,8 +121,9 @@
 import "../../assets/css/user.scss";
 import constants from "../../lib/constants";
 import axios from "axios";
+import TermsOfUse from "@/page/user/TermsOfUse";
 export default {
-  components: {},
+  components: { TermsOfUse },
   created() {},
   methods: {
     signup() {
