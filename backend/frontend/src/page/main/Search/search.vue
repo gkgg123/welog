@@ -21,8 +21,7 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-            >{{ article.author }}</router-link
-          >
+          >{{ article.author }}</router-link>
         </div>
         <div class="list-title">
           <router-link
@@ -31,8 +30,7 @@
               name: constants.URL_TYPE.POST.POST,
               params: { id: article.author, pid: article.pid },
             }"
-            >{{ article.title }}</router-link
-          >
+          >{{ article.title }}</router-link>
         </div>
         <div class="list-content">
           <router-link
@@ -41,8 +39,7 @@
               name: constants.URL_TYPE.POST.POST,
               params: { id: article.author, pid: article.pid },
             }"
-            >{{ article.content }}</router-link
-          >
+          >{{ article.content }}</router-link>
         </div>
         <div class="list-data">
           <span class="date">
@@ -65,7 +62,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import "@/assets/css/post.scss";
 import constants from "@/lib/constants";
 export default {
@@ -98,6 +95,7 @@ export default {
   },
   computed: {
     ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
+    ...mapGetters(["isreceived"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
@@ -107,9 +105,11 @@ export default {
 
       if (!!this.receiveArticleList.length) {
         watcher.enterViewport(() => {
-          setTimeout(() => {
-            this.attachArticles();
-          }, 1000);
+          if (this.isreceived) {
+            setTimeout(() => {
+              this.attachArticles();
+            }, 1000);
+          }
         });
       }
     },

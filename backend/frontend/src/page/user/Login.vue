@@ -87,7 +87,7 @@ export default {
     },
     checkpassword() {
       const passwordlabel = document.querySelector("#passwordlabel");
-      if (this.loginData.password.length > 8) {
+      if (this.loginData.password.length >= 8) {
         passwordlabel.setAttribute("style", "color:blue");
         passwordlabel.innerText = "비밀번호가 적절합니다.";
         this.ispassword = true;
