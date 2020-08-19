@@ -5,34 +5,20 @@
       <div class="middle">
         <div class="form-wrap">
           <div class="input-id">
-            <input
-              v-model="nickName"
-              id="nickname"
-              placeholder="닉네임을 입력해주세요"
-              type="text"
-            />
-            <button>중복확인</button>
+            <input v-model="nickName" id="nickname" placeholder="닉네임을 입력해주세요" type="text" />
+            <button @click="checkNickname" v-if="!ninknameoverlapcheck">중복확인</button>
+            <button @click="resetNickname" v-else>닉네임 변경</button>
             <p>* 닉네임 설정 후 변경불가</p>
           </div>
 
           <div class="input-wrap">
-            <input
-              v-model="email"
-              id="email"
-              placeholder="이메일을 입력해주세요"
-              type="text"
-            />
+            <input v-model="email" id="email" placeholder="이메일을 입력해주세요" type="text" />
           </div>
 
           <div class="input-wrap password-wrap">
-            <input
-              v-model="password"
-              id="password"
-              :type="passwordType"
-              placeholder="비밀번호를 입력해주세요"
-            />
+            <input v-model="password" id="password" :type="passwordType" placeholder="비밀번호를 입력해주세요" />
             <span :class="{ active: passwordType === 'text' }">
-              <i class="fas fa-eye"></i>
+              <i class="fas fa-eye" @click="viewpassword"></i>
             </span>
           </div>
 
@@ -44,7 +30,7 @@
               placeholder="비밀번호를 한번 더 입력해주세요"
             />
             <span :class="{ active: passwordConfirmType === 'text' }">
-              <i class="fas fa-eye"></i>
+              <i class="fas fa-eye" @click="viewpasswordConfirm"></i>
             </span>
           </div>
         </div>
@@ -59,9 +45,7 @@
           <span class="term-span">약관에 동의합니다</span>
         </label>
 
-        <span class="go-term" data-toggle="modal" data-target="#staticBackdrop"
-          >약관 보기</span
-        >
+        <span class="go-term" data-toggle="modal" data-target="#staticBackdrop">약관 보기</span>
         <div
           class="modal fade"
           id="staticBackdrop"
@@ -76,12 +60,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h3 class="modal-title" id="staticBackdropLabel">이용약관</h3>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -94,17 +73,13 @@
                   class="modal-btn-secondary rounded-lg"
                   data-dismiss="modal"
                   v-on:click="isTerm = true"
-                >
-                  동의함
-                </button>
+                >동의함</button>
                 <button
                   type="button"
                   class="modal-btn-primary rounded-lg"
                   data-dismiss="modal"
                   v-on:click="isTerm = false"
-                >
-                  동의안함
-                </button>
+                >동의안함</button>
               </div>
             </div>
           </div>
@@ -150,6 +125,57 @@ export default {
       this.$router.push({ name: constants.URL_TYPE.USER.LOGIN });
       window.close();
     },
+    checkNickname(event) {
+      axios
+        .get(constants.baseUrl + "user/check/nickname", {
+          params: {
+            nickname: this.nickName,
+          },
+        })
+        .then((res) => {
+          if (res.data === false) {
+            alert("닉네임이 중복됩니다.");
+          } else {
+            this.setnickname = this.nickName;
+            this.ninknameoverlapcheck = true;
+            const inputNickname = document.querySelector("#nickname");
+            inputNickname.setAttribute("disabled", true);
+            inputNickname.setAttribute("style", "background-color:red");
+            alert("사용할수 있는 닉네임입니다.");
+          }
+        });
+    },
+    resetNickname() {
+      this.setnickname = "";
+      this.ninknameoverlapcheck = false;
+      const inputNickname = document.querySelector("#nickname");
+      inputNickname.removeAttribute("disabled");
+      inputNickname.setAttribute("style", "background-color:white");
+    },
+
+    /// 비밀번호 표시
+    viewpassword(event) {
+      if (this.passwordType == "text") {
+        this.passwordType = "password";
+        event.target.classList.add("fa-eye");
+        event.target.classList.remove("fa-eye-slash");
+      } else {
+        this.passwordType = "text";
+        event.target.classList.add("fa-eye-slash");
+        event.target.classList.remove("fa-eye");
+      }
+    },
+    viewpasswordConfirm(event) {
+      if (this.passwordConfirmType == "text") {
+        this.passwordConfirmType = "password";
+        event.target.classList.add("fa-eye");
+        event.target.classList.remove("fa-eye-slash");
+      } else {
+        this.passwordConfirmType = "text";
+        event.target.classList.add("fa-eye-slash");
+        event.target.classList.remove("fa-eye");
+      }
+    },
     checkSingupData(signupData) {
       if (this.isTerm) {
         console.log(signupData);
@@ -185,6 +211,8 @@ export default {
       constants,
       email: "",
       nickName: "",
+      setnickname: "",
+      ninknameoverlapcheck: false,
       password: "",
       passwordConfirm: "",
       isTerm: false,

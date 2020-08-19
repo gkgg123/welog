@@ -50,7 +50,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["authToken"]),
+    ...mapState(["authToken", "s3url"]),
   },
   methods: {
     checkCreate() {
@@ -118,6 +118,7 @@ export default {
         alert("제목과 내용을 빈칸으로 낼수 없습니다.");
       } else {
         this.imageList = this.imageList.filter((item) => {
+          const imageUrl = item.path.replace(this.s3url, constants.imageUrl);
           return this.text.includes(item.iid);
         });
         const images = this.imageList.map((image) => {
@@ -158,8 +159,14 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.imageList.push(res.data.object);
+          console.log(res.data.object.path);
+          const imageUrl = res.data.object.path.replace(
+            this.s3url,
+            constants.imageUrl
+          );
+          console.log(imageUrl);
           insertImage({
-            url: `${constants.imageUrl}${res.data.object.iid}`,
+            url: imageUrl,
             desc: res.data.object.iname,
           });
         })

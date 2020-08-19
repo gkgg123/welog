@@ -25,6 +25,7 @@ export default new Vuex.Store({
     commentList: [],
     nextPage: 0,
     pageLimit: 0,
+    modifyState: false,
   },
   getters: {
     isLogined: (state) => !!state.authToken,
@@ -55,7 +56,6 @@ export default new Vuex.Store({
       state.userintro = description;
     },
     SET_USERPROFILE(state, profileUrl) {
-      console.log(profileUrl);
       state.userprofile = profileUrl;
     },
     // RECEVIE_ARTICLES를 변경하는 함수
@@ -90,6 +90,9 @@ export default new Vuex.Store({
     },
     SET_COMMENTLIST(state, comment) {
       state.commentList = comment;
+    },
+    SET_MODIFYSTATE(state, modifystate) {
+      state.modifyState = modifystate;
     },
   },
   actions: {
@@ -130,6 +133,9 @@ export default new Vuex.Store({
         });
       }
     },
+    // getModifyCommentState({commit}) {
+    //   axios.
+    // },
     //Login 하는 함수
     login({ dispatch }, loginData) {
       const info = {

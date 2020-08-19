@@ -58,7 +58,7 @@ import constants from "@/lib/constants.js";
 
 export default {
   computed: {
-    ...mapState(["updateArticle", "articleDetail", "authToken"]),
+    ...mapState(["updateArticle", "articleDetail", "authToken", "s3url"]),
   },
   data() {
     return {
@@ -122,7 +122,8 @@ export default {
         alert("제목과 내용을 빈칸으로 낼수 없습니다.");
       } else {
         this.imageList = this.imageList.filter((item) => {
-          return this.updateArticle.content.includes(item.iid);
+          const imgageUrl = item.path.replace(this.s3url, constants.imageUrl);
+          return this.updateArticle.content.includes(imgageUrl);
         });
         const images = this.imageList.map((image) => {
           const data = {};
@@ -159,9 +160,13 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.imageList.push(res.data.object);
+          const imageUrl = res.data.object.path.replace(
+            this.s3url,
+            constants.imageUrl
+          );
           insertImage({
             // 고쳐야할 부분
-            url: `${constants.baseUrl}${res.data.object.path}`,
+            url: imageUrl,
             desc: res.data.object.iname,
           });
         })

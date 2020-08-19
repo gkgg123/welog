@@ -157,42 +157,9 @@ export default {
       constants,
       category: "all",
       recevieConfirmlist: [],
-      defalutWillmodify: "",
-      defalutisModifyed: "",
     };
   },
   methods: {
-    getConfirmDetail(recevieConfirm) {
-      this.defalutWillmodify = recevieConfirm.willmodify;
-      this.defalutisModifyed = recevieConfirm.ismodified;
-      axios
-        .get(constants.baseUrl + `modfrequest/comment/${recevieConfirm.cid}`)
-        .then((res) => {
-          recevieConfirm.ischecked = true;
-          recevieConfirm.read = "읽음";
-        });
-    },
-    returnData(recevieConfirm) {
-      recevieConfirm.willmodify = this.defalutWillmodify;
-      recevieConfirm.ismodified = this.defalutisModifyed;
-    },
-    putReceiveMrcomment(recevieConfirm) {
-      console.log(recevieConfirm);
-      recevieConfirm.willmodify = String(recevieConfirm.willmodify);
-      axios
-        .put(constants.baseUrl + "modfrequest/option/", recevieConfirm, {
-          headers: {
-            Authorization: this.authToken,
-          },
-        })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
-    },
-
     getReceiveMrcomment() {
       const totalData = {
         Authorization: this.authToken,

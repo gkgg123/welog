@@ -103,7 +103,7 @@ public class ModifyRequestController {
             (repository.findAllByPwriter(tokenUtils.getUserNameFromToken(jwtinheader)),HttpStatus.OK);
   }
 
-  @GetMapping("/SSS")
+  @GetMapping("/commentwriter")
   @ApiOperation(value = "로그인한 계정이 작성한 모든 수정 요청을 불러옴")
   public ResponseEntity<List<Mrcomment>> getCommentListbyCwriter(HttpServletRequest request){
     String jwtinheader = request.getHeader(JwtProperties.HEADER_STRING);

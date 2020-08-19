@@ -69,7 +69,7 @@
 
 <script>
 import constants from "../../../lib/constants";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import "../../../assets/css/user.scss";
 export default {
   name: "profile",
@@ -80,6 +80,12 @@ export default {
   },
   computed: {
     ...mapState(["username"]),
+  },
+  methods: {
+    ...mapActions(["headerChange"]),
+  },
+  mounted() {
+    this.headerChange(this.$route.params.username);
   },
 };
 </script>

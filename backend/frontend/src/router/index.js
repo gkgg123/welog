@@ -47,6 +47,10 @@ const routes = [
     path: "/:username/profile/",
     name: constants.URL_TYPE.USER.PROFILE,
     component: UserProfile,
+    beforeEnter: (to, from, next) => {
+      store.dispatch("headerChange", to.params.username);
+      next();
+    },
     redirect: {
       name: constants.URL_TYPE.USER.PROFILECONFIG,
     },
