@@ -51,6 +51,7 @@ public class AccountController {
     @ApiOperation(value = "회원 가입")
     public String signup(@RequestBody Account account) {
         account.setGrade(AccountGrade.USER);
+        account.setProfileUrl("no_img");
         accountService.createNew(account);
 
         return "signup success";

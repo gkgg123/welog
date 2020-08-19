@@ -143,7 +143,7 @@ export default {
             totalData
           )
           .then((res) => {
-            console.log(res.data);
+            // 바뀌어야할곳
             // setTimeout(this.$router.go(0), 1000);
           })
           .catch((err) => {
@@ -158,14 +158,12 @@ export default {
       axios
         .post(constants.baseUrl + "file/upload/", formData)
         .then((res) => {
-          console.log(res.data);
           this.imageList.push(res.data.object);
           const imageUrl = res.data.object.path.replace(
             this.s3url,
             constants.imageUrl
           );
           insertImage({
-            // 고쳐야할 부분
             url: imageUrl,
             desc: res.data.object.iname,
           });

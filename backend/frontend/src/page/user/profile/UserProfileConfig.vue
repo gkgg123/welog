@@ -102,6 +102,7 @@ export default {
       "defalutprofileimg",
       "userintro",
       "authToken",
+      "s3url",
     ]),
   },
   methods: {
@@ -114,7 +115,6 @@ export default {
         originalPassword: this.currentPassword,
         changePassword: this.newPassword1,
       };
-      console.log(totalData);
       axios
         .put(constants.baseUrl + `user/pwchange`, totalData, {
           headers: {
@@ -122,6 +122,7 @@ export default {
           },
         })
         .then((res) => {
+          //추가
           console.log(res);
         })
         .catch((err) => {
@@ -134,8 +135,10 @@ export default {
       axios
         .post(constants.baseUrl + `user/${this.username}/profile`, formData)
         .then((res) => {
-          console.log(res);
-          var receiveimg = constants.imageUrl + res.data.object.iid;
+          var receiveimg = res.data.object.path.replace(
+            this.s3url,
+            constants.imageUrl
+          );
 
           this.SET_USERPROFILE(receiveimg);
         })

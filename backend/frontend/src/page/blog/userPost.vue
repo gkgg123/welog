@@ -13,8 +13,7 @@
                   name: constants.URL_TYPE.MAIN.SEARCH,
                   query: { type: 'tag', search: tag },
                 }"
-                >{{ tag }}</router-link
-              >
+              >{{ tag }}</router-link>
             </span>
           </div>
         </div>
@@ -66,26 +65,14 @@
         v-if="checkAuthorLogin"
         data-toggle="modal"
         data-target="#update"
-      >
-        수정
-      </button>
-      <button
-        class="update-button"
-        v-if="checkAuthorLogin"
-        @click="confirmDelete"
-      >
-        삭제
-      </button>
+      >수정</button>
+      <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
       <userPostUpdate />
     </div>
 
     <div class="post-userBar">
       <div class="userBar">
-        <img
-          class="userImage"
-          :src="articleDetail.profileUrl"
-          alt="profileImage"
-        />
+        <img class="userImage" :src="articleDetail.profileUrl" alt="profileImage" />
         <div class="userIntro">
           <h2 class="box">{{ articleDetail.author }}</h2>
           <p class="box">{{ articleDetail.lineintro }}</p>
@@ -94,14 +81,7 @@
     </div>
 
     <div id="context-menu" class="context-menu">
-      <div
-        class="item"
-        data-toggle="modal"
-        data-target="#example"
-        @click="closeCofirmmenu"
-      >
-        수정요청
-      </div>
+      <div class="item" data-toggle="modal" data-target="#example" @click="closeCofirmmenu">수정요청</div>
       <div class="item" @click="closeCofirmmenu">나가기</div>
     </div>
     <div class="commentBox">
@@ -110,18 +90,11 @@
           <p>{{ commentNumber }}개의 댓글</p>
         </div>
         <div class="comment">
-          <textarea
-            placeholder="댓글을 남겨주세요"
-            v-model="commentContents"
-          ></textarea>
+          <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
           <div class="comment-underbar">
             <span>비밀글</span>
             <div class="secret-button">
-              <i
-                class="fas fa-lock"
-                v-if="isSecret"
-                @click="isSecret = !isSecret"
-              ></i>
+              <i class="fas fa-lock" v-if="isSecret" @click="isSecret = !isSecret"></i>
               <i class="fas fa-unlock" v-else @click="isSecret = !isSecret"></i>
             </div>
             <button @click="commentSubmit">댓글 작성</button>
@@ -143,40 +116,21 @@
         <div class="modal-content">
           <div class="modal-header">
             <p class="modal-title" id="exampleModalLabel">수정요청</p>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <p><i class="far fa-edit"></i> 수정 요청 내용</p>
+            <p>
+              <i class="far fa-edit"></i> 수정 요청 내용
+            </p>
             <div class="request-content">{{ confirmText }}</div>
           </div>
 
-          <textarea
-            name="confirmComment"
-            id="confirmComment"
-            v-model="confirmComment"
-          ></textarea>
+          <textarea name="confirmComment" id="confirmComment" v-model="confirmComment"></textarea>
           <div class="modal-footer">
-            <button
-              type="button"
-              data-dismiss="modal"
-              @click="modifyrequestPost"
-            >
-              수정요청
-            </button>
-            <button
-              type="button"
-              data-dismiss="modal"
-              @click="returnconfirmComment"
-            >
-              취소
-            </button>
+            <button type="button" data-dismiss="modal" @click="modifyrequestPost">수정요청</button>
+            <button type="button" data-dismiss="modal" @click="returnconfirmComment">취소</button>
           </div>
         </div>
       </div>
@@ -236,7 +190,7 @@ export default {
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
-      creatediv.addEventListener("click", function() {
+      creatediv.addEventListener("click", function () {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
@@ -297,7 +251,6 @@ export default {
           totalData
         )
         .then((res) => {
-          console.log(res);
           alert("수정요청이 성공적으로 보내졌습니다.");
         })
         .catch((err) => {

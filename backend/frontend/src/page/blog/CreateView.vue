@@ -99,7 +99,6 @@ export default {
     /// 코드 복사
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
-      console.log(code);
     },
     changeHeight() {
       const mainMarkdownEditor = document.querySelector(".v-md-editor__main");
@@ -118,7 +117,6 @@ export default {
         alert("제목과 내용을 빈칸으로 낼수 없습니다.");
       } else {
         this.imageList = this.imageList.filter((item) => {
-          console.log(item);
           const imageUrl = item.path.replace(this.s3url, constants.imageUrl);
           return this.text.includes(imageUrl);
         });
@@ -158,14 +156,11 @@ export default {
       axios
         .post(constants.baseUrl + "file/upload/", formData)
         .then((res) => {
-          console.log(res.data);
           this.imageList.push(res.data.object);
-          console.log(res.data.object.path);
           const imageUrl = res.data.object.path.replace(
             this.s3url,
             constants.imageUrl
           );
-          console.log(imageUrl);
           insertImage({
             url: imageUrl,
             desc: res.data.object.iname,

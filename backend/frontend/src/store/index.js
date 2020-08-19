@@ -103,7 +103,6 @@ export default new Vuex.Store({
         .post(constants.baseUrl + info.location, info.data)
 
         .then((res) => {
-          console.log(res);
           const token = res.headers.authorization.replace("Bearer", "");
           const mrcount = res.headers.mralarmcount;
           const data = JSON.parse(atob(token.split(".")[1]));
@@ -183,7 +182,6 @@ export default new Vuex.Store({
       await axios
         .get(constants.baseUrl + payload.location, { params: payload.query })
         .then((res) => {
-          console.log(res.data);
           var receive = Object.values(res.data);
           const temp = receive.map((item) => {
             if (!!item.post.tags) {
@@ -206,7 +204,6 @@ export default new Vuex.Store({
         .catch((err) => {
           if (err.response.data.data === "fail") {
             commit("SET_ARTICLES", []);
-            console.log(state.articles);
           }
         });
     },
@@ -258,7 +255,6 @@ export default new Vuex.Store({
           item.postInfo.post.lineintro = item.account.userDescription;
           return item.postInfo.post;
         });
-        console.log(temp);
         commit("SET_ARTICLEDETAIL", temp[0]);
       });
     },

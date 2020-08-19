@@ -1,7 +1,7 @@
 <template>
   <section class="post-list">
     <section class="loading-box" v-if="state === '1'">
-      <img src="img/loading.gif" alt="" />
+      <img src="img/loading.gif" alt />
     </section>
     <div
       v-else-if="state === true"
@@ -16,10 +16,7 @@
             params: { id: article.author, pid: article.pid },
           }"
         >
-          <div
-            v-if="!article.imageList.length"
-            :class="{ 'post-img': !article.imageList.length }"
-          />
+          <div v-if="!article.imageList.length" :class="{ 'post-img': !article.imageList.length }" />
           <div
             v-else
             :style="{
@@ -49,12 +46,19 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-            >{{ article.author }}</router-link
-          >
+          >작성자 : {{ article.author }}</router-link>
           <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>
     </div>
+    <div
+      role="status"
+      v-if="loading"
+      style="width:100%; text-align:center; height:0vh; padding:0px; margin:0px"
+    >
+      <img src="/img/pageloading.gif" alt />
+    </div>
+
     <div id="bottomSensor" style="height:10px"></div>
   </section>
 </template>
@@ -73,6 +77,7 @@ export default {
     return {
       constants,
       state: "1",
+      loading: false,
     };
   },
   computed: {
@@ -95,11 +100,18 @@ export default {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
-        setTimeout(() => {
+        if (this.nextPage <= this.pageLimit) {
           if (this.isreceived) {
-            this.attachArticles();
+            this.loading = true;
           }
-        }, 500);
+          setTimeout(() => {
+            if (this.isreceived) {
+              this.attachArticles().then(() => {
+                this.loading = false;
+              });
+            }
+          }, 1000);
+        }
       });
     },
     loadUntilVieportIsFull() {

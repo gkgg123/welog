@@ -56,6 +56,14 @@
         </div>
       </div>
     </div>
+    <div
+      role="status"
+      v-if="loading"
+      style="width:100%; text-align:center; height:0vh; padding:0px; margin:0px"
+    >
+      <img src="/img/pageloading.gif" alt />
+    </div>
+
     <div id="bottomSensor" style="height:10px;"></div>
   </section>
 </template>
@@ -74,6 +82,7 @@ export default {
     return {
       constants,
       state: "1",
+      loading: false,
     };
   },
   computed: {
@@ -96,11 +105,18 @@ export default {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
-        setTimeout(() => {
+        if (this.nextPage <= this.pageLimit) {
           if (this.isreceived) {
-            this.attachArticles();
+            this.loading = true;
           }
-        }, 500);
+          setTimeout(() => {
+            if (this.isreceived) {
+              this.attachArticles().then(() => {
+                this.loading = false;
+              });
+            }
+          }, 1000);
+        }
       });
     },
     loadUntilVieportIsFull() {
@@ -111,7 +127,7 @@ export default {
           if (this.isreceived) {
             this.attachArticles();
           }
-        });
+        }, 500);
       }
     },
   },

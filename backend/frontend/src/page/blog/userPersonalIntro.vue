@@ -64,7 +64,6 @@ export default {
         intro: [intro],
         token: this.authToken,
       };
-      console.log(totalData);
       axios
         .post(constants.baseUrl + `post/${author}/intro/`, totalData)
         .then((res) => {
@@ -86,7 +85,6 @@ export default {
     ...mapState(["authToken", "username"]),
     isCheckAuthor() {
       const author = this.$route.params.id;
-      console.log(author);
       console.log(this.username);
       if (author === this.username) {
         return true;

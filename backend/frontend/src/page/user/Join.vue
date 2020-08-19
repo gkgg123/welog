@@ -178,10 +178,8 @@ export default {
     },
     checkSingupData(signupData) {
       if (this.isTerm) {
-        console.log(signupData);
         if (signupData.password === this.passwordConfirm) {
           if (signupData.password.length >= 8) {
-            console.log(this.reg.test(signupData.useremail), this.reg);
             if (
               signupData.email !== "" &&
               this.reg.test(signupData.useremail)

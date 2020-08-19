@@ -18,19 +18,14 @@
         <th class="state">처리 상태</th>
         <th class="result">처리 결과</th>
       </tr>
-      <tr
-        v-for="(recevieConfirm, index) in recevieConfirmBystatus"
-        :key="recevieConfirm.cid"
-      >
+      <tr v-for="(recevieConfirm, index) in recevieConfirmBystatus" :key="recevieConfirm.cid">
         <td class="num">{{ index + 1 }}</td>
         <td
           class="post-title title"
           @click="getConfirmDetail(recevieConfirm)"
           data-toggle="modal"
           :data-target="'#receiveconfirm' + recevieConfirm.cid"
-        >
-          {{ recevieConfirm.posttitle }}
-        </td>
+        >{{ recevieConfirm.posttitle }}</td>
         <td class="send-user">{{ recevieConfirm.cwriter }}</td>
         <td class="read">{{ recevieConfirm.read }}</td>
         <td class="state">{{ recevieConfirm.state }}</td>
@@ -46,15 +41,8 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">
-                  글 제목 : {{ recevieConfirm.posttitle }}
-                </p>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <p class="modal-title" id="exampleModalLabel">글 제목 : {{ recevieConfirm.posttitle }}</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -105,19 +93,8 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button
-                  type="button"
-                  @click="putReceiveMrcomment(recevieConfirm)"
-                >
-                  완료
-                </button>
-                <button
-                  type="button"
-                  data-dismiss="modal"
-                  @click="returnData(recevieConfirm)"
-                >
-                  취소
-                </button>
+                <button type="button" @click="putReceiveMrcomment(recevieConfirm)">완료</button>
+                <button type="button" data-dismiss="modal" @click="returnData(recevieConfirm)">취소</button>
               </div>
             </div>
           </div>
@@ -198,7 +175,9 @@ export default {
           .then((res) => {
             recevieConfirm.ischecked = true;
             recevieConfirm.read = "읽음";
-            this.SET_MODIFYSTATE(this.modifyState - 1);
+            if (this.modifyState > 0) {
+              this.SET_MODIFYSTATE(this.modifyState - 1);
+            }
           });
       }
     },
@@ -208,7 +187,7 @@ export default {
     },
     putReceiveMrcomment(recevieConfirm) {
       recevieConfirm.willmodify = Number(recevieConfirm.willmodify);
-      console.log(recevieConfirm, "보낸데이터");
+
       axios
         .put(constants.baseUrl + "modfrequest/option/", recevieConfirm, {
           headers: {
@@ -216,6 +195,7 @@ export default {
           },
         })
         .then((res) => {
+          //추가
           console.log(res);
         })
         .catch((err) => {
