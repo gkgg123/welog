@@ -98,6 +98,7 @@ import constants from "../../lib/constants";
 import axios from "axios";
 import TermsOfUse from "@/page/user/TermsOfUse";
 export default {
+  nama: "Join",
   components: { TermsOfUse },
   created() {},
   methods: {
@@ -108,14 +109,18 @@ export default {
         password: this.password,
       };
       if (this.checkSingupData(signupData)) {
-        axios
-          .post(constants.baseUrl + "user/signup", signupData)
-          .then(() => {
-            this.alertAfterpush();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        if (this.ninknameoverlapcheck) {
+          axios
+            .post(constants.baseUrl + "user/signup", signupData)
+            .then(() => {
+              this.alertAfterpush();
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          alert("닉네임 중복체크를 해주세요");
+        }
       }
     },
     alertAfterpush() {
@@ -126,24 +131,28 @@ export default {
       window.close();
     },
     checkNickname(event) {
-      axios
-        .get(constants.baseUrl + "user/check/nickname", {
-          params: {
-            nickname: this.nickName,
-          },
-        })
-        .then((res) => {
-          if (res.data === false) {
-            alert("닉네임이 중복됩니다.");
-          } else {
-            this.setnickname = this.nickName;
-            this.ninknameoverlapcheck = true;
-            const inputNickname = document.querySelector("#nickname");
-            inputNickname.setAttribute("disabled", true);
-            inputNickname.setAttribute("style", "background-color:red");
-            alert("사용할수 있는 닉네임입니다.");
-          }
-        });
+      if (!this.nickName.trim().length) {
+        alert("공백을 입력하시면 안됩니다.");
+      } else {
+        axios
+          .get(constants.baseUrl + "user/check/nickname", {
+            params: {
+              nickname: this.nickName,
+            },
+          })
+          .then((res) => {
+            if (res.data === false) {
+              alert("닉네임이 중복됩니다.");
+            } else {
+              this.setnickname = this.nickName;
+              this.ninknameoverlapcheck = true;
+              const inputNickname = document.querySelector("#nickname");
+              inputNickname.setAttribute("disabled", true);
+              inputNickname.setAttribute("style", "background-color:#69f0ae");
+              alert("사용할수 있는 닉네임입니다.");
+            }
+          });
+      }
     },
     resetNickname() {
       this.setnickname = "";
