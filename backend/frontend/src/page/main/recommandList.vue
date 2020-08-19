@@ -23,7 +23,7 @@
             v-else
             :style="{
               'background-image': `url(
-                ${constants.imageUrl + article.imageList[0].iid}
+                ${article.imageList[0].path.replace(s3url,constants.imageUrl)}
               )`,
             }"
             style="background-size:100% 170px;
@@ -74,7 +74,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
+    ...mapState([
+      "articles",
+      "nextPage",
+      "pageLimit",
+      "receiveArticleList",
+      "s3url",
+    ]),
     ...mapGetters(["isreceived"]),
   },
   methods: {

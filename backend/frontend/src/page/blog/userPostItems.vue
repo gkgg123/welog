@@ -15,7 +15,18 @@
                 params: { id: $route.params.id, pid: article.pid },
               }"
             >
-              <img src="img/no_image.png" alt />
+              <img v-if="!article.imageList.length" src="img/no_image.png" />
+              <div
+                v-else
+                :style="{
+              'background-image': `url(
+                ${article.imageList[0].path.replace(s3url,constants.imageUrl)}
+              )`,
+            }"
+                style="background-size: 80% 45vh;
+                  background-repeat : no-repeat;
+                  height : 45vh;"
+              ></div>
             </router-link>
           </div>
           <li class="article-title">
@@ -61,7 +72,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
+    ...mapState([
+      "articles",
+      "nextPage",
+      "pageLimit",
+      "receiveArticleList",
+      "s3url",
+    ]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),

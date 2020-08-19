@@ -207,8 +207,8 @@ export default {
       recevieConfirm.ismodified = this.defalutisModifyed;
     },
     putReceiveMrcomment(recevieConfirm) {
-      console.log(recevieConfirm);
-      recevieConfirm.willmodify = String(recevieConfirm.willmodify);
+      recevieConfirm.willmodify = Number(recevieConfirm.willmodify);
+      console.log(recevieConfirm, "보낸데이터");
       axios
         .put(constants.baseUrl + "modfrequest/option/", recevieConfirm, {
           headers: {

@@ -67,39 +67,19 @@
                   <div>수정 요청 내역</div>
                   <p>- {{ recevieConfirm.rcomment }}</p>
                 </div>
-                <div class="request-radio">
-                  <label class="box-radio-input">
-                    <input
-                      type="radio"
-                      name="cp_item"
-                      v-model="recevieConfirm.willmodify"
-                      value="1"
-                      checked="checked"
-                    />
-                    <span>승인</span>
-                  </label>
-                  <label class="box-radio-input">
-                    <input
-                      type="radio"
-                      name="cp_item"
-                      v-model="recevieConfirm.willmodify"
-                      value="-1"
-                    />
-                    <span>거절</span>
-                  </label>
-                </div>
+                <div
+                  style="display:inline-block; height:5vh; text-align: center; padding:10px"
+                >처리 상태 :</div>
+                <div
+                  style=" display:inline-block; border: solid;border-radius: 10%; height:5vh; padding:10px"
+                  :class="{reject : recevieConfirm.willmodify === -1, approve : recevieConfirm.willmodify === 1}"
+                >{{recevieConfirm.state}}</div>
+
                 <div v-if="recevieConfirm.willmodify == 1">
                   <div>처리 상태</div>
                   <div class="request-radio">
-                    <label class="box-radio-input">
-                      <input
-                        type="checkbox"
-                        name="cp_item"
-                        v-model="recevieConfirm.ismodified"
-                        checked="checked"
-                      />
-                      <span>수정완료</span>
-                    </label>
+                    <span v-if="recevieConfirm.ismodified">수정완료</span>
+                    <span v-else>수정 中</span>
                   </div>
                 </div>
               </div>
@@ -218,4 +198,15 @@ export default {
 };
 </script>
 
+<<<<<<< Updated upstream
 <style></style>
+=======
+<style scoped>
+.reject {
+  background-color: red;
+}
+.approve {
+  background-color: blue;
+}
+</style>
+>>>>>>> Stashed changes

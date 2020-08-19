@@ -81,8 +81,6 @@ export default {
         .then((res) => {
           this.blogusername = res.data.username;
           this.bloglineintro = res.data.userDescription;
-          console.log(res.data);
-          console.log(res.data.profileUrl, "-------");
           if (
             res.data.profileUrl === "no_img" ||
             res.data.profileUrl === null

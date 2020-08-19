@@ -19,15 +19,12 @@
             params: { id: article.author, pid: article.pid },
           }"
         >
-          <div
-            v-if="!article.imageList.length"
-            :class="{ 'post-img': !article.imageList.length }"
-          />
+          <div v-if="!article.imageList.length" :class="{ 'post-img': !article.imageList.length }" />
           <div
             v-else
             :style="{
               'background-image': `url(
-                ${constants.imageUrl + article.imageList[0].iid}
+                ${article.imageList[0].path.replace(s3url,constants.imageUrl)}
               )`,
             }"
             style="background-size: 100% 170px;
@@ -52,8 +49,7 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-            >{{ article.author }}</router-link
-          >
+          >{{ article.author }}</router-link>
           <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>
@@ -79,14 +75,20 @@ export default {
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
+    ...mapState([
+      "articles",
+      "nextPage",
+      "pageLimit",
+      "receiveArticleList",
+      "s3url",
+    ]),
     ...mapGetters(["isreceived"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
     async totalCreate() {
       await this.getArticles({ location: "post/latest" });
-      this.state = !!this.receiveArticleList;
+      this.state = !!this.receiveArticleList.length;
     },
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");
