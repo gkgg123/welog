@@ -15,6 +15,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
+      alert("메인화면으로 이동합니다.");
       this.$router.push({ name: constants.URL_TYPE.MAIN.MAIN });
     },
   },

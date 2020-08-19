@@ -43,7 +43,7 @@ export default {
     return {
       constants,
       title: "",
-      text: "",
+      text: constants.defalutText,
       inputTag: null,
       tagList: [],
       imageList: [],

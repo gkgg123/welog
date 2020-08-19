@@ -320,7 +320,7 @@ export default {
         editor.previewScrollToTarget({
           target: heading,
           scrollContainer: window,
-          top: 70,
+          top: 90,
         });
       }
     },

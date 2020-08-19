@@ -37,14 +37,15 @@
           <v-md-editor
             class="w-100"
             v-model="updateArticle.content"
+            style="text-align:initial"
             left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code"
             :disabled-menus="[]"
             @upload-image="handleUploadImage"
           />
         </div>
         <div class="modal-footer">
+          <button type="button" @click="updateCheck">수정</button>
           <button type="button" @click="returnData" data-dismiss="modal">취소</button>
-          <button type="button" @click="updatePost">수정</button>
         </div>
       </div>
     </div>
@@ -112,6 +113,11 @@ export default {
     returnData() {
       this.$store.commit("SET_ARTICLEDETAIL", this.articleDetail);
     },
+    updateCheck() {
+      if (confirm("정말 수정하시겠습니까?")) {
+        this.updatePost();
+      }
+    },
     updatePost() {
       const tempTags = "," + this.tagList.join(",") + ",";
       this.updateArticle.tags = tempTags;
@@ -143,8 +149,8 @@ export default {
             totalData
           )
           .then((res) => {
-            // 바뀌어야할곳
-            // setTimeout(this.$router.go(0), 1000);
+            $("#update").modal("hide");
+            this.$router.go(0);
           })
           .catch((err) => {
             console.log("에러 : ", err);
