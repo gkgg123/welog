@@ -438,22 +438,49 @@
               }
             }
             .modal-body {
-              margin: 0 5%;
-              width: 90%;
-              height: 150px;
-              .input-label {
-                label {
-                  position: absolute;
-                  margin: 10px;
-                  text-align: end;
-                  width: 25%;
+              padding: 16px;
+              width: 100%;
+              .before-update {
+                margin-bottom: 5%;
+                > div {
+                  font-size: 18px;
                   font-weight: 600;
+                  color: #ffa726;
                 }
-                input {
-                  width: 45%;
-                  margin-left: 35%;
-                  height: 32px;
-                  border-bottom: solid 1px #48a999;
+                p {
+                  margin: 10px;
+                }
+              }
+              .after-update {
+                margin-bottom: 5%;
+                > div {
+                  font-size: 18px;
+                  font-weight: 600;
+                  color: #8e24aa;
+                }
+                p {
+                  margin: 10px;
+                }
+              }
+              .request-radio {
+                .box-radio-input input[type="radio"] + span {
+                  border-radius: 5px;
+                  display: inline-block;
+                  background: none;
+                  margin-right: 10px;
+                  border: 1px solid #dfdfdf;
+                  padding: 0px 10px;
+                  text-align: center;
+                  height: 35px;
+                  line-height: 33px;
+                  font-weight: 600;
+                  cursor: pointer;
+                }
+
+                .box-radio-input input[type="radio"]:checked + span {
+                  border: 1px solid #23a3a7;
+                  background: #23a3a7;
+                  color: #fff;
                 }
               }
             }
@@ -479,13 +506,17 @@
         vertical-align: middle;
       }
       .table td {
-        cursor: pointer;
         font-size: 16px;
         padding: 10px;
         height: 45px;
         vertical-align: middle;
         border: 1px solid #3b8686;
         text-align: center;
+      }
+      .table tr {
+        .post-title {
+          cursor: pointer;
+        }
       }
       .table-under {
         width: 100%;

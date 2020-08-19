@@ -20,6 +20,7 @@
       <tr v-for="(recevieConfirm,index) in recevieConfirmBystatus" :key="index">
         <td>{{index+1}}</td>
         <td
+          class="post-title"
           @click="getConfirmDetail"
           data-toggle="modal"
           :data-target="'#receiveconfrim'+recevieConfirm.cid"
@@ -39,13 +40,31 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">{{recevieConfirm.posttitle}}</p>
+                <p class="modal-title" id="exampleModalLabel">글 제목 {{recevieConfirm.posttitle}}</p>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <div>수락</div>
+                <div class="before-update">
+                  <div>수정 전</div>
+                  <p>- {{recevieConfirm.rstring}}</p>
+                </div>
+
+                <div class="after-update">
+                  <div>수정 후</div>
+                  <p>- {{recevieConfirm.rcomment}}</p>
+                </div>
+                <div class="request-radio">
+                  <label class="box-radio-input">
+                    <input type="radio" name="cp_item" value="옵션1" checked="checked" />
+                    <span>승인</span>
+                  </label>
+                  <label class="box-radio-input">
+                    <input type="radio" name="cp_item" value="옵션2" />
+                    <span>거절</span>
+                  </label>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" data-dismiss="modal">취소</button>
