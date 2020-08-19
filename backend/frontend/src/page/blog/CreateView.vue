@@ -118,8 +118,9 @@ export default {
         alert("제목과 내용을 빈칸으로 낼수 없습니다.");
       } else {
         this.imageList = this.imageList.filter((item) => {
+          console.log(item);
           const imageUrl = item.path.replace(this.s3url, constants.imageUrl);
-          return this.text.includes(item.iid);
+          return this.text.includes(imageUrl);
         });
         const images = this.imageList.map((image) => {
           const data = {};
