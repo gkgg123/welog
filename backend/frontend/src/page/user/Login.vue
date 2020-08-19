@@ -2,7 +2,7 @@
   <div class="user" id="login">
     <div class="wrapC table">
       <img class="logo-welcome" src="img\Welcome.png" alt="welcome" />
-      <img class="login-image" src="img\Logo.png" alt="logo-image" />
+      <img class="login-image" src="img\home_logo.png" alt="logo-image" />
       <div class="middle">
         <div class="input-wrap">
           <i class="fas fa-user"></i>
