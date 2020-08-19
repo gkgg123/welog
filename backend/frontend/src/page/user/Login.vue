@@ -1,25 +1,57 @@
 <template>
   <div class="user" id="login">
     <div class="wrapC table">
+      <img class="logo-welcome" src="img\Welcome.png" alt="welcome" />
+      <img class="login-image" src="img\Logo.png" alt="logo-image" />
       <div class="middle">
-        <h1>welog</h1>
         <div class="input-wrap">
-          <input v-model="loginData.useremail" id="email" placeholder="이메일을 입력해주세요" type="text" />
+          <i class="fas fa-user"></i>
+          <input
+            v-model="loginData.useremail"
+            id="email"
+            type="text"
+            required
+          />
+          <label for="email">email을 입력해주세요</label>
         </div>
         <div class="input-wrap">
+          <i class="fas fa-key"></i>
           <input
             v-model="loginData.password"
             type="password"
             id="password"
-            placeholder="영문, 숫자 혼용 8자 이상"
-            @keyup.enter="login(loginData)"
+            required
           />
+          <label for="password">비밀번호를 입력해주세요</label>
         </div>
-        <button class="btn btn--back btn--login" @click="login(loginData)">로그인 하기</button>
+        <button
+          class="btn btn--back btn--login rounded-lg mb-2"
+          @click="login(loginData)"
+        >
+          로그인 하기
+        </button>
+        <button class="btn btn--google-login rounded-lg mb-2">
+          <i class="fab fa-google-plus-g fa-2x"></i>
+          <span>구글 아이디로 로그인</span>
+        </button>
+
+        <button class="btn btn--naver-login rounded-lg mb-2">
+          <img class="naver-icon" src="img\naver-icon.PNG" alt />
+          <span>네이버 아이디로 로그인</span>
+        </button>
+        <button class="btn btn--facebook-login rounded-lg mb-2">
+          <i class="fab fa-facebook-square fa-2x"></i>
+          <span>페이스북 아이디로 로그인</span>
+        </button>
+
         <div class="add-option">
           <div class="wrap">
             <p>아직 회원이 아니신가요?</p>
-            <router-link v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }" class="btn--text">회원가입</router-link>
+            <router-link
+              v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
+              class="btn--text"
+              >회원가입</router-link
+            >
           </div>
         </div>
       </div>
