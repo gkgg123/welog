@@ -67,6 +67,7 @@ export default {
       axios
         .post(constants.baseUrl + `post/${author}/intro/`, totalData)
         .then((res) => {
+          alert("수정되었습니다.");
           this.intro = res.data.content;
           var introConfirm = document.querySelector("#introConfirm");
           introConfirm.setAttribute("style", "display:none");
@@ -85,7 +86,6 @@ export default {
     ...mapState(["authToken", "username"]),
     isCheckAuthor() {
       const author = this.$route.params.id;
-      console.log(this.username);
       if (author === this.username) {
         return true;
       } else {

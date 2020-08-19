@@ -276,6 +276,9 @@ export default new Vuex.Store({
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: state.articleDetail.author },
             });
+          })
+          .catch(() => {
+            alert("해당글은 수정요청이 있어서 지우지 못합니다.");
           });
       }
     },

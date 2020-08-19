@@ -101,10 +101,6 @@
         </div>
       </tr>
     </div>
-
-    <div class="table-under">
-      <button @click="getReceiveMrcomment">요청</button>
-    </div>
   </div>
 </template>
 
@@ -195,8 +191,8 @@ export default {
           },
         })
         .then((res) => {
-          //추가
-          console.log(res);
+          alert("수정되었습니다.");
+          $(`#receiveconfirm${recevieConfirm.cid}`).modal("hide");
         })
         .catch((err) => {
           console.log(err.response);

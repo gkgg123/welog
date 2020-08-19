@@ -290,24 +290,29 @@ export default {
     },
     /// 수정요청 보내기 자기글에 수정요청..못 보내기 ㅋ///
     modifyrequestPost() {
-      const totalData = {
-        comment: this.confirmComment,
-        requiredString: this.confirmText,
-        postTitle: this.articleDetail.title,
-        Authorization: this.authToken,
-      };
+      if (this.username == this.articleDetail.author) {
+        alert("자기글에는 수정요청을 보낼수 없습니다.");
+      } else {
+        const totalData = {
+          comment: this.confirmComment,
+          requiredString: this.confirmText,
+          postTitle: this.articleDetail.title,
+          Authorization: this.authToken,
+        };
 
-      axios
-        .post(
-          constants.baseUrl + `modfrequest/post/${this.articleDetail.pid}`,
-          totalData
-        )
-        .then((res) => {
-          alert("수정요청이 성공적으로 보내졌습니다.");
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+        axios
+          .post(
+            constants.baseUrl + `modfrequest/post/${this.articleDetail.pid}`,
+            totalData
+          )
+          .then((res) => {
+            alert("수정요청이 성공적으로 보내졌습니다.");
+            $("#example").modal("hide");
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
     },
     returnconfirmComment() {
       this.confirmComment = "";

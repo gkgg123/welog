@@ -6,13 +6,7 @@
       <div class="middle">
         <div class="input-wrap">
           <i class="fas fa-user"></i>
-          <input
-            v-model="loginData.useremail"
-            id="email"
-            type="text"
-            @keydown="checkemail"
-            required
-          />
+          <input v-model="loginData.useremail" id="email" type="text" @keyup="checkemail" required />
           <label id="emaillabel" for="email">email을 입력해주세요</label>
         </div>
         <div class="input-wrap">
@@ -21,7 +15,7 @@
             v-model="loginData.password"
             type="password"
             id="password"
-            @keydown="checkpassword"
+            @keyup="checkpassword"
             required
           />
           <label id="passwordlabel" for="password">비밀번호를 입력해주세요</label>

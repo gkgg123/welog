@@ -7,6 +7,8 @@
         <option value="read">읽음</option>
         <option value="unread">읽지않음</option>
         <option value="middlestate">대기 중</option>
+        <option value="reject">수정거절</option>
+        <option value="accept">수정승인</option>
       </select>
     </div>
     <div class="table">
@@ -18,18 +20,13 @@
         <th class="state">처리 상태</th>
         <th class="result">처리 결과</th>
       </tr>
-      <tr
-        v-for="(recevieConfirm, index) in recevieConfirmBystatus"
-        :key="recevieConfirm.cid"
-      >
+      <tr v-for="(recevieConfirm, index) in recevieConfirmBystatus" :key="recevieConfirm.cid">
         <td class="num">{{ index + 1 }}</td>
         <td
           class="post-title title"
           data-toggle="modal"
           :data-target="'#receiveconfirm' + recevieConfirm.cid"
-        >
-          {{ recevieConfirm.posttitle }}
-        </td>
+        >{{ recevieConfirm.posttitle }}</td>
         <td class="send-user">{{ recevieConfirm.pwriter }}</td>
         <td class="read">{{ recevieConfirm.read }}</td>
         <td class="state">{{ recevieConfirm.state }}</td>
@@ -45,15 +42,8 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">
-                  글 제목 : {{ recevieConfirm.posttitle }}
-                </p>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <p class="modal-title" id="exampleModalLabel">글 제목 : {{ recevieConfirm.posttitle }}</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -68,18 +58,14 @@
                   <p>- {{ recevieConfirm.rcomment }}</p>
                 </div>
                 <div class="request-data">
-                  <div>
-                    처리 상태 :
-                  </div>
+                  <div>처리 상태 :</div>
                   <div
                     class="result-data"
                     :class="{
                       reject: recevieConfirm.willmodify === -1,
                       approve: recevieConfirm.willmodify === 1,
                     }"
-                  >
-                    {{ recevieConfirm.state }}
-                  </div>
+                  >{{ recevieConfirm.state }}</div>
                 </div>
                 <div class="request-data" v-if="recevieConfirm.willmodify == 1">
                   <div class="request-state">
@@ -96,10 +82,6 @@
           </div>
         </div>
       </tr>
-    </div>
-
-    <div class="table-under">
-      <button>요청</button>
     </div>
   </div>
 </template>
@@ -145,6 +127,14 @@ export default {
       } else if (this.category === "middlestate") {
         return this.recevieConfirmlist.filter((item) => {
           return item.willmodify == 0;
+        });
+      } else if (this.category === "reject") {
+        return this.recevieConfirmlist.filter((item) => {
+          return item.willmodify == -1;
+        });
+      } else if (this.category === "accept") {
+        return this.recevieConfirmlist.filter((item) => {
+          return item.willmodify == 1;
         });
       } else {
         return this.recevieConfirmlist;

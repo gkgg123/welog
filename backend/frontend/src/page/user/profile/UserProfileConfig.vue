@@ -7,7 +7,7 @@
           <label for="ex_file">이미지 수정</label>
           <input type="file" id="ex_file" ref="profileimg" @change="updateprofile" />
         </div>
-        <button class="button-delete" @click="deleteprofile">이미지 삭제</button>
+        <button class="button-delete" @click="checkdeleteprofile">이미지 삭제</button>
       </div>
       <div class="user-intro">
         <div class="user-name">{{username}}</div>
@@ -34,7 +34,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="width:200%;">
           <div class="modal-header">
             <p class="modal-title" id="staticBackdropLabel">비밀번호 변경</p>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -44,19 +44,33 @@
           <div class="modal-body">
             <div class="input-label">
               <label for="password-now">현재 비밀번호</label>
-              <input id="password-now" type="password" />
+              <input id="password-now" v-model="currentPassword" type="password" style="width:20%" />
             </div>
             <div class="input-label">
               <label for="password-new1">새 비밀번호</label>
-              <input id="password-new1" type="password" />
+              <input
+                id="password-new1"
+                @keyup="checkpassword1"
+                v-model="newPassword1"
+                type="password"
+                style="width:20%"
+              />
+              <span id="alertmessage1"></span>
             </div>
             <div class="input-label">
               <label for="password-new2">새 비밀번호 확인</label>
-              <input id="password-new2" type="password" />
+              <input
+                id="password-new2"
+                v-model="newPassword2"
+                @keyup="checkpassword2"
+                type="password"
+                style="width:20%"
+              />
+              <span id="alertmessage2"></span>
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" @click="updatePassword">변경</button>
+            <button type="button" @click="checkupdatePassword">변경</button>
             <button type="button" data-dismiss="modal">취소</button>
           </div>
         </div>
@@ -110,24 +124,62 @@ export default {
     setIntro() {
       this.lineintro = this.userintro;
     },
+    checkupdatePassword() {
+      if (confirm("정말 비밀번호를 변경하시겠습니까?")) {
+        this.updatePassword();
+      }
+    },
+    checkpassword1() {
+      const alertmessage = document.querySelector("#alertmessage1");
+      if (this.newPassword1 == this.currentPassword) {
+        alertmessage.setAttribute("style", "color:red");
+        alertmessage.innerText = "기존 비밀번호와 같으면 안 됩니다.";
+        this.ispasswordcheck1 = false;
+      } else if (this.newPassword1.length < 8) {
+        alertmessage.setAttribute("style", "color:red");
+        alertmessage.innerText = "새 비밀번호가 너무 짧습니다.";
+        this.ispasswordcheck1 = false;
+      } else {
+        alertmessage.setAttribute("style", "color:blue");
+        alertmessage.innerText = "가능한 비밀번호입니다.";
+        this.ispasswordcheck1 = true;
+      }
+    },
+    checkpassword2() {
+      const alertmessage = document.querySelector("#alertmessage2");
+      if (this.newPassword1 == this.newPassword2) {
+        alertmessage.setAttribute("style", "color:blue");
+        alertmessage.innerText = "새 비밀번호와 같습니다.";
+        this.ispasswordcheck2 = true;
+      } else {
+        alertmessage.setAttribute("style", "color:red");
+        alertmessage.innerText = "새 비밀번호와 다릅니다.";
+        this.ispasswordcheck2 = false;
+      }
+    },
     updatePassword() {
       const totalData = {
         originalPassword: this.currentPassword,
         changePassword: this.newPassword1,
       };
-      axios
-        .put(constants.baseUrl + `user/pwchange`, totalData, {
-          headers: {
-            Authorization: this.authToken,
-          },
-        })
-        .then((res) => {
-          //추가
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+      if (this.ispasswordcheck1 && this.ispasswordcheck2) {
+        axios
+          .put(constants.baseUrl + `user/pwchange`, totalData, {
+            headers: {
+              Authorization: this.authToken,
+            },
+          })
+          .then((res) => {
+            alert("Password가 정상적으로 변경되었습니다.");
+            $("staticBackdrop").modal("hide");
+            console.log(res);
+          })
+          .catch((err) => {
+            alert("현재비밀번호가 다릅니다.");
+          });
+      } else {
+        alert("새 비밀번호와 비밀번호 확인이 다르거나 너무 짧습니다.");
+      }
     },
     updateprofile(event) {
       const formData = new FormData();
@@ -139,12 +191,17 @@ export default {
             this.s3url,
             constants.imageUrl
           );
-
+          alert("프로필이 수정되었습니다.");
           this.SET_USERPROFILE(receiveimg);
         })
         .catch((err) => {
           console.log(err.response);
         });
+    },
+    checkdeleteprofile() {
+      if (confirm("프로필 사진을 정말 초기화 시키겠습니까?")) {
+        this.deleteprofile();
+      }
     },
     deleteprofile() {
       axios
@@ -166,6 +223,7 @@ export default {
         })
         .then((res) => {
           this.lineintro = res.data.object.userDescription;
+          alert("한줄소개가 수정되었습니다.");
           this.SET_USERDESCRIPTION(res.data.object.userDescription);
         })
         .catch((err) => {
@@ -188,6 +246,8 @@ export default {
       newPassword1: "",
       newPassword2: "",
       getAchivementData: "",
+      ispasswordcheck1: false,
+      ispasswordcheck2: false,
     };
   },
   mounted() {
