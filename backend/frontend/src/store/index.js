@@ -25,12 +25,13 @@ export default new Vuex.Store({
     commentList: [],
     nextPage: 0,
     pageLimit: 0,
-    modifyState: false,
+    modifyState: 0,
   },
   getters: {
     isLogined: (state) => !!state.authToken,
     pageLimitcalc: (state) => parseInt(state.receiveArticleList.length / 10),
     isreceived: (state) => !!state.receiveArticleList.length,
+    countModify: (state) => state.modifyState,
   },
   mutations: {
     // Header의 이름을 바꿔주는 mutaion
@@ -104,9 +105,11 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res);
           const token = res.headers.authorization.replace("Bearer", "");
+          const mrcount = res.headers.mralarmcount;
           const data = JSON.parse(atob(token.split(".")[1]));
           commit("SET_USERNAME", data.username);
           commit("SET_TOKEN", token);
+          commit("SET_MODIFYSTATE", mrcount);
           dispatch("getUserDetailinfo");
           router.push({
             name: constants.URL_TYPE.POST.POSTITEMS,

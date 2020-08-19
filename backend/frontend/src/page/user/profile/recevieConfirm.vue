@@ -109,11 +109,11 @@
 <script>
 import axios from "axios";
 import constants from "@/lib/constants.js";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   name: "recevieConfirm",
   computed: {
-    ...mapState(["authToken"]),
+    ...mapState(["authToken", "modifyState"]),
     recevieConfirmBystatus() {
       this.recevieConfirmlist = this.recevieConfirmlist.map((item) => {
         if (item.ischecked === false) {
@@ -163,15 +163,19 @@ export default {
     };
   },
   methods: {
+    ...mapMutations(["SET_MODIFYSTATE"]),
     getConfirmDetail(recevieConfirm) {
       this.defalutWillmodify = recevieConfirm.willmodify;
       this.defalutisModifyed = recevieConfirm.ismodified;
-      axios
-        .get(constants.baseUrl + `modfrequest/comment/${recevieConfirm.cid}`)
-        .then((res) => {
-          recevieConfirm.ischecked = true;
-          recevieConfirm.read = "읽음";
-        });
+      if (recevieConfirm.ischecked === false) {
+        axios
+          .get(constants.baseUrl + `modfrequest/comment/${recevieConfirm.cid}`)
+          .then((res) => {
+            recevieConfirm.ischecked = true;
+            recevieConfirm.read = "읽음";
+            this.SET_MODIFYSTATE(this.modifyState - 1);
+          });
+      }
     },
     returnData(recevieConfirm) {
       recevieConfirm.willmodify = this.defalutWillmodify;
