@@ -1,5 +1,6 @@
 <template>
   <div class="update-request">
+    <h1>보낸 수정요청</h1>
     <div class="select-bar">
       <select v-model="category" name id>
         <option value="all">전체</option>
@@ -10,27 +11,32 @@
     </div>
     <div class="table">
       <tr>
-        <th>No.</th>
-        <th>수정 요청 글</th>
-        <th>받은 사람</th>
-        <th>읽음 상태</th>
-        <th>처리 상태</th>
-        <th>처리 결과</th>
+        <th class="num">No.</th>
+        <th class="title">수정 요청 글</th>
+        <th class="send-user">받은 사람</th>
+        <th class="read">읽음 상태</th>
+        <th class="state">처리 상태</th>
+        <th class="result">처리 결과</th>
       </tr>
-      <tr v-for="(recevieConfirm,index) in recevieConfirmBystatus" :key="recevieConfirm.cid">
-        <td>{{index+1}}</td>
+      <tr
+        v-for="(recevieConfirm, index) in recevieConfirmBystatus"
+        :key="recevieConfirm.cid"
+      >
+        <td class="num">{{ index + 1 }}</td>
         <td
-          class="post-title"
+          class="post-title title"
           data-toggle="modal"
-          :data-target="'#receiveconfirm'+recevieConfirm.cid"
-        >{{recevieConfirm.posttitle}}</td>
-        <td>{{recevieConfirm.pwriter}}</td>
-        <td>{{recevieConfirm.read}}</td>
-        <td>{{recevieConfirm.state}}</td>
-        <td>{{recevieConfirm.nextState}}</td>
+          :data-target="'#receiveconfirm' + recevieConfirm.cid"
+        >
+          {{ recevieConfirm.posttitle }}
+        </td>
+        <td class="send-user">{{ recevieConfirm.pwriter }}</td>
+        <td class="read">{{ recevieConfirm.read }}</td>
+        <td class="state">{{ recevieConfirm.state }}</td>
+        <td class="result">{{ recevieConfirm.nextState }}</td>
         <div
           class="modal fade"
-          :id="'receiveconfirm'+recevieConfirm.cid"
+          :id="'receiveconfirm' + recevieConfirm.cid"
           tabindex="-1"
           role="dialog"
           aria-labelledby="exampleModalLabel"
@@ -39,20 +45,27 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">글 제목 : {{recevieConfirm.posttitle}}</p>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <p class="modal-title" id="exampleModalLabel">
+                  글 제목 : {{ recevieConfirm.posttitle }}
+                </p>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
                 <div class="before-update">
                   <div>수정 요청 부분</div>
-                  <p>- {{recevieConfirm.rstring}}</p>
+                  <p>- {{ recevieConfirm.rstring }}</p>
                 </div>
 
                 <div class="after-update">
                   <div>수정 요청 내역</div>
-                  <p>- {{recevieConfirm.rcomment}}</p>
+                  <p>- {{ recevieConfirm.rcomment }}</p>
                 </div>
                 <div class="request-radio">
                   <label class="box-radio-input">
@@ -99,6 +112,7 @@
         </div>
       </tr>
     </div>
+
     <div class="table-under">
       <button>요청</button>
     </div>
@@ -204,5 +218,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

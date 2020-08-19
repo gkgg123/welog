@@ -548,7 +548,11 @@
     }
     .update-request {
       width: 80%;
+      h1 {
+        font-weight: 600;
+      }
       .select-bar {
+        float: right;
         margin-bottom: 20px;
         select {
           font-size: 16px;
@@ -659,6 +663,24 @@
       .table tr {
         .post-title {
           cursor: pointer;
+        }
+        .num {
+          width: 6%;
+        }
+        .title {
+          width: 42%;
+        }
+        .send-user {
+          width: 13%;
+        }
+        .read {
+          width: 13%;
+        }
+        .state {
+          width: 13%;
+        }
+        .result {
+          width: 13%;
         }
       }
       .table-under {
