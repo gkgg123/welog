@@ -114,19 +114,21 @@ export default new Vuex.Store({
         });
     },
     // user의 정확한 정보를 가져오는 곳
-    getUserDetailinfo({ state, commit }) {
-      axios.get(constants.baseUrl + `user/${state.username}`).then((res) => {
-        commit("SET_USERDESCRIPTION", res.data.userDescription);
-        if (res.data.profileUrl === "no_img") {
-          commit("SET_USERPROFILE", state.defalutprofileimg);
-        } else {
-          const profileurl = res.data.profileUrl.replace(
-            state.s3url,
-            constants.imageUrl
-          );
-          commit("SET_USERPROFILE", profileurl);
-        }
-      });
+    getUserDetailinfo({ state, getters, commit }) {
+      if (getters.isLogined) {
+        axios.get(constants.baseUrl + `user/${state.username}`).then((res) => {
+          commit("SET_USERDESCRIPTION", res.data.userDescription);
+          if (res.data.profileUrl === "no_img") {
+            commit("SET_USERPROFILE", state.defalutprofileimg);
+          } else {
+            const profileurl = res.data.profileUrl.replace(
+              state.s3url,
+              constants.imageUrl
+            );
+            commit("SET_USERPROFILE", profileurl);
+          }
+        });
+      }
     },
     //Login 하는 함수
     login({ dispatch }, loginData) {

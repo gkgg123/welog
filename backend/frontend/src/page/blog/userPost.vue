@@ -130,7 +130,7 @@
           <textarea name="confirmComment" id="confirmComment" v-model="confirmComment"></textarea>
           <div class="modal-footer">
             <button type="button" @click="modifyrequestPost">수정</button>
-            <button type="button" data-dismiss="modal" @click="confirmComment">취소</button>
+            <button type="button" data-dismiss="modal" @click="returnconfirmComment">취소</button>
           </div>
         </div>
       </div>
@@ -258,7 +258,9 @@ export default {
           console.log(err.response);
         });
     },
-
+    returnconfirmComment() {
+      this.confirmComment = "";
+    },
     /// 앵커 만드는 거
     anchorCreate() {
       const anchors = this.$refs.editor.$el.querySelectorAll(

@@ -24,7 +24,14 @@
           </router-link>
         </div>
         <div class="side-item mt-5">
-          <i class="fas fa-paper-plane"></i>보낸 수정요청
+          <router-link
+            :to="{
+              name: constants.URL_TYPE.USER.SENDCONFIRM,
+              params: { username: username },
+            }"
+          >
+            <i class="fas fa-paper-plane"></i>보낸 수정요청
+          </router-link>
         </div>
       </div>
       <!-- 모바일 사이즈에서 보이는 사이드(?)바 -->

@@ -12,7 +12,7 @@
       <tr>
         <th>No.</th>
         <th>수정 요청 글</th>
-        <th>보낸 사람</th>
+        <th>받은 사람</th>
         <th>읽음 상태</th>
         <th>처리 상태</th>
         <th>처리 결과</th>
@@ -21,11 +21,10 @@
         <td>{{index+1}}</td>
         <td
           class="post-title"
-          @click="getConfirmDetail(recevieConfirm)"
           data-toggle="modal"
           :data-target="'#receiveconfirm'+recevieConfirm.cid"
         >{{recevieConfirm.posttitle}}</td>
-        <td>{{recevieConfirm.cwriter}}</td>
+        <td>{{recevieConfirm.pwriter}}</td>
         <td>{{recevieConfirm.read}}</td>
         <td>{{recevieConfirm.state}}</td>
         <td>{{recevieConfirm.nextState}}</td>
@@ -92,8 +91,8 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" @click="putReceiveMrcomment(recevieConfirm)">완료</button>
-                <button type="button" data-dismiss="modal" @click="returnData(recevieConfirm)">취소</button>
+                <button type="button">완료</button>
+                <button type="button" data-dismiss="modal">취소</button>
               </div>
             </div>
           </div>
@@ -101,17 +100,17 @@
       </tr>
     </div>
     <div class="table-under">
-      <button @click="getReceiveMrcomment">요청</button>
+      <button>요청</button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import constants from "@/lib/constants.js";
 import { mapState } from "vuex";
+import constants from "@/lib/constants.js";
 export default {
-  name: "recevieConfirm",
+  name: "sendConfirm",
   computed: {
     ...mapState(["authToken"]),
     recevieConfirmBystatus() {
@@ -199,7 +198,7 @@ export default {
         Authorization: this.authToken,
       };
       axios
-        .get(constants.baseUrl + "modfrequest/author", {
+        .get(constants.baseUrl + "modfrequest/commentwriter", {
           headers: {
             Authorization: this.authToken,
           },
@@ -238,4 +237,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

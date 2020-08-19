@@ -13,6 +13,7 @@
       PROFILE: "profile",
       PROFILECONFIG: "profileconfig",
       RECEIVECONFIRM: "recevieConfirm",
+      SENDCONFIRM: "sendConfirm",
     },
     MAIN: {
       MAIN: "main",
