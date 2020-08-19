@@ -60,7 +60,14 @@ public class AccountController {
     public Account getAccount(@PathVariable String author) {
         return accountRepository.findByUsername(author);
     }
-
+    @GetMapping(value = "/check/email")
+    public boolean checkEmail(@RequestParam String email){
+        return accountRepository.findByUseremail(email) == null;
+    }
+    @GetMapping(value = "/check/nickname")
+    public boolean checkNickname(@RequestParam String nickname){
+        return accountRepository.findByUsername(nickname) == null;
+    }
     @PostMapping(value = "/{author}/profile")
     public Object inputProfile(@PathVariable String author, @RequestPart List<MultipartFile> files) throws IOException, ParseException {
         S3Service s3 = new S3Service();
