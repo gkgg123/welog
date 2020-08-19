@@ -29,7 +29,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
     String username = user.getUsername();
 
     response.addHeader("Authorization","Bearer"+token);
-    response.addHeader("MrAlarmCount",Integer.toString(repository.countByPwriter(username)));
+    response.addHeader("MrAlarmCount",Integer.toString(repository.countByPwriterAndIscheckedFalse(username)));
   }
 
 }
