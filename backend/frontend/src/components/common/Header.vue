@@ -14,13 +14,21 @@
         <div class="header-name">{{ headerTitle }}</div>
       </router-link>
 
-      <router-link v-else :to="{ name: headerPathName, params: { id: headerPathParams } }">
+      <router-link
+        v-else
+        :to="{ name: headerPathName, params: { id: headerPathParams } }"
+      >
         <img class="home-logo" src="/img/home_logo.png" />
       </router-link>
     </div>
     <div class="right d-flex">
       <select class="select-box" v-model="selected">
-        <option v-for="option in options" :value="option.value" :key="option.text">{{ option.text }}</option>
+        <option
+          v-for="option in options"
+          :value="option.value"
+          :key="option.text"
+          >{{ option.text }}</option
+        >
       </select>
       <div class="search-input">
         <i class="fas fa-search"></i>
@@ -31,16 +39,19 @@
         v-if="!isLogined"
         :to="{ name: constants.URL_TYPE.USER.LOGIN }"
         class="login-btn"
-      >로그인</router-link>
+        >로그인</router-link
+      >
 
-      <router-link v-if="isLogined" to="/create" class="create-btn">새 글쓰기</router-link>
+      <router-link v-if="isLogined" to="/create" class="create-btn"
+        >새 글쓰기</router-link
+      >
       <div class="request-alert" v-if="isLogined">
         <div v-if="countModify == 0">
           <i class="far fa-bell"></i>
         </div>
         <div v-else>
           <i class="fas fa-bell"></i>
-          <span>{{countModify}}</span>
+          <span>{{ countModify }}</span>
         </div>
       </div>
       <div class="dropdown-box" v-if="isLogined">
@@ -64,15 +75,21 @@
                 username: username,
               },
             }"
-          >내 프로필</router-link>
+            >내 프로필</router-link
+          >
           <router-link
             class="dropdown-item"
             :to="{
               name: constants.URL_TYPE.POST.POSTITEMS,
               params: { id: username },
             }"
-          >내 블로그</router-link>
-          <router-link class="dropdown-item" :to="{ name: constants.URL_TYPE.USER.LOGOUT }">로그아웃</router-link>
+            >내 블로그</router-link
+          >
+          <router-link
+            class="dropdown-item"
+            :to="{ name: constants.URL_TYPE.USER.LOGOUT }"
+            >로그아웃</router-link
+          >
         </div>
       </div>
     </div>
@@ -113,7 +130,7 @@ export default {
       });
     },
   },
-  data: function () {
+  data: function() {
     return {
       constants,
       keyword: "",
