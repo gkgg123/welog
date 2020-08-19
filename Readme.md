@@ -26,7 +26,7 @@
 
 - mariaDB
 
-  <img src="Readme.assets%5Cbackend.jpg" alt="backend" style="zoom: 50%;" />
+  <img src="Readme.assets/backend.jpg" alt="backend" style="zoom: 50%;" />
 
 
 
@@ -36,7 +36,7 @@
 
 - bootstrap
 
-  <img src="Readme.assets%5Cfrontend.jpg" alt="frontend" style="zoom: 50%;" />
+  <img src="Readme.assets/frontend.jpg" alt="frontend" style="zoom: 50%;" />
 
 
 
