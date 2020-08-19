@@ -18,10 +18,7 @@
             params: { id: article.author, pid: article.pid },
           }"
         >
-          <div
-            v-if="!article.imageList.length"
-            :class="{ 'post-img': !article.imageList.length }"
-          />
+          <div v-if="!article.imageList.length" :class="{ 'post-img': !article.imageList.length }" />
           <div
             v-else
             :style="{
@@ -51,8 +48,7 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-            >{{ article.author }}</router-link
-          >
+          >{{ article.author }}</router-link>
           <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>
@@ -85,7 +81,7 @@ export default {
     ...mapActions(["getArticles", "attachArticles"]),
     async totalCreate() {
       await this.getArticles({ location: "post/popularity" });
-      this.state = !!this.receiveArticleList;
+      this.state = !!this.receiveArticleList.length;
     },
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");

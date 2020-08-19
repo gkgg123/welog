@@ -125,7 +125,10 @@ export default new Vuex.Store({
       if (getters.isLogined) {
         axios.get(constants.baseUrl + `user/${state.username}`).then((res) => {
           commit("SET_USERDESCRIPTION", res.data.userDescription);
-          if (res.data.profileUrl === "no_img") {
+          if (
+            res.data.profileUrl === "no_img" ||
+            res.data.profileUrl === null
+          ) {
             commit("SET_USERPROFILE", state.defalutprofileimg);
           } else {
             const profileurl = res.data.profileUrl.replace(
@@ -240,7 +243,10 @@ export default new Vuex.Store({
           item.postInfo.post.likeCount = item.postInfo.likeCount;
           item.postInfo.post.likeuserlist = item.postInfo.userlist;
           item.postInfo.post.imageList = item.postInfo.images;
-          if (item.account.profileUrl === "no_img") {
+          if (
+            item.account.profileUrl === "no_img" ||
+            item.account.profileUrl === null
+          ) {
             item.postInfo.post.profileUrl = state.defalutprofileimg;
           } else {
             const profileurl = item.account.profileUrl.replace(
@@ -284,7 +290,7 @@ export default new Vuex.Store({
       return axios.get(constants.baseUrl + location).then((res) => {
         const temp = res.data.map((item) => {
           var userProfile = item.profileUrl;
-          if (userProfile === "no_img") {
+          if (userProfile === "no_img" || userProfile === null) {
             userProfile = state.defalutprofileimg;
           } else {
             userProfile = item.profileUrl.replace(
