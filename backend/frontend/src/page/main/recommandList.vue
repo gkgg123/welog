@@ -1,11 +1,16 @@
 <template>
   <section class="post-list">
-    <section>
+    <section v-if="state === '1'">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </section>
-    <div class="post-card-box" v-for="article in articles" :key="article.pid">
+    <div
+      v-else-if="state === true"
+      class="post-card-box"
+      v-for="article in articles"
+      :key="article.pid"
+    >
       <div class="post-card">
         <router-link
           :to="{
@@ -60,19 +65,24 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "recommandList",
   created() {
-    this.getArticles({ location: "post/popularity" });
+    this.totalCreate();
   },
   data: () => {
     return {
       constants,
+      state: "1",
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit"]),
+    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
     ...mapGetters(["isreceived"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
+    async totalCreate() {
+      await this.getArticles({ location: "post/popularity" });
+      this.state = !!this.receiveArticleList;
+    },
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);

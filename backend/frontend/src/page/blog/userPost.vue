@@ -236,7 +236,7 @@ export default {
         }
       }
     },
-    /// 댓글 수정 ///
+    /// 수정요청 보내기 자기글에 수정요청..못 보내기 ㅋ///
     modifyrequestPost() {
       const totalData = {
         comment: this.confirmComment,
@@ -244,7 +244,6 @@ export default {
         postTitle: this.articleDetail.title,
         Authorization: this.authToken,
       };
-      console.log(totalData, "보낸데이터");
 
       axios
         .post(
@@ -253,6 +252,7 @@ export default {
         )
         .then((res) => {
           console.log(res);
+          alert("수정요청이 성공적으로 보내졌습니다.");
         })
         .catch((err) => {
           console.log(err.response);

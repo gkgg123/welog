@@ -17,18 +17,17 @@
         <th>처리 상태</th>
         <th>처리 결과</th>
       </tr>
-      <tr
-        v-for="(recevieConfirm,index) in recevieConfirmBystatus"
-        :key="index"
-        data-toggle="modal"
-        :data-target="'#receiveconfrim'+recevieConfirm.cid"
-      >
-        <td @click="getConfirmDetail">{{index+1}}</td>
-        <td @click="getConfirmDetail">{{recevieConfirm.posttitle}}</td>
-        <td @click="getConfirmDetail">{{recevieConfirm.cwriter}}</td>
-        <td @click="getConfirmDetail">{{recevieConfirm.read}}</td>
-        <td @click="getConfirmDetail">{{recevieConfirm.state}}</td>
-        <td @click="getConfirmDetail">{{recevieConfirm.nextState}}</td>
+      <tr v-for="(recevieConfirm,index) in recevieConfirmBystatus" :key="index">
+        <td>{{index+1}}</td>
+        <td
+          @click="getConfirmDetail"
+          data-toggle="modal"
+          :data-target="'#receiveconfrim'+recevieConfirm.cid"
+        >{{recevieConfirm.posttitle}}</td>
+        <td>{{recevieConfirm.cwriter}}</td>
+        <td>{{recevieConfirm.read}}</td>
+        <td>{{recevieConfirm.state}}</td>
+        <td>{{recevieConfirm.nextState}}</td>
         <div
           class="modal fade"
           :id="'receiveconfrim'+recevieConfirm.cid"

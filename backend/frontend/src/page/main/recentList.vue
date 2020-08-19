@@ -1,11 +1,16 @@
 <template>
   <section class="post-list" v-cloak>
-    <section>
+    <section v-if="state === '1'">
       <div class="spinner-border" role="status">
         <span class="sr-only">Loading...</span>
       </div>
     </section>
-    <div class="post-card-box" v-for="article in articles" :key="article.pid">
+    <div
+      v-else-if="state === true"
+      class="post-card-box"
+      v-for="article in articles"
+      :key="article.pid"
+    >
       <div class="post-card">
         <router-link
           v-if="article.pid"
@@ -61,11 +66,12 @@ import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "recentList",
   created() {
-    this.getArticles({ location: "post/latest" });
+    this.totalCreate();
   },
   data: () => {
     return {
       constants,
+      state: "1",
     };
   },
   computed: {
@@ -74,6 +80,10 @@ export default {
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
+    async totalCreate() {
+      await this.getArticles({ location: "post/latest" });
+      this.state = !!this.receiveArticleList;
+    },
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
