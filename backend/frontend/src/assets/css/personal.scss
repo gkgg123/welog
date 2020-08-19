@@ -418,22 +418,10 @@
   }
 }
 #post-items {
-  .spin-box {
+  .loading-box {
     display: flex;
     margin: 0 20%;
     justify-content: center;
-    .spinner-border {
-      margin: auto;
-      display: inline-block;
-      width: 300px;
-      height: 300px;
-      vertical-align: text-bottom;
-      border: 1em solid currentColor;
-      border-right-color: transparent;
-      border-radius: 50%;
-      -webkit-animation: spinner-border 1s linear infinite;
-      animation: spinner-border 1s linear infinite;
-    }
   }
   .post-item {
     text-align: center;

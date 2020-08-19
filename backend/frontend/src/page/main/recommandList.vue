@@ -1,9 +1,7 @@
 <template>
   <section class="post-list">
-    <section class="spin-box" v-if="state === '1'">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+    <section class="loading-box" v-if="state === '1'">
+      <img src="img/loading.gif" alt="" />
     </section>
     <div
       v-else-if="state === true"
@@ -18,12 +16,15 @@
             params: { id: article.author, pid: article.pid },
           }"
         >
-          <div v-if="!article.imageList.length" :class="{ 'post-img': !article.imageList.length }" />
+          <div
+            v-if="!article.imageList.length"
+            :class="{ 'post-img': !article.imageList.length }"
+          />
           <div
             v-else
             :style="{
               'background-image': `url(
-                ${article.imageList[0].path.replace(s3url,constants.imageUrl)}
+                ${article.imageList[0].path.replace(s3url, constants.imageUrl)}
               )`,
             }"
             style="background-size:100% 170px;
@@ -48,7 +49,8 @@
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: article.author },
             }"
-          >{{ article.author }}</router-link>
+            >{{ article.author }}</router-link
+          >
           <span>♥ {{ article.likeCount }}</span>
         </div>
       </div>

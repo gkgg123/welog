@@ -18,28 +18,31 @@
           <router-link
             v-if="article.author"
             :to="{
-                  name: constants.URL_TYPE.POST.BLOG,
-                  params: { id: article.author },
-                }"
-          >{{ article.author }}</router-link>
+              name: constants.URL_TYPE.POST.BLOG,
+              params: { id: article.author },
+            }"
+            >{{ article.author }}</router-link
+          >
         </div>
         <div class="list-title">
           <router-link
             v-if="article.pid"
             :to="{
-                name: constants.URL_TYPE.POST.POST,
-                params: { id: article.author, pid: article.pid },
-              }"
-          >{{ article.title }}</router-link>
+              name: constants.URL_TYPE.POST.POST,
+              params: { id: article.author, pid: article.pid },
+            }"
+            >{{ article.title }}</router-link
+          >
         </div>
         <div class="list-content">
           <router-link
             v-if="article.pid"
             :to="{
-                name: constants.URL_TYPE.POST.POST,
-                params: { id: article.author, pid: article.pid },
-              }"
-          >{{ article.content }}</router-link>
+              name: constants.URL_TYPE.POST.POST,
+              params: { id: article.author, pid: article.pid },
+            }"
+            >{{ article.content }}</router-link
+          >
         </div>
         <div class="list-data">
           <span class="date">
@@ -47,13 +50,14 @@
             {{ article.createDate.slice(5, 7) }}월
             {{ article.createDate.slice(8, 10) }}일
           </span>
-          <span class="comment">댓글 0개</span>
-          <span class="like">♥2</span>
         </div>
       </div>
     </div>
     <div v-else class="search-item">
-      <h1>죄송합니다. {{this.$route.query.search}}과(와) 일치하는 결과가 없습니다.</h1>
+      <h1>
+        죄송합니다. {{ this.$route.query.search }}과(와) 일치하는 결과가
+        없습니다.
+      </h1>
       <li>철자가 정확한지 확인하세요.</li>
       <li>좀 더 간단하게 입력하여 검색해 보세요.</li>
     </div>
