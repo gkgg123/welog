@@ -76,7 +76,7 @@ export default {
     },
     async totalCreate() {
       await this.getArticles({ location: `post/${this.$route.params.id}/` });
-      this.state = !!this.getArticles;
+      this.state = !!this.receiveArticleList.length;
     },
   },
   created() {
