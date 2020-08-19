@@ -18,18 +18,13 @@
         <th class="state">처리 상태</th>
         <th class="result">처리 결과</th>
       </tr>
-      <tr
-        v-for="(recevieConfirm, index) in recevieConfirmBystatus"
-        :key="recevieConfirm.cid"
-      >
+      <tr v-for="(recevieConfirm, index) in recevieConfirmBystatus" :key="recevieConfirm.cid">
         <td class="num">{{ index + 1 }}</td>
         <td
           class="post-title title"
           data-toggle="modal"
           :data-target="'#receiveconfirm' + recevieConfirm.cid"
-        >
-          {{ recevieConfirm.posttitle }}
-        </td>
+        >{{ recevieConfirm.posttitle }}</td>
         <td class="send-user">{{ recevieConfirm.pwriter }}</td>
         <td class="read">{{ recevieConfirm.read }}</td>
         <td class="state">{{ recevieConfirm.state }}</td>
@@ -45,15 +40,8 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <p class="modal-title" id="exampleModalLabel">
-                  글 제목 : {{ recevieConfirm.posttitle }}
-                </p>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <p class="modal-title" id="exampleModalLabel">글 제목 : {{ recevieConfirm.posttitle }}</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -198,9 +186,6 @@ export default {
 };
 </script>
 
-<<<<<<< Updated upstream
-<style></style>
-=======
 <style scoped>
 .reject {
   background-color: red;
@@ -209,4 +194,3 @@ export default {
   background-color: blue;
 }
 </style>
->>>>>>> Stashed changes
