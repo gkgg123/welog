@@ -56,7 +56,9 @@
         <div class="writer-info">
           <p class="writer-id">{{ comment.name }}</p>
           <p v-if="checkAuthor">작성자</p>
-          <p class="written-day">작성 날짜</p>
+          <p
+            class="written-day"
+          >작성 날짜 {{ comment.createDate.slice(2, 4) }}/{{ comment.createDate.slice(5, 7) }}/{{ comment.createDate.slice(8, 10) }}/ {{comment.createDate.slice(11)}}</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
           <p @click="deleteComment">삭제</p>
