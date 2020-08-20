@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Mrcomment {
-  @Id  @GeneratedValue
+  @Id  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer cid;
 
   @NonNull

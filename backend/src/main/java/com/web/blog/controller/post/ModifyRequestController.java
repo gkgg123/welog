@@ -129,10 +129,13 @@ public class ModifyRequestController {
       throw new CustomUserException(ErrorCode.INCORRECT_USER_ACCESS);
     }
     boolean opt1 = (boolean) jsonObject.get("ischecked");
-    int opt2 = (int) jsonObject.get("willmodify");
+    Long tmpopt = (Long) jsonObject.get("willmodify");
+    int opt2 = tmpopt.intValue();
     boolean opt3 = (boolean) jsonObject.get("ismodified");
 
-    Mrcomment mrcomment = repository.findByCid((int) jsonObject.get("cid"));
+    tmpopt = (Long) jsonObject.get("cid");
+
+    Mrcomment mrcomment = repository.findByCid(tmpopt.intValue());
 
     mrcomment.setIschecked(opt1);
     mrcomment.setIsmodified(opt3);
