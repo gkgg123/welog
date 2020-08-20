@@ -13,6 +13,8 @@
 
           <div class="input-wrap">
             <input v-model="email" id="email" placeholder="이메일을 입력해주세요" type="text" />
+            <button class="check-email" @click="checkNickname" v-if="!ninknameoverlapcheck">중복확인</button>
+            <button class="reset-email" @click="resetNickname" v-else>이메일 변경</button>
           </div>
 
           <div class="input-wrap password-wrap">
@@ -148,7 +150,6 @@ export default {
               this.ninknameoverlapcheck = true;
               const inputNickname = document.querySelector("#nickname");
               inputNickname.setAttribute("disabled", true);
-              inputNickname.setAttribute("style", "background-color:#80deea");
               alert("사용할수 있는 닉네임입니다.");
             }
           });
