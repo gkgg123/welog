@@ -73,6 +73,7 @@
         data-target="#update"
       >수정</button>
       <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
+      <button class="update-button" @click="markdownfile">md파일로 다운로드</button>
       <userPostUpdate />
     </div>
 
@@ -210,6 +211,19 @@ export default {
     },
   },
   methods: {
+    markdownfile() {
+      var sourcefile = this.articleDetail.content;
+      var source =
+        "data:application/vnd.ms-word;charset=utf-8," +
+        encodeURIComponent(sourcefile);
+      var fileDownload = document.createElement("a");
+      document.body.appendChild(fileDownload);
+      fileDownload.href = source;
+      fileDownload.download = `${this.articleDetail.title}.md`;
+      fileDownload.click();
+      document.body.removeChild(fileDownload);
+    },
+
     //  오른쪽 버튼 Custom
     contextmenu(event) {
       const creatediv = document.querySelector(".v-md-editor__preview-wrapper");
