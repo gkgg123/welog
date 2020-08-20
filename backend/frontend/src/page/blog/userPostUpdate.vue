@@ -37,14 +37,15 @@
           <v-md-editor
             class="w-100"
             v-model="updateArticle.content"
+            style="text-align:initial"
             left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code"
             :disabled-menus="[]"
             @upload-image="handleUploadImage"
           />
         </div>
         <div class="modal-footer">
+          <button type="button" @click="updateCheck">수정</button>
           <button type="button" @click="returnData" data-dismiss="modal">취소</button>
-          <button type="button" @click="updatePost">수정</button>
         </div>
       </div>
     </div>
@@ -58,7 +59,7 @@ import constants from "@/lib/constants.js";
 
 export default {
   computed: {
-    ...mapState(["updateArticle", "articleDetail", "authToken"]),
+    ...mapState(["updateArticle", "articleDetail", "authToken", "s3url"]),
   },
   data() {
     return {
@@ -112,6 +113,11 @@ export default {
     returnData() {
       this.$store.commit("SET_ARTICLEDETAIL", this.articleDetail);
     },
+    updateCheck() {
+      if (confirm("정말 수정하시겠습니까?")) {
+        this.updatePost();
+      }
+    },
     updatePost() {
       const tempTags = "," + this.tagList.join(",") + ",";
       this.updateArticle.tags = tempTags;
@@ -122,7 +128,8 @@ export default {
         alert("제목과 내용을 빈칸으로 낼수 없습니다.");
       } else {
         this.imageList = this.imageList.filter((item) => {
-          return this.updateArticle.content.includes(item.iid);
+          const imgageUrl = item.path.replace(this.s3url, constants.imageUrl);
+          return this.updateArticle.content.includes(imgageUrl);
         });
         const images = this.imageList.map((image) => {
           const data = {};
@@ -142,8 +149,8 @@ export default {
             totalData
           )
           .then((res) => {
-            console.log(res.data);
-            // setTimeout(this.$router.go(0), 1000);
+            $("#update").modal("hide");
+            this.$router.go(0);
           })
           .catch((err) => {
             console.log("에러 : ", err);
@@ -157,11 +164,13 @@ export default {
       axios
         .post(constants.baseUrl + "file/upload/", formData)
         .then((res) => {
-          console.log(res.data);
           this.imageList.push(res.data.object);
+          const imageUrl = res.data.object.path.replace(
+            this.s3url,
+            constants.imageUrl
+          );
           insertImage({
-            // 고쳐야할 부분
-            url: `${constants.baseUrl}${res.data.object.path}`,
+            url: imageUrl,
             desc: res.data.object.iname,
           });
         })

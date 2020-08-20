@@ -1,6 +1,14 @@
 <template>
   <section class="post-list" v-cloak>
-    <div class="post-card-box" v-for="article in articles" :key="article.pid">
+    <section class="loading-box" v-if="state === '1'">
+      <img src="img/loading.gif" alt="" />
+    </section>
+    <div
+      v-else-if="state === true"
+      class="post-card-box"
+      v-for="article in articles"
+      :key="article.pid"
+    >
       <div class="post-card">
         <router-link
           v-if="article.pid"
@@ -17,10 +25,10 @@
             v-else
             :style="{
               'background-image': `url(
-                ${constants.baseUrl + article.imageList[0].path}
+                ${article.imageList[0].path.replace(s3url, constants.imageUrl)}
               )`,
             }"
-            style="background-size:auto 170px;
+            style="background-size: 100% 170px;
                   background-repeat : no-repeat;
                   height : 170px;"
           ></div>
@@ -31,7 +39,7 @@
               {{ article.createDate.slice(5, 7) }}월
               {{ article.createDate.slice(8, 10) }}일ㆍ
             </span>
-            <span class="comment">댓글 0개</span>
+            <span class="comment">댓글 {{ article.commentCount }}개</span>
           </div>
         </router-link>
 
@@ -48,6 +56,14 @@
         </div>
       </div>
     </div>
+    <div
+      role="status"
+      v-if="loading"
+      style="width:100%; text-align:center; height:0vh; padding:0px; margin:0px"
+    >
+      <img src="/img/pageloading.gif" alt />
+    </div>
+
     <div id="bottomSensor" style="height:10px;"></div>
   </section>
 </template>
@@ -60,28 +76,47 @@ import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "recentList",
   created() {
-    this.getArticles({ location: "post/latest" });
+    this.totalCreate();
   },
   data: () => {
     return {
       constants,
+      state: "1",
+      loading: false,
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
+    ...mapState([
+      "articles",
+      "nextPage",
+      "pageLimit",
+      "receiveArticleList",
+      "s3url",
+    ]),
     ...mapGetters(["isreceived"]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
+    async totalCreate() {
+      await this.getArticles({ location: "post/latest" });
+      this.state = !!this.receiveArticleList.length;
+    },
     addScrollMonitor() {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
-        setTimeout(() => {
+        if (this.nextPage <= this.pageLimit) {
           if (this.isreceived) {
-            this.attachArticles();
+            this.loading = true;
           }
-        }, 500);
+          setTimeout(() => {
+            if (this.isreceived) {
+              this.attachArticles().then(() => {
+                this.loading = false;
+              });
+            }
+          }, 1000);
+        }
       });
     },
     loadUntilVieportIsFull() {
@@ -92,7 +127,7 @@ export default {
           if (this.isreceived) {
             this.attachArticles();
           }
-        });
+        }, 500);
       }
     },
   },

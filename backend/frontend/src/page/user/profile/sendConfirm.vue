@@ -1,19 +1,21 @@
 <template>
   <div class="update-request">
-    <h1>받은 수정요청</h1>
+    <h1>보낸 수정요청</h1>
     <div class="select-bar">
       <select v-model="category" name id>
         <option value="all">전체</option>
         <option value="read">읽음</option>
         <option value="unread">읽지않음</option>
         <option value="middlestate">대기 중</option>
+        <option value="reject">수정거절</option>
+        <option value="accept">수정승인</option>
       </select>
     </div>
     <div class="table">
       <tr>
         <th class="num">No.</th>
         <th class="title">수정 요청 글</th>
-        <th class="send-user">보낸 사람</th>
+        <th class="send-user">받은 사람</th>
         <th class="read">읽음 상태</th>
         <th class="state">처리 상태</th>
         <th class="result">처리 결과</th>
@@ -22,11 +24,10 @@
         <td class="num">{{ index + 1 }}</td>
         <td
           class="post-title title"
-          @click="getConfirmDetail(recevieConfirm)"
           data-toggle="modal"
           :data-target="'#receiveconfirm' + recevieConfirm.cid"
         >{{ recevieConfirm.posttitle }}</td>
-        <td class="send-user">{{ recevieConfirm.cwriter }}</td>
+        <td class="send-user">{{ recevieConfirm.pwriter }}</td>
         <td class="read">{{ recevieConfirm.read }}</td>
         <td class="state">{{ recevieConfirm.state }}</td>
         <td class="result">{{ recevieConfirm.nextState }}</td>
@@ -56,45 +57,26 @@
                   <div>수정 요청 내역</div>
                   <p>- {{ recevieConfirm.rcomment }}</p>
                 </div>
-                <div class="request-radio">
-                  <label class="box-radio-input">
-                    <input
-                      type="radio"
-                      name="cp_item"
-                      v-model="recevieConfirm.willmodify"
-                      value="1"
-                      checked="checked"
-                    />
-                    <span>승인</span>
-                  </label>
-                  <label class="box-radio-input">
-                    <input
-                      type="radio"
-                      name="cp_item"
-                      v-model="recevieConfirm.willmodify"
-                      value="-1"
-                    />
-                    <span>거절</span>
-                  </label>
-                </div>
-                <div class="result-state" v-if="recevieConfirm.willmodify == 1">
+                <div class="request-data">
                   <div>처리 상태 :</div>
-                  <div>
-                    <label>
-                      <input
-                        type="checkbox"
-                        name="cp_item"
-                        v-model="recevieConfirm.ismodified"
-                        checked="checked"
-                      />
-                      <span>수정완료</span>
-                    </label>
+                  <div
+                    class="result-data"
+                    :class="{
+                      reject: recevieConfirm.willmodify === -1,
+                      approve: recevieConfirm.willmodify === 1,
+                    }"
+                  >{{ recevieConfirm.state }}</div>
+                </div>
+                <div class="request-data" v-if="recevieConfirm.willmodify == 1">
+                  <div class="request-state">
+                    <span v-if="recevieConfirm.ismodified">수정완료</span>
+                    <span v-else>수정 中</span>
                   </div>
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" @click="putReceiveMrcomment(recevieConfirm)">완료</button>
-                <button type="button" data-dismiss="modal" @click="returnData(recevieConfirm)">취소</button>
+                <button type="button">완료</button>
+                <button type="button" data-dismiss="modal">취소</button>
               </div>
             </div>
           </div>
@@ -106,12 +88,12 @@
 
 <script>
 import axios from "axios";
+import { mapState } from "vuex";
 import constants from "@/lib/constants.js";
-import { mapState, mapMutations } from "vuex";
 export default {
-  name: "recevieConfirm",
+  name: "sendConfirm",
   computed: {
-    ...mapState(["authToken", "modifyState"]),
+    ...mapState(["authToken"]),
     recevieConfirmBystatus() {
       this.recevieConfirmlist = this.recevieConfirmlist.map((item) => {
         if (item.ischecked === false) {
@@ -146,6 +128,14 @@ export default {
         return this.recevieConfirmlist.filter((item) => {
           return item.willmodify == 0;
         });
+      } else if (this.category === "reject") {
+        return this.recevieConfirmlist.filter((item) => {
+          return item.willmodify == -1;
+        });
+      } else if (this.category === "accept") {
+        return this.recevieConfirmlist.filter((item) => {
+          return item.willmodify == 1;
+        });
       } else {
         return this.recevieConfirmlist;
       }
@@ -156,55 +146,15 @@ export default {
       constants,
       category: "all",
       recevieConfirmlist: [],
-      defalutWillmodify: "",
-      defalutisModifyed: "",
     };
   },
   methods: {
-    ...mapMutations(["SET_MODIFYSTATE"]),
-    getConfirmDetail(recevieConfirm) {
-      this.defalutWillmodify = recevieConfirm.willmodify;
-      this.defalutisModifyed = recevieConfirm.ismodified;
-      if (recevieConfirm.ischecked === false) {
-        axios
-          .get(constants.baseUrl + `modfrequest/comment/${recevieConfirm.cid}`)
-          .then((res) => {
-            recevieConfirm.ischecked = true;
-            recevieConfirm.read = "읽음";
-            if (this.modifyState > 0) {
-              this.SET_MODIFYSTATE(this.modifyState - 1);
-            }
-          });
-      }
-    },
-    returnData(recevieConfirm) {
-      recevieConfirm.willmodify = this.defalutWillmodify;
-      recevieConfirm.ismodified = this.defalutisModifyed;
-    },
-    putReceiveMrcomment(recevieConfirm) {
-      recevieConfirm.willmodify = Number(recevieConfirm.willmodify);
-
-      axios
-        .put(constants.baseUrl + "modfrequest/option/", recevieConfirm, {
-          headers: {
-            Authorization: this.authToken,
-          },
-        })
-        .then((res) => {
-          alert("수정되었습니다.");
-          $(`#receiveconfirm${recevieConfirm.cid}`).modal("hide");
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
-    },
-
     getReceiveMrcomment() {
       const totalData = {
         Authorization: this.authToken,
       };
       axios
-        .get(constants.baseUrl + "modfrequest/author", {
+        .get(constants.baseUrl + "modfrequest/commentwriter", {
           headers: {
             Authorization: this.authToken,
           },
@@ -243,4 +193,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.reject {
+  color: red;
+}
+.approve {
+  color: blue;
+}
+</style>

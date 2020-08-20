@@ -84,12 +84,23 @@
         padding: 10px;
         background-color: #e8eaf6;
         border-radius: 20px;
-        .like p {
+        .like {
           text-align: center;
-          font-size: 15px;
+          p {
+            text-align: center;
+            font-size: 15px;
+          }
         }
         .fas {
-          margin-top: 30px;
+          cursor: pointer;
+          margin-top: 8px;
+        }
+        .download {
+          text-align: center;
+          p {
+            font-size: 14px;
+            font-weight: 600;
+          }
         }
       }
     }
@@ -140,43 +151,43 @@
       color: white;
       border-radius: 8px;
     }
-  }
-  .modal.fade {
-    .modal-dialog.modal-fullsize {
-      min-width: 80%;
-      height: 80%;
-      margin: 4% 10%;
-      padding: 0;
-    }
-    .modal-content.modal-fullsize {
-      min-height: 80%;
-      border-radius: 0;
-    }
-    .modal-header {
-      border: none;
-      .modal-title {
-        font-size: 28px;
-        width: 80%;
+    .modal.fade {
+      .modal-dialog.modal-fullsize {
+        min-width: 80%;
+        height: 80%;
+        margin: 4% 10%;
+        padding: 0;
       }
-    }
-    .modal-tags {
-      display: flex;
-      height: 63px;
-      padding: 16px;
-      border-bottom: solid 1px #dee2e6;
-      input {
-        margin-left: 8px;
-        width: 16%;
+      .modal-content.modal-fullsize {
+        min-height: 80%;
+        border-radius: 0;
       }
-    }
-    .modal-footer {
-      button {
-        font-size: 20px;
-        margin: 5px 15px;
-        padding: 8px 13px;
-        background-color: #48a999;
-        color: white;
-        border-radius: 8px;
+      .modal-header {
+        border: none;
+        .modal-title {
+          font-size: 28px;
+          width: 80%;
+        }
+      }
+      .modal-tags {
+        display: flex;
+        height: 63px;
+        padding: 16px;
+        border-bottom: solid 1px #dee2e6;
+        input {
+          margin-left: 8px;
+          width: 16%;
+        }
+      }
+      .modal-footer {
+        button {
+          font-size: 20px;
+          margin: 5px 15px;
+          padding: 8px 13px;
+          background-color: #48a999;
+          color: white;
+          border-radius: 8px;
+        }
       }
     }
   }
@@ -285,10 +296,17 @@
           margin: 10px;
           vertical-align: middle;
           .profile-img {
-            font-size: 50px;
-            margin-right: 40px;
+            margin-right: 30px;
+            .img {
+              margin-top: 8px;
+              width: 50px;
+              height: 50px;
+              background-color: #aaaaaa;
+              border-radius: 70%;
+            }
           }
           .writer-info {
+            margin-top: 10px;
             .writer-id {
               font-weight: bold;
             }
@@ -298,9 +316,9 @@
           }
           .comment-button {
             display: block;
-            width: 80%;
-            cursor: pointer;
+            width: 76%;
             p {
+              cursor: pointer;
               float: right;
               margin-right: 10px;
               color: #aaaa;
@@ -319,7 +337,48 @@
             height: 32px;
             margin-right: 10px;
           }
-          span {
+        }
+      }
+    }
+  }
+  .request-modal {
+    .modal-dialog {
+      margin-top: 15%;
+      border: none;
+      .modal-content {
+        border: solid 3px #48a999;
+        border-radius: 8px;
+        .modal-header {
+          border: none;
+          p {
+            font-size: 24px;
+            font-weight: 800;
+            color: #48a999;
+          }
+        }
+        .modal-body {
+          padding: 0px 16px 16px 16px;
+          p {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+          }
+          .request-content {
+            margin: 0px 5px;
+          }
+        }
+        textarea {
+          padding: 10px 21px;
+          border-top: solid thin #aaaa;
+          border-bottom: solid thin #aaaa;
+          height: 292px;
+        }
+
+        .modal-footer {
+          button {
+            margin-right: 5px;
+            font-weight: 600;
+            color: #48a999;
           }
         }
       }
@@ -329,8 +388,51 @@
 
 .personal-intro {
   text-align: center;
+  p {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .button-layout {
+    height: 35px;
+    margin-bottom: 10px;
+  }
+  .updateBtn {
+    float: right;
+    font-weight: 600;
+    margin: 5px 15px;
+    padding: 8px 13px;
+    background-color: #48a999;
+    color: white;
+    border-radius: 5px;
+  }
+  #introConfirm {
+    .intro-box {
+      width: 100%;
+      height: 150px;
+      padding: 3px;
+      border: 2px #48a999 solid;
+      border-radius: 5px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .btn-box {
+      .updateConfirmBtn {
+        font-weight: 600;
+        margin: 5px 15px;
+        padding: 8px 13px;
+        background-color: #48a999;
+        color: white;
+        border-radius: 5px;
+      }
+    }
+  }
 }
 #post-items {
+  .loading-box {
+    display: flex;
+    margin: 0 20%;
+    justify-content: center;
+  }
   .post-item {
     text-align: center;
     h3 {
@@ -346,21 +448,29 @@
     padding-bottom: 50px;
     margin-bottom: 60px;
     border-bottom: solid 1px #aaaa;
-    .article-title {
-      margin: 0px 20px 20px 20px;
-      text-align: left;
-      font-size: 48px;
+    .article-img {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+      a {
+        width: 100%;
+        img {
+          margin: 0px 10%;
+          width: 80%;
+          height: 45vh;
+          background-color: #aaaaaa;
+        }
+      }
     }
-    .article-content {
-      font-size: 20px;
-      padding: 5px 0px 15px 0px;
-      margin: 10px 20px 10px 20px;
+    .article-title {
+      margin: 20px;
       text-align: left;
+      font-size: 32px;
     }
     .article-tag {
       margin: 0px 13px;
       padding: 20px 0px;
-      span {
+      span a {
         background-color: #e8eaf6;
         border: none;
         border-radius: 16px;
@@ -434,7 +544,11 @@
     }
   }
 }
-
+@media only screen and (max-width: 1024px) {
+  #personalUser {
+    margin-top: 60px;
+  }
+}
 @media only screen and (max-width: 767px) {
   #detail {
     .post-title {
@@ -452,6 +566,16 @@
     }
     .aside-right {
       display: none;
+    }
+    .post-userBar {
+      margin: 0 30px;
+      width: calc(100% - 60px);
+      .userBar {
+        .userImage {
+          width: calc(100px - 3%);
+          height: calc(100px - 3%);
+        }
+      }
     }
     .commentBox {
       .commentBox2 {
@@ -513,6 +637,15 @@
           background-color: #00796b;
           color: #e8eaf6;
         }
+      }
+    }
+  }
+}
+@media only screen and (max-width: 480px) {
+  #detail {
+    .post-userBar {
+      h2 {
+        font-size: 20px;
       }
     }
   }

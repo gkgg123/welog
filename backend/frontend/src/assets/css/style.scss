@@ -244,7 +244,7 @@ body {
   overflow-x: auto;
   line-height: 1;
   overflow-y: auto;
-  min-width: 480px;
+  min-width: 320px;
   text-align: left;
 }
 
@@ -353,7 +353,6 @@ h2 {
     }
   }
   .right {
-    float: right;
     margin-top: 18px;
     .select-box {
       margin-top: 6px;
@@ -390,25 +389,78 @@ h2 {
         box-shadow: 2px 2px 12px 2px #00796b;
       }
     }
-
+    .request-alert {
+      margin: 0px 5px;
+      width: 25px;
+      position: relative;
+      div {
+        vertical-align: middle;
+        font-size: 28px;
+        position: static;
+        .fas {
+          margin-top: 9px;
+          color: #ffd54f;
+        }
+        .far {
+          margin-top: 9px;
+          color: #707070;
+        }
+        span {
+          position: absolute;
+          left: 10px;
+          top: 2px;
+          width: 18px;
+          height: 18px;
+          text-align: center;
+          padding-top: 2px;
+          background-color: red;
+          color: white;
+          border-radius: 50%;
+          font-size: 14px;
+        }
+      }
+    }
     .dropdown-box {
       text-align: center;
       > a {
         font-size: 24px;
-        > i {
-          font-size: 32px;
+        > img {
+          width: 36px;
+          height: 36px;
+          border-radius: 70%;
+          background-color: #cfe0f4;
         }
       }
+      .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 0.4em;
+        vertical-align: 0.5em;
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+      }
     }
-
     .login-btn {
       font-size: 20px;
-      padding: 5px;
+      padding: 8px 5px 5px 5px;
       border-radius: 4px;
-      margin: 10px 0px 10px 10px;
+      margin: 8px 10px 15px 10px;
+      float: left;
+    }
+    .create-btn {
+      width: 90px;
+      font-size: 20px;
+      padding: 8px 5px 5px 5px;
+      border-radius: 4px;
+      margin: 8px 10px 15px 10px;
       float: left;
     }
     .login-btn:hover {
+      color: #fff;
+      background-color: #00796b;
+    }
+    .create-btn:hover {
       color: #fff;
       background-color: #00796b;
     }
@@ -469,11 +521,26 @@ h2 {
 }
 
 /* media query */
-@media only screen and (max-width: 950px) {
+@media only screen and (max-width: 1040px) {
   #header {
     .right {
       .search-input {
         width: 100px;
+      }
+    }
+  }
+}
+@media only screen and (max-width: 480px) {
+  #header {
+    padding: 0;
+    .right {
+      float: left;
+      margin-left: 15px;
+      .select-box {
+        width: 60px;
+      }
+      .search-input {
+        width: 60px;
       }
     }
   }

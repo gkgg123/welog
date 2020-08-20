@@ -51,6 +51,7 @@ public class AccountController {
     @ApiOperation(value = "회원 가입")
     public String signup(@RequestBody Account account) {
         account.setGrade(AccountGrade.USER);
+        account.setProfileUrl("no_img");
         accountService.createNew(account);
 
         return "signup success";
@@ -60,7 +61,14 @@ public class AccountController {
     public Account getAccount(@PathVariable String author) {
         return accountRepository.findByUsername(author);
     }
-
+    @GetMapping(value = "/check/email")
+    public boolean checkEmail(@RequestParam String email){
+        return accountRepository.findByUseremail(email) == null;
+    }
+    @GetMapping(value = "/check/nickname")
+    public boolean checkNickname(@RequestParam String nickname){
+        return accountRepository.findByUsername(nickname) == null;
+    }
     @PostMapping(value = "/{author}/profile")
     public Object inputProfile(@PathVariable String author, @RequestPart List<MultipartFile> files) throws IOException, ParseException {
         S3Service s3 = new S3Service();
@@ -94,11 +102,12 @@ public class AccountController {
     public Object deleteProfile(@PathVariable String author) {
         BasicResponse result = new BasicResponse();
         Account account = accountRepository.findByUsername(author);
-
         Image image = imageRepository.findByPath(account.getProfileUrl());
         if (image != null)
             imageRepository.delete(image);
         account.setProfileUrl("no_img");
+
+        accountRepository.save(account);
         result.data = "success";
         result.status = true;
         result.object = null;
@@ -107,9 +116,11 @@ public class AccountController {
     }
 
     @PostMapping(value = "/{author}/description")
-    public Object inputDescription(@PathVariable String author, @RequestBody String description) {
+    public Object inputDescription(@PathVariable String author, @RequestBody String jsonObj) throws ParseException{
         BasicResponse result = new BasicResponse();
-
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+        String description = (String) obj.get("description");
         Account account = accountRepository.findByUsername(author);
         account.setUserDescription(description);
         accountRepository.save(account);

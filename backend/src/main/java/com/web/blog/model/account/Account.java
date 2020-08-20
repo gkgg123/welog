@@ -90,7 +90,7 @@ public class Account implements Serializable {
   public String getUsername() {
     return username;
   }
-
+  public void setProfileUrl(String profileUrl){ this.profileUrl = profileUrl;}
   public void setUsername(String username) {
     this.username = username;
   }

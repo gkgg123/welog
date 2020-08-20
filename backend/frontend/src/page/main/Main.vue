@@ -17,26 +17,29 @@
           <h4>공지사항</h4>
           <ul class="tag-list mb-5">
             <li class="notice">
-              <p>공지사항1</p>
+              <p></p>
+            </li>
+            <div class="text-secondary mb-3">2020년 8월 20일</div>
+            <li class="notice">
+              <p>Welog 정식 서비스 시작</p>
             </li>
             <div class="text-secondary mb-3">2020년 8월 4일</div>
             <li class="notice">
-              <p>공지사항2</p>
+              <p>Welog 베타서비스 시작</p>
             </li>
-            <div class="text-secondary mb-3">2020년 8월 4일</div>
+            <div class="text-secondary mb-3">2020년 7월 13일</div>
             <li class="notice">
-              <p>제목이 긴 공지사항 예시입니다. 한 이정도는 될 것 같습니다.</p>
+              <p>Welog 개발 시작</p>
             </li>
-            <div class="text-secondary mb-3">2020년 8월 4일</div>
             <p class="text-secondary">
               <u>더보기</u>
             </p>
           </ul>
           <h4>인기태그</h4>
           <ul class="tag-list">
-            <li>#태그1 (8)</li>
-            <li>#태그2 (5)</li>
-            <li>#태그3 (2)</li>
+            <li>Java (8)</li>
+            <li>Python (5)</li>
+            <li>김영환 (2)</li>
             <p class="text-secondary">
               <u>더보기</u>
             </p>

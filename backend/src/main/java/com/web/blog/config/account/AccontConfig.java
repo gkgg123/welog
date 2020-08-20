@@ -99,7 +99,7 @@ public class AccontConfig extends WebSecurityConfigurerAdapter {
 
     // This allow us to expose the headers
     configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Headers", "Authorization, x-xsrf-token, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, " +
-            "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"));
+            "Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers","MrAlarmCount"));
 
 
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

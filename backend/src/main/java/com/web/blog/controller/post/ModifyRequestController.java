@@ -5,7 +5,7 @@ import com.web.blog.exception.account.CustomUserException;
 import com.web.blog.model.BasicResponse;
 
 
-import com.web.blog.model.account.repository.PostRepository;
+import com.web.blog.model.post.repository.PostRepository;
 import com.web.blog.model.post.Mrcomment;
 import com.web.blog.model.post.repository.ModifyRequestCommentRepository;
 import com.web.blog.property.JwtProperties;

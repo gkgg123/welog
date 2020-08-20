@@ -1,4 +1,4 @@
-package com.web.blog.model.account.repository;
+package com.web.blog.model.post.repository;
 
 import com.web.blog.model.post.LikeInfo;
 

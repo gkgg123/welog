@@ -220,7 +220,13 @@
         transform: translateY(-5px);
       }
     }
+    .loading-box {
+      display: flex;
+      margin: 15% 20% 0 20%;
+      justify-content: center;
+    }
   }
+
   &.post-temporary {
     margin-left: 0;
   }
@@ -362,6 +368,76 @@
   }
 }
 
+.search {
+  margin: 120px 25% 0px 25%;
+  height: 100vh;
+  width: 50%;
+  .search-box {
+    border: 2px solid;
+    padding: 20px;
+    font-size: 40px;
+    transition: 0.1s ease;
+    i {
+      vertical-align: middle;
+      margin-right: 30px;
+    }
+  }
+  .search-box:focus-within {
+    color: #00796b;
+    border: 5px solid;
+  }
+  .search-count {
+    margin-top: 20px;
+    font-size: 26px;
+  }
+  .search-item {
+    margin-top: 20px;
+    li {
+      margin: 16px;
+      font-size: 20px;
+    }
+    .search-list {
+      padding: 20px 0px 20px;
+      border-bottom: 2px solid #ede7f6;
+      max-height: 300px;
+      .list-user {
+        margin: 0px 5px;
+        .user-img {
+          background-color: #cfe0f4;
+          border-radius: 70%;
+          height: 60px;
+          vertical-align: middle;
+          margin-right: 15px;
+        }
+        a {
+          font-size: 20px;
+          font-weight: 600;
+        }
+      }
+      .list-title {
+        margin: 8px;
+        a {
+          font-size: 28px;
+          font-weight: bold;
+        }
+      }
+      .list-content {
+        margin: 12px;
+        max-height: 80px;
+        font-size: 18px;
+        padding-bottom: 10px;
+      }
+      .list-data {
+        padding-top: 10px;
+        margin: 12px;
+        span {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
 .tag-list-wrap {
   display: block;
   position: fixed;
@@ -408,6 +484,13 @@
   .tag-list-wrap {
     left: 80%;
   }
+  .search {
+    .search-box {
+      > input {
+        width: calc(100% - 70px);
+      }
+    }
+  }
 }
 @media only screen and (max-width: 1439px) {
   .post {
@@ -441,6 +524,13 @@
     }
   }
 }
+@media only screen and (max-width: 864px) {
+  .post {
+    .main-post-bar {
+      margin-top: 100px;
+    }
+  }
+}
 @media only screen and (max-width: 767px) {
   .post {
     .post-list {
@@ -458,5 +548,10 @@
     .tag-list-wrap {
       display: none;
     }
+  }
+  .search {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }

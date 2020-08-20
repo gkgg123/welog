@@ -1,6 +1,11 @@
 <template>
   <div>
-    <commentItem :comment="comment" v-for="comment in commentList" :key="comment.cid" />
+    <commentItem
+      :wauthor="wauthor"
+      :comment="comment"
+      v-for="comment in commentList"
+      :key="comment.cid"
+    />
   </div>
 </template>
 
@@ -11,6 +16,9 @@ export default {
   name: "commentListitems",
   computed: {
     ...mapState(["commentList"]),
+  },
+  props: {
+    wauthor: String,
   },
   components: {
     commentItem,

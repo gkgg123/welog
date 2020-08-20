@@ -13,6 +13,11 @@ export default new Vuex.Store({
     headerPathParams: null,
     authToken: sessionStorage.getItem("auth-token"),
     username: null,
+    userintro: null,
+    userprofile: null,
+    defalutprofileimg:
+      "https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png",
+    s3url: "https://javaimg.s3.ap-northeast-2.amazonaws.com/",
     receiveArticleList: [],
     articles: [],
     articleDetail: [],
@@ -20,11 +25,13 @@ export default new Vuex.Store({
     commentList: [],
     nextPage: 0,
     pageLimit: 0,
+    modifyState: 0,
   },
   getters: {
     isLogined: (state) => !!state.authToken,
     pageLimitcalc: (state) => parseInt(state.receiveArticleList.length / 10),
     isreceived: (state) => !!state.receiveArticleList.length,
+    countModify: (state) => state.modifyState,
   },
   mutations: {
     // Header의 이름을 바꿔주는 mutaion
@@ -44,6 +51,13 @@ export default new Vuex.Store({
     // state의 username을 변경해주는 mutation
     SET_USERNAME(state, username) {
       state.username = username;
+    },
+    // state의 USERDESCRITION을 변경해주는 mutation
+    SET_USERDESCRIPTION(state, description) {
+      state.userintro = description;
+    },
+    SET_USERPROFILE(state, profileUrl) {
+      state.userprofile = profileUrl;
     },
     // RECEVIE_ARTICLES를 변경하는 함수
     SET_RECEIVEARTICLES(state, reciveArticleList) {
@@ -78,18 +92,24 @@ export default new Vuex.Store({
     SET_COMMENTLIST(state, comment) {
       state.commentList = comment;
     },
+    SET_MODIFYSTATE(state, modifystate) {
+      state.modifyState = modifystate;
+    },
   },
   actions: {
     // 로그인 Axios 요청하는 과정
-    postAuthData({ commit }, info) {
+    async postAuthData({ commit, dispatch }, info) {
       axios
         .post(constants.baseUrl + info.location, info.data)
 
         .then((res) => {
           const token = res.headers.authorization.replace("Bearer", "");
+          const mrcount = res.headers.mralarmcount;
           const data = JSON.parse(atob(token.split(".")[1]));
           commit("SET_USERNAME", data.username);
           commit("SET_TOKEN", token);
+          commit("SET_MODIFYSTATE", mrcount);
+          dispatch("getUserDetailinfo");
           router.push({
             name: constants.URL_TYPE.POST.POSTITEMS,
             params: { id: data.username },
@@ -99,6 +119,29 @@ export default new Vuex.Store({
           alert("아이디가 없거나 비밀번호가 틀렸습니다.");
         });
     },
+    // user의 정확한 정보를 가져오는 곳
+    getUserDetailinfo({ state, getters, commit }) {
+      if (getters.isLogined) {
+        axios.get(constants.baseUrl + `user/${state.username}`).then((res) => {
+          commit("SET_USERDESCRIPTION", res.data.userDescription);
+          if (
+            res.data.profileUrl === "no_img" ||
+            res.data.profileUrl === null
+          ) {
+            commit("SET_USERPROFILE", state.defalutprofileimg);
+          } else {
+            const profileurl = res.data.profileUrl.replace(
+              state.s3url,
+              constants.imageUrl
+            );
+            commit("SET_USERPROFILE", profileurl);
+          }
+        });
+      }
+    },
+    // getModifyCommentState({commit}) {
+    //   axios.
+    // },
     //Login 하는 함수
     login({ dispatch }, loginData) {
       const info = {
@@ -108,10 +151,12 @@ export default new Vuex.Store({
       dispatch("postAuthData", info);
     },
     //Logout 하는 함수
-    logout({ commit }) {
+    logout({ state, commit }) {
       commit("SET_TOKEN", null);
       sessionStorage.removeItem("auth-token");
       commit("SET_USERNAME", null);
+      commit("SET_USERPROFILE", state.defalutprofileimg);
+      commit("SET_USERDESCRIPTION", null);
     },
     //UserName을 JWT TOKEN에서 decoding 하는 함수
     usernameCheck({ state, commit }) {
@@ -147,6 +192,7 @@ export default new Vuex.Store({
             item.post.likeCount = item.likeCount;
             item.post.liseuserlist = item.userlist;
             item.post.imageList = item.images;
+            item.post.commentCount = item.commentCount;
             return item.post;
           });
           commit("SET_RECEIVEARTICLES", temp);
@@ -158,7 +204,6 @@ export default new Vuex.Store({
         .catch((err) => {
           if (err.response.data.data === "fail") {
             commit("SET_ARTICLES", []);
-            console.log(state.articles);
           }
         });
     },
@@ -180,19 +225,34 @@ export default new Vuex.Store({
       }
     },
     /// ArticleDetail 정보를 불러오는 곳
-    async carryArticle({ commit }, location) {
+    async carryArticle({ state, commit }, location) {
       return await axios.get(constants.baseUrl + location).then((res) => {
         const receive = [res.data];
         const temp = receive.map((item) => {
-          if (!!item.post.tags) {
-            item.post.tags = item.post.tags.split(",").filter((tag) => !!tag);
+          if (!!item.postInfo.post.tags) {
+            item.postInfo.post.tags = item.postInfo.post.tags
+              .split(",")
+              .filter((tag) => !!tag);
           } else {
-            item.post.tags = [];
+            item.postInfo.post.tags = [];
           }
-          item.post.likeCount = item.likeCount;
-          item.post.likeuserlist = item.userlist;
-          item.post.imageList = item.images;
-          return item.post;
+          item.postInfo.post.likeCount = item.postInfo.likeCount;
+          item.postInfo.post.likeuserlist = item.postInfo.userlist;
+          item.postInfo.post.imageList = item.postInfo.images;
+          if (
+            item.account.profileUrl === "no_img" ||
+            item.account.profileUrl === null
+          ) {
+            item.postInfo.post.profileUrl = state.defalutprofileimg;
+          } else {
+            const profileurl = item.account.profileUrl.replace(
+              state.s3url,
+              constants.imageUrl
+            );
+            item.postInfo.post.profileUrl = profileurl;
+          }
+          item.postInfo.post.lineintro = item.account.userDescription;
+          return item.postInfo.post;
         });
         commit("SET_ARTICLEDETAIL", temp[0]);
       });
@@ -216,14 +276,30 @@ export default new Vuex.Store({
               name: constants.URL_TYPE.POST.BLOG,
               params: { id: state.articleDetail.author },
             });
+          })
+          .catch(() => {
+            alert("해당글은 수정요청이 있어서 지우지 못합니다.");
           });
       }
     },
 
     //CommentList 가져오는 방법
-    carryComment({ commit }, location) {
+    carryComment({ state, commit }, location) {
       return axios.get(constants.baseUrl + location).then((res) => {
-        commit("SET_COMMENTLIST", res.data);
+        const temp = res.data.map((item) => {
+          var userProfile = item.profileUrl;
+          if (userProfile === "no_img" || userProfile === null) {
+            userProfile = state.defalutprofileimg;
+          } else {
+            userProfile = item.profileUrl.replace(
+              state.s3url,
+              constants.imageUrl
+            );
+          }
+          item.comment.userProfile = userProfile;
+          return item.comment;
+        });
+        commit("SET_COMMENTLIST", temp);
       });
     },
   },

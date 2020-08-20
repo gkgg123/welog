@@ -1,14 +1,14 @@
 <template>
   <div id="create" class="container">
     <div class="row">
-      <div class="col-12 p-0" style="text-align:left; margin:5vh 0px 3vh 0px;">
+      <div class="col-12 p-0" style="text-align:left; margin:3vh 0px 3vh 0px;">
         <p id="newPost">새 글 쓰기</p>
       </div>
 
       <input placeholder="제목을 입력하세요" class="titleInput" v-model="title" type="text" />
 
       <div id="tag" class="flex-column">
-        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
+        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{ tag }}</button>
       </div>
       <input
         placeholder="Tag를 입력하고 Enter를 누르세요"
@@ -19,7 +19,7 @@
         type="text"
       />
       <v-md-editor
-        style="margin:5vh 0px; box-sizing: border-box;"
+        style="margin:5vh 0px 2vh 0px; box-sizing: border-box;"
         id="create"
         placeholder="새 글을 작성해 보세요"
         v-model="text"
@@ -28,7 +28,12 @@
         @upload-image="handleUploadImage"
         @copy-code-success="handleCopyCodeSuccess"
       />
-      <button @click="checkCreate">제출</button>
+    </div>
+    <div class="buttons">
+      <button class="submit" @click="checkCreate">제출</button>
+      <button class="exit" @click="outCreate">
+        <i class="fas fa-sign-out-alt"></i>나가기
+      </button>
     </div>
   </div>
 </template>
@@ -43,14 +48,14 @@ export default {
     return {
       constants,
       title: "",
-      text: "",
+      text: constants.defalutText,
       inputTag: null,
       tagList: [],
       imageList: [],
     };
   },
   computed: {
-    ...mapState(["authToken"]),
+    ...mapState(["authToken", "s3url"]),
   },
   methods: {
     checkCreate() {
@@ -77,7 +82,15 @@ export default {
         this.inputTag = null;
       }
     },
-
+    outCreate() {
+      if (this.text.trim().length > 0) {
+        if (confirm("작성중인 글이 있습니다. 정말 나가시겠습니까?")) {
+          this.$router.back();
+        }
+      } else {
+        this.$router.back();
+      }
+    },
     /// Tag 지우는 로직
     deleteTag() {
       if (
@@ -99,7 +112,6 @@ export default {
     /// 코드 복사
     handleCopyCodeSuccess(code) {
       alert("성공적으로 복사되었습니다.");
-      console.log(code);
     },
     changeHeight() {
       const mainMarkdownEditor = document.querySelector(".v-md-editor__main");
@@ -118,7 +130,8 @@ export default {
         alert("제목과 내용을 빈칸으로 낼수 없습니다.");
       } else {
         this.imageList = this.imageList.filter((item) => {
-          return this.text.includes(item.iid);
+          const imageUrl = item.path.replace(this.s3url, constants.imageUrl);
+          return this.text.includes(imageUrl);
         });
         const images = this.imageList.map((image) => {
           const data = {};
@@ -156,10 +169,13 @@ export default {
       axios
         .post(constants.baseUrl + "file/upload/", formData)
         .then((res) => {
-          console.log(res.data);
           this.imageList.push(res.data.object);
+          const imageUrl = res.data.object.path.replace(
+            this.s3url,
+            constants.imageUrl
+          );
           insertImage({
-            url: `${constants.baseUrl}${res.data.object.path}`,
+            url: imageUrl,
             desc: res.data.object.iname,
           });
         })
@@ -174,10 +190,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.container {
+  max-width: 90%;
+  margin-bottom: 50px;
+}
 #newPost {
   font-size: 40px;
-  border-bottom: #ddd solid 4px;
+  padding: 3px 8px 3px 5px;
+  border-bottom: #48a999 solid 4px;
   display: inline;
 }
 .titleInput {
@@ -189,8 +210,8 @@ export default {
   font-size: 17px;
   padding-bottom: 4px;
   padding-left: 6px;
-  width: 30%;
-  border-bottom: 1px solid;
+  width: 20%;
+  border-bottom: 1px solid #aaaaaa;
   margin: 1vh 5px;
 }
 .tagBtn {
@@ -201,5 +222,29 @@ export default {
   padding: 7px;
   margin: 7px 3px;
   color: #0ca678;
+}
+
+.buttons {
+  float: right;
+  .submit {
+    font-size: 20px;
+    margin: 5px 0px;
+    padding: 8px 13px;
+    background-color: #48a999;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .exit {
+    font-size: 20px;
+    margin: 5px 15px;
+    padding: 8px 13px;
+    background-color: #e91e63;
+    color: white;
+    border-radius: 8px;
+    i {
+      margin-right: 5px;
+    }
+  }
 }
 </style>

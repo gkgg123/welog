@@ -3,15 +3,20 @@
     <div class="comment-list" v-if="checkSecret">
       <div class="comment-profile">
         <div class="profile-img">
-          <i class="far fa-smile"></i>
+          <img :src="comment.userProfile" class="img" />
         </div>
         <div class="writer-info">
-          <p class="writer-id">{{ comment.name }}</p>
+          <span class="writer-id">{{ comment.name }}</span>
+          <span
+            v-if="checkAuthor"
+            style="margin:0px 5px; background:#69f0ae; padding:2.5px; border-radius:30%"
+          >작성자</span>
+
           <p class="written-day">작성 날짜</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
-          <p @click="popUp">수정</p>
           <p @click="deleteComment">삭제</p>
+          <p @click="popUp">수정</p>
         </div>
       </div>
       <div class="comment-content">{{ comment.content }}</div>
@@ -23,11 +28,7 @@
           name="commentUpdate"
           v-model="cofirmComment"
         ></textarea>
-        <div
-          class="secretcheckboxclose"
-          id="isSecret"
-          :data-checkbox="comment.cid"
-        >
+        <div class="secretcheckboxclose" id="isSecret" :data-checkbox="comment.cid">
           <i
             class="fas fa-lock"
             v-if="isSecret"
@@ -43,38 +44,29 @@
             @click="isSecret = !isSecret"
           ></i>
         </div>
-        <button
-          class="btn close closedisplay"
-          :data-set="comment.cid"
-          @click="confirmCMT"
-        >
-          수정
-        </button>
-        <button
-          class="btn close closedisplay"
-          :data-set="comment.cid"
-          @click="closepop"
-        >
-          취소
-        </button>
+        <button class="btn close closedisplay" :data-set="comment.cid" @click="closepop">취소</button>
+        <button class="btn close closedisplay" :data-set="comment.cid" @click="confirmCMT">수정</button>
       </div>
     </div>
     <div class="comment-list" v-if="!checkSecret">
       <div class="comment-profile">
         <div class="profile-img">
-          <i class="far fa-smile"></i>
+          <img :src="comment.userProfile" class="img" />
         </div>
         <div class="writer-info">
           <p class="writer-id">{{ comment.name }}</p>
-          <p class="written-day">작성 날짜</p>
+          <p v-if="checkAuthor">작성자</p>
+          <p
+            class="written-day"
+          >작성 날짜 {{ comment.createDate.slice(2, 4) }}/{{ comment.createDate.slice(5, 7) }}/{{ comment.createDate.slice(8, 10) }}/ {{comment.createDate.slice(11)}}</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
-          <p @click="popUp">수정</p>
           <p @click="deleteComment">삭제</p>
+          <p @click="popUp">수정</p>
         </div>
       </div>
       <div class="comment-content-secret">
-        <img class="secret-img" src="../../../public/img/lock.png" alt="" />
+        <img class="secret-img" src="img/lock.png" alt />
         <span>비밀 댓글입니다.</span>
       </div>
     </div>
@@ -99,6 +91,7 @@ export default {
   },
   props: {
     comment: Object,
+    wauthor: String,
   },
   computed: {
     ...mapState(["username", "articleDetail", "authToken"]),
@@ -120,6 +113,13 @@ export default {
         return false;
       } else {
         return true;
+      }
+    },
+    checkAuthor() {
+      if (this.comment.name == this.wauthor) {
+        return true;
+      } else {
+        return false;
       }
     },
   },
@@ -167,13 +167,13 @@ export default {
       const Btns = document.querySelectorAll(
         `[data-set="${this.comment.cid}"]`
       );
-      setTimeout(function() {
+      setTimeout(function () {
         Btns.forEach((Btn) => {
           Btn.classList.add("close");
           Btn.classList.remove("open");
         });
       }, 0);
-      setTimeout(function() {
+      setTimeout(function () {
         Btns.forEach((Btn) => {
           Btn.classList.add("closedisplay");
         });

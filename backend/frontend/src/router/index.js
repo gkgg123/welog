@@ -10,7 +10,7 @@ import Logout from "../page/user/Logout.vue";
 import UserProfile from "../page/user/profile/UserProfile.vue";
 import UserProfileConfig from "../page/user/profile/UserProfileConfig.vue";
 import recevieConfirm from "../page/user/profile/recevieConfirm.vue";
-
+import sendConfirm from "../page/user/profile/sendConfirm.vue";
 // 메인화면
 import Main from "../page/main/Main.vue";
 import recentList from "../page/main/recentList.vue";
@@ -47,6 +47,10 @@ const routes = [
     path: "/:username/profile/",
     name: constants.URL_TYPE.USER.PROFILE,
     component: UserProfile,
+    beforeEnter: (to, from, next) => {
+      store.dispatch("headerChange", to.params.username);
+      next();
+    },
     redirect: {
       name: constants.URL_TYPE.USER.PROFILECONFIG,
     },
@@ -60,6 +64,11 @@ const routes = [
         path: "receive",
         name: constants.URL_TYPE.USER.RECEIVECONFIRM,
         component: recevieConfirm,
+      },
+      {
+        path: "send",
+        name: constants.URL_TYPE.USER.SENDCONFIRM,
+        component: sendConfirm,
       },
     ],
   },

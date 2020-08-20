@@ -1,21 +1,18 @@
 <template>
   <div class="personal-intro">
-    소개 페이지입니다.
-    <span>{{intro}}</span>
-    <button class="btn btn-primary" v-if="isCheckAuthor" @click="openTextarea">수정</button>
-
-    <div id="introConfirm" style="display:none;" class="border border-primary">
-      <textarea
-        class="border border-primary"
-        v-model="introConfirm"
-        name
-        id
-        cols="20"
-        rows="10"
-        style="width:35vw; height:25vh"
-      ></textarea>
-      <button class="btn btn-primary" @click="updateIntro">수정완료</button>
-      <button class="btn btn-primary">닫기</button>
+    <p v-if="intro">
+      <span>{{intro}}</span>
+    </p>
+    <p v-else>소개 페이지입니다.</p>
+    <div class="button-layout">
+      <button class="updateBtn" v-if="isCheckAuthor" @click="openTextarea">수정하기</button>
+    </div>
+    <div id="introConfirm" style="display:none;">
+      <textarea class="intro-box" v-model="introConfirm"></textarea>
+      <div class="btn-box">
+        <button id="updateConfirmBtn" class="updateConfirmBtn" @click="updateIntro">수정완료</button>
+        <button class="updateConfirmBtn" @click="closeTextarea">닫기</button>
+      </div>
     </div>
   </div>
 </template>
@@ -47,7 +44,16 @@ export default {
     openTextarea() {
       this.introConfirm = this.intro;
       var confirmTextarea = document.querySelector("#introConfirm");
+      var confirmUpdateButton = document.querySelector(".updateBtn");
       confirmTextarea.setAttribute("style", "display:block;  height:30vh;");
+      confirmUpdateButton.setAttribute("style", "display:none;");
+    },
+    closeTextarea() {
+      this.introConfirm = "";
+      var confirmTextarea = document.querySelector("#introConfirm");
+      var confirmUpdateButton = document.querySelector(".updateBtn");
+      confirmTextarea.setAttribute("style", "display:none;");
+      confirmUpdateButton.setAttribute("style", "display:block;");
     },
     updateIntro() {
       const author = this.$route.params.id;
@@ -58,10 +64,12 @@ export default {
         intro: [intro],
         token: this.authToken,
       };
-      console.log(totalData);
+      console.log("안녕하세요");
       axios
         .post(constants.baseUrl + `post/${author}/intro/`, totalData)
         .then((res) => {
+          alert("수정되었습니다.");
+          console.log(res.data, "-------");
           this.intro = res.data.content;
           var introConfirm = document.querySelector("#introConfirm");
           introConfirm.setAttribute("style", "display:none");
@@ -69,6 +77,8 @@ export default {
         .catch((err) => {
           console.log(err.response);
         });
+      var confirmUpdateButton = document.querySelector(".updateBtn");
+      confirmUpdateButton.setAttribute("style", "display:block;");
     },
   },
   created() {
@@ -78,8 +88,6 @@ export default {
     ...mapState(["authToken", "username"]),
     isCheckAuthor() {
       const author = this.$route.params.id;
-      console.log(author);
-      console.log(this.username);
       if (author === this.username) {
         return true;
       } else {

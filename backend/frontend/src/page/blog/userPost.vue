@@ -1,11 +1,16 @@
 <template>
   <div id="detail" class="mt-5">
-    <div class="post-title">
+    <div class="post-title" v-if="state">
       <div class="title">
         <h2>{{ articleDetail.title }}</h2>
         <div class="title-item">
           <p class="author">{{ articleDetail.author }}</p>
-          <p class="written-date">• 작성일</p>
+          <p class="written-date">
+            • 작성일 {{ articleDetail.createDate.slice(0, 4) }}년
+            {{ articleDetail.createDate.slice(5, 7) }}월
+            {{ articleDetail.createDate.slice(8, 10) }}일
+            {{articleDetail.createDate.slice(11,13)}}시
+          </p>
           <div class="written-tag">
             <span v-for="(tag, index) in articleDetail.tags" :key="index">
               <router-link
@@ -13,28 +18,29 @@
                   name: constants.URL_TYPE.MAIN.SEARCH,
                   query: { type: 'tag', search: tag },
                 }"
-              >
-                {{ tag }}
-              </router-link>
+              >{{ tag }}</router-link>
             </span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 좋아요, 공유하기 -->
+    <!-- 좋아요, 다운로드 -->
     <aside class="aside-left">
       <div class="left-side">
         <div class="floating-bar">
           <div class="like">
             <i
-              class="far fa-heart"
+              class="fas fa-heart"
               :class="{ likeBtn: isLikeuser, unlikeBtn: !isLikeuser }"
               @click="likePost"
             ></i>
             <p>{{ likecount }}</p>
           </div>
-          <i class="fas fa-share-alt"></i>
+          <div class="download" @click="markdownfile">
+            <i class="fas fa-download"></i>
+            <p>저장</p>
+          </div>
         </div>
       </div>
     </aside>
@@ -58,6 +64,7 @@
       mode="preview"
       v-model="articleDetail.content"
       ref="editor"
+      style="position:relative;"
       @copy-code-success="handleCopyCodeSuccess"
     />
     <!-- 수정 삭제 버튼 -->
@@ -67,73 +74,49 @@
         v-if="checkAuthorLogin"
         data-toggle="modal"
         data-target="#update"
-      >
-        수정
-      </button>
-      <button
-        class="update-button"
-        v-if="checkAuthorLogin"
-        @click="confirmDelete"
-      >
-        삭제
-      </button>
+      >수정</button>
+      <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
+      <userPostUpdate />
     </div>
-    <userPostUpdate />
 
     <div class="post-userBar">
       <div class="userBar">
-        <img
-          class="userImage"
-          src="https://cdn0.iconfinder.com/data/icons/set-ui-app-android/32/8-512.png"
-          alt="profileImage"
-        />
+        <img class="userImage" :src="articleDetail.profileUrl" alt="profileImage" />
         <div class="userIntro">
           <h2 class="box">{{ articleDetail.author }}</h2>
-          <p class="box">유저 한줄 소개</p>
+          <p class="box">{{ articleDetail.lineintro }}</p>
         </div>
       </div>
     </div>
 
     <div id="context-menu" class="context-menu">
-      <div
-        class="item"
-        data-toggle="modal"
-        data-target="#example"
-        @click="closeCofirmmenu"
-      >
-        수정요청
-      </div>
+      <div class="item" data-toggle="modal" data-target="#example" @click="closeCofirmmenu">수정요청</div>
+      <div class="item" @click="copyString">복사하기</div>
       <div class="item" @click="closeCofirmmenu">나가기</div>
     </div>
+
     <div class="commentBox">
       <div class="commentBox2">
         <div class="comment-label">
           <p>{{ commentNumber }}개의 댓글</p>
         </div>
         <div class="comment">
-          <textarea
-            placeholder="댓글을 남겨주세요"
-            v-model="commentContents"
-          ></textarea>
+          <textarea placeholder="댓글을 남겨주세요" v-model="commentContents"></textarea>
           <div class="comment-underbar">
             <span>비밀글</span>
             <div class="secret-button">
-              <i
-                class="fas fa-lock"
-                v-if="isSecret"
-                @click="isSecret = !isSecret"
-              ></i>
+              <i class="fas fa-lock" v-if="isSecret" @click="isSecret = !isSecret"></i>
               <i class="fas fa-unlock" v-else @click="isSecret = !isSecret"></i>
             </div>
             <button @click="commentSubmit">댓글 작성</button>
           </div>
         </div>
-        <commentListItems />
+        <commentListItems :wauthor="articleDetail.author" />
       </div>
     </div>
     <!-- 수정요청 -->
     <div
-      class="modal fade"
+      class="modal fade request-modal"
       id="example"
       tabindex="-1"
       role="dialog"
@@ -143,41 +126,22 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">수정요청</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <p class="modal-title" id="exampleModalLabel">수정요청</p>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">{{ confirmText }}</div>
+          <div class="modal-body">
+            <p>
+              <i class="far fa-edit"></i> 수정 요청 내용
+            </p>
+            <div class="request-content">{{ confirmText }}</div>
+          </div>
 
-          <textarea
-            class="border"
-            name="confirmComment"
-            id="confirmComment"
-            cols="30"
-            rows="10"
-            v-model="confirmComment"
-          ></textarea>
+          <textarea name="confirmComment" id="confirmComment" v-model="confirmComment"></textarea>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="modifyrequestPost"
-            >
-              Save changes
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
+            <button type="button" data-dismiss="modal" @click="modifyrequestPost">수정요청</button>
+            <button type="button" data-dismiss="modal" @click="returnconfirmComment">취소</button>
           </div>
         </div>
       </div>
@@ -192,6 +156,29 @@ import { mapState, mapActions, mapGetters } from "vuex";
 import constants from "@/lib/constants.js";
 import userPostUpdate from "@/page/blog/userPostUpdate.vue";
 import commentListItems from "@/page/blog/commentListItems.vue";
+function getPosition(e) {
+  var posx = 0;
+  var posy = 0;
+
+  if (!e) var e = window.event;
+
+  if (e.pageX || e.pageY) {
+    posx = e.pageX;
+    posy = e.pageY;
+  } else if (e.clientX || e.clientY) {
+    posx =
+      e.clientX +
+      document.body.scrollLeft +
+      document.documentElement.scrollLeft;
+    posy =
+      e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+  }
+
+  return {
+    x: posx,
+    y: posy,
+  };
+}
 export default {
   name: "userPost",
   data() {
@@ -204,6 +191,7 @@ export default {
       isSecret: false,
       isLikeuser: false,
       likecount: 0,
+      state: false,
     };
   },
   components: {
@@ -225,22 +213,53 @@ export default {
     },
   },
   methods: {
+    markdownfile() {
+      var sourcefile = this.articleDetail.content;
+      var source =
+        "data:application/vnd.ms-word;charset=utf-8," +
+        encodeURIComponent(sourcefile);
+      var fileDownload = document.createElement("a");
+      document.body.appendChild(fileDownload);
+      fileDownload.href = source;
+      fileDownload.download = `${this.articleDetail.title}.md`;
+      fileDownload.click();
+      document.body.removeChild(fileDownload);
+    },
+
     //  오른쪽 버튼 Custom
     contextmenu(event) {
       const creatediv = document.querySelector(".v-md-editor__preview-wrapper");
-      this.confirmText = document.getSelection().toString();
       creatediv.addEventListener("contextmenu", (event) => {
         event.preventDefault();
         var contextElement = document.getElementById("context-menu");
-        contextElement.style.top = event.offsetY + 450 + "px";
-        contextElement.style.left = event.offsetX + 450 + "px";
+        var clickCoords = getPosition(event);
+        var clickCoordsX = clickCoords.x;
+        var clickCoordsY = clickCoords.y;
+        contextElement.style.left = clickCoordsX + "px";
+
+        contextElement.style.top = clickCoordsY + "px";
+
         this.confirmText = document.getSelection().toString();
         contextElement.classList.add("active");
       });
-      creatediv.addEventListener("click", function() {
+      creatediv.addEventListener("click", function () {
         var contextElement = document.getElementById("context-menu");
         contextElement.classList.remove("active");
       });
+    },
+    copyToClipboard(val) {
+      var t = document.createElement("textarea");
+      document.body.appendChild(t);
+      t.value = val;
+      t.select();
+      document.execCommand("copy");
+      document.body.removeChild(t);
+    },
+    copyString(event) {
+      this.copyToClipboard(this.confirmText);
+      alert("복사되었습니다.");
+      var contextElement = document.getElementById("context-menu");
+      contextElement.classList.remove("active");
     },
     closeCofirmmenu() {
       var contextElement = document.getElementById("context-menu");
@@ -275,7 +294,9 @@ export default {
               totalData
             )
             .then((res) => {
-              this.$router.go();
+              this.totalCreate();
+              alert("댓글이 작성됬습니다.");
+              this.commentContents = "";
             })
             .catch((err) => {
               console.log(err.response);
@@ -283,27 +304,35 @@ export default {
         }
       }
     },
+    /// 수정요청 보내기 자기글에 수정요청..못 보내기 ㅋ///
     modifyrequestPost() {
-      const totalData = {
-        comment: this.confirmComment,
-        Authorization: this.authToken,
-        requiredString: this.confirmText,
-      };
-      console.log(totalData, "보낸데이터");
+      if (this.username == this.articleDetail.author) {
+        alert("자기글에는 수정요청을 보낼수 없습니다.");
+      } else {
+        const totalData = {
+          comment: this.confirmComment,
+          requiredString: this.confirmText,
+          postTitle: this.articleDetail.title,
+          Authorization: this.authToken,
+        };
 
-      axios
-        .post(
-          constants.baseUrl + `modfrequest/post/${this.articleDetail.pid}`,
-          totalData
-        )
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => {
-          console.log(err.response);
-        });
+        axios
+          .post(
+            constants.baseUrl + `modfrequest/post/${this.articleDetail.pid}`,
+            totalData
+          )
+          .then((res) => {
+            alert("수정요청이 성공적으로 보내졌습니다.");
+            $("#example").modal("hide");
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      }
     },
-
+    returnconfirmComment() {
+      this.confirmComment = "";
+    },
     /// 앵커 만드는 거
     anchorCreate() {
       const anchors = this.$refs.editor.$el.querySelectorAll(
@@ -336,6 +365,7 @@ export default {
       await this.carryComment(`post/${this.$route.params.pid}/comment/`);
       this.anchorCreate();
       this.isLike();
+      this.state = true;
       this.likecount = this.articleDetail.likeCount;
     },
 
@@ -364,7 +394,7 @@ export default {
         editor.previewScrollToTarget({
           target: heading,
           scrollContainer: window,
-          top: 70,
+          top: 90,
         });
       }
     },
@@ -419,7 +449,9 @@ export default {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   },
   mounted() {
-    this.contextmenu();
+    if (this.isLogined) {
+      this.contextmenu();
+    }
     this.totalCreate();
   },
 };
@@ -427,9 +459,11 @@ export default {
 
 <style scoped>
 .likeBtn {
-  color: red;
+  color: #f06292;
+  transition: 0.3s ease;
 }
 .unlikeBtn {
   color: black;
+  transition: 0.1s ease;
 }
 </style>

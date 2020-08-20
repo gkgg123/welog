@@ -1,27 +1,49 @@
 <template>
   <div id="post-items">
-    <div v-if="articles.length" v-cloak>
+    <div v-if="state === -100" class="loading-box">
+      <img src="img/loading.gif" alt />
+    </div>
+    <div v-else-if="state === true" v-cloak>
       <div class="post-articles" v-for="article in articles" :key="article.pid">
         <div class="post-article">
+          <div class="article-img">
+            <router-link
+              :to="{
+                name: 'userPost',
+                params: { id: $route.params.id, pid: article.pid },
+              }"
+            >
+              <img v-if="!article.imageList.length" src="img/no_image.png" />
+              <div
+                v-else
+                :style="{
+                  'background-image': `url(
+                ${article.imageList[0].path.replace(s3url, constants.imageUrl)}
+              )`,
+                }"
+                style="background-size: 80% 45vh;
+                  background-repeat : no-repeat;
+                  background-postion : center center;
+                  height : 45vh;"
+              ></div>
+            </router-link>
+          </div>
           <li class="article-title">
             <router-link
               :to="{
-              name: 'userPost',
-              params: { id: $route.params.id, pid: article.pid },
-            }"
+                name: 'userPost',
+                params: { id: $route.params.id, pid: article.pid },
+              }"
             >{{ article.title }}</router-link>
           </li>
-          <div class="article-content">{{ article.content }}</div>
-          <!--  <div v-for="tag in articles.tags" :key="tag"> -->
           <div class="article-tag">
             <span v-for="tag in article.tags" :key="tag">
               <router-link
-                :to="{name : constants.URL_TYPE.MAIN.SEARCH, query :{ type : 'tag', search : tag}}"
-              >
-                {{
-                tag
-                }}
-              </router-link>
+                :to="{
+                  name: constants.URL_TYPE.MAIN.SEARCH,
+                  query: { type: 'tag', search: tag },
+                }"
+              >{{ tag }}</router-link>
             </span>
           </div>
           <li class="article-day">{{ article.createDate }}</li>
@@ -45,10 +67,17 @@ export default {
   data() {
     return {
       constants,
+      state: -100,
     };
   },
   computed: {
-    ...mapState(["articles", "nextPage", "pageLimit", "receiveArticleList"]),
+    ...mapState([
+      "articles",
+      "nextPage",
+      "pageLimit",
+      "receiveArticleList",
+      "s3url",
+    ]),
   },
   methods: {
     ...mapActions(["getArticles", "attachArticles"]),
@@ -61,12 +90,22 @@ export default {
         }, 500);
       });
     },
+    async totalCreate() {
+      await this.getArticles({ location: `post/${this.$route.params.id}/` });
+      this.state = !!this.receiveArticleList.length;
+    },
   },
   created() {
-    this.getArticles({ location: `post/${this.$route.params.id}/` });
+    this.totalCreate();
   },
   mounted() {
     this.addScrollMonitor();
+  },
+  watch: {
+    $route(to, from) {
+      const target = this.$route.query.type;
+      this.getArticles({ location: `post/${this.$route.params.id}/` });
+    },
   },
 };
 </script>

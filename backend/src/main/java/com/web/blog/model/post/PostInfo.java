@@ -7,13 +7,15 @@ import java.util.List;
 public class PostInfo {
     private Post post;
     private int likeCount;
+    private int commentCount;
     private List<String> userlist;
     private List<Image> images;
-    public PostInfo(Post post, int likeCount, List<String> userlist, List<Image> images){
+    public PostInfo(Post post, int likeCount, int commentCount, List<String> userlist, List<Image> images){
         this.post = post;
         this.likeCount = likeCount;
         this.userlist = userlist;
         this.images = images;
+        this.commentCount = commentCount;
     }
 
     public Post getPost() {
@@ -30,6 +32,14 @@ public class PostInfo {
 
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
     public List<String> getUserlist() {

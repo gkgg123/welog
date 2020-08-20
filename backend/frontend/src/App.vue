@@ -21,6 +21,7 @@ export default {
     let url = this.$route.name;
     this.checkUrl(url);
     this.usernameCheck();
+    this.getUserDetailinfo();
   },
   watch: {
     $route(to) {
@@ -41,7 +42,7 @@ export default {
       });
       this.isHeader = isHeader;
     },
-    ...mapActions(["usernameCheck"]),
+    ...mapActions(["usernameCheck", "getUserDetailinfo"]),
   },
   computed: {
     ...mapState(["username"]),

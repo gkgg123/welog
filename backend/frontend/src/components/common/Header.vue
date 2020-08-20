@@ -33,7 +33,20 @@
         class="login-btn"
       >로그인</router-link>
 
-      <router-link v-if="isLogined" to="/create" class="login-btn">새 글쓰기</router-link>
+      <router-link v-if="isLogined" to="/create" class="create-btn">새 글쓰기</router-link>
+      <div class="request-alert" v-if="isLogined">
+        <div v-if="countModify == 0">
+          <i class="far fa-bell"></i>
+        </div>
+        <div v-else>
+          <router-link
+            :to="{name : constants.URL_TYPE.USER.RECEIVECONFIRM, params : {username : username}}"
+          >
+            <i class="fas fa-bell"></i>
+            <span>{{ countModify }}</span>
+          </router-link>
+        </div>
+      </div>
       <div class="dropdown-box" v-if="isLogined">
         <a
           class="nav-link dropdown-toggle"
@@ -44,7 +57,7 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <i class="far fa-smile"></i>
+          <img :src="userprofile" />
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <router-link
@@ -83,7 +96,9 @@ export default {
       "headerPathName",
       "headerPathParams",
       "username",
+      "userprofile",
     ]),
+    ...mapGetters(["countModify"]),
   },
   watch: {},
   created() {},
@@ -134,7 +149,7 @@ export default {
 .dropdown-item {
   text-align: center;
   font-size: 18px;
-  padding: 8px 16px;
+  padding: 8px 12px;
   margin: 8px 0px;
 }
 .dropdown-item:hover {
