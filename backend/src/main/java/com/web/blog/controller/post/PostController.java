@@ -7,11 +7,10 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import com.web.blog.model.ErrorResponse;
 import com.web.blog.model.account.Account;
-import com.web.blog.model.account.repository.CommentRepository;
-import com.web.blog.model.account.repository.LikeRepository;
-import com.web.blog.model.account.repository.PostRepository;
+import com.web.blog.model.post.repository.CommentRepository;
+import com.web.blog.model.post.repository.LikeRepository;
+import com.web.blog.model.post.repository.PostRepository;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.account.repository.AccountRepository;
 import com.web.blog.model.file.Image;
@@ -19,7 +18,6 @@ import com.web.blog.model.file.repository.ImageRepository;
 import com.web.blog.model.post.*;
 
 import com.web.blog.utils.TokenUtils;
-import io.swagger.annotations.Api;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

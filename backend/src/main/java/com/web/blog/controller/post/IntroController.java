@@ -1,7 +1,7 @@
 package com.web.blog.controller.post;
 
 import com.web.blog.model.BasicResponse;
-import com.web.blog.model.account.repository.IntroRepository;
+import com.web.blog.model.post.repository.IntroRepository;
 import com.web.blog.model.post.Intro;
 import com.web.blog.utils.TokenUtils;
 import io.swagger.annotations.ApiOperation;
@@ -12,8 +12,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),

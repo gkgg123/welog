@@ -7,14 +7,13 @@ import javax.validation.Valid;
 
 import com.web.blog.model.account.Account;
 import com.web.blog.model.account.repository.AccountRepository;
-import com.web.blog.model.account.repository.CommentRepository;
+import com.web.blog.model.post.repository.CommentRepository;
 import com.web.blog.model.BasicResponse;
 
 import com.web.blog.model.post.Comment;
 import com.web.blog.model.post.CommentInfo;
 import com.web.blog.utils.TokenUtils;
 
-import org.json.JSONString;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
