@@ -72,8 +72,7 @@ export default {
     checkemail() {
       const emaillabel = document.querySelector("#emaillabel");
       if (this.reg.test(this.loginData.useremail)) {
-        emaillabel.setAttribute("style", "color:blue");
-        emaillabel.innerText = "email형식에 맞습니다.";
+        emaillabel.innerText = "";
         this.isemail = true;
       } else if (!this.loginData.useremail.length) {
         emaillabel.setAttribute("style", "color:#aaaaaa");
@@ -88,8 +87,7 @@ export default {
     checkpassword() {
       const passwordlabel = document.querySelector("#passwordlabel");
       if (this.loginData.password.length >= 8) {
-        passwordlabel.setAttribute("style", "color:blue");
-        passwordlabel.innerText = "비밀번호가 적절합니다.";
+        passwordlabel.innerText = "";
         this.ispassword = true;
       } else if (this.loginData.password.length === 0) {
         passwordlabel.setAttribute("style", "color:#aaaaaa");

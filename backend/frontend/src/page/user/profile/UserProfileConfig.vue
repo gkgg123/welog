@@ -34,7 +34,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog">
-        <div class="modal-content" style="width:200%;">
+        <div class="modal-content">
           <div class="modal-header">
             <p class="modal-title" id="staticBackdropLabel">비밀번호 변경</p>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -44,27 +44,32 @@
           <div class="modal-body">
             <div class="input-label">
               <label for="password-now">현재 비밀번호</label>
-              <input id="password-now" v-model="currentPassword" type="password" style="width:20%" />
+              <input
+                class="label-input"
+                id="password-now"
+                v-model="currentPassword"
+                type="password"
+              />
             </div>
             <div class="input-label">
               <label for="password-new1">새 비밀번호</label>
               <input
+                class="label-input"
                 id="password-new1"
                 @keyup="checkpassword1"
                 v-model="newPassword1"
                 type="password"
-                style="width:20%"
               />
               <span id="alertmessage1"></span>
             </div>
             <div class="input-label">
               <label for="password-new2">새 비밀번호 확인</label>
               <input
+                class="label-input"
                 id="password-new2"
                 v-model="newPassword2"
                 @keyup="checkpassword2"
                 type="password"
-                style="width:20%"
               />
               <span id="alertmessage2"></span>
             </div>
@@ -133,11 +138,11 @@ export default {
       const alertmessage = document.querySelector("#alertmessage1");
       if (this.newPassword1 == this.currentPassword) {
         alertmessage.setAttribute("style", "color:red");
-        alertmessage.innerText = "기존 비밀번호와 같으면 안 됩니다.";
+        alertmessage.innerText = "기존 비밀번호와 같습니다.";
         this.ispasswordcheck1 = false;
       } else if (this.newPassword1.length < 8) {
         alertmessage.setAttribute("style", "color:red");
-        alertmessage.innerText = "새 비밀번호가 너무 짧습니다.";
+        alertmessage.innerText = "비밀번호가 너무 짧습니다.";
         this.ispasswordcheck1 = false;
       } else {
         alertmessage.setAttribute("style", "color:blue");
@@ -149,11 +154,11 @@ export default {
       const alertmessage = document.querySelector("#alertmessage2");
       if (this.newPassword1 == this.newPassword2) {
         alertmessage.setAttribute("style", "color:blue");
-        alertmessage.innerText = "새 비밀번호와 같습니다.";
+        alertmessage.innerText = "비밀번호가 같습니다.";
         this.ispasswordcheck2 = true;
       } else {
         alertmessage.setAttribute("style", "color:red");
-        alertmessage.innerText = "새 비밀번호와 다릅니다.";
+        alertmessage.innerText = "비밀번호가 다릅니다.";
         this.ispasswordcheck2 = false;
       }
     },
