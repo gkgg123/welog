@@ -39,7 +39,7 @@
               name: constants.URL_TYPE.POST.POST,
               params: { id: article.author, pid: article.pid },
             }"
-          >{{ article.content }}</router-link>
+          >{{ article.content.slice(0, 300) }} ...</router-link>
         </div>
         <div class="list-data">
           <span class="date">
