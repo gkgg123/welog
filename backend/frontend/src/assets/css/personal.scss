@@ -84,13 +84,23 @@
         padding: 10px;
         background-color: #e8eaf6;
         border-radius: 20px;
-        .like p {
+        .like {
           text-align: center;
-          font-size: 15px;
+          p {
+            text-align: center;
+            font-size: 15px;
+          }
         }
         .fas {
           cursor: pointer;
           margin-top: 8px;
+        }
+        .download {
+          text-align: center;
+          p {
+            font-size: 14px;
+            font-weight: 600;
+          }
         }
       }
     }

@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <!-- 좋아요, 공유하기 -->
+    <!-- 좋아요, 다운로드 -->
     <aside class="aside-left">
       <div class="left-side">
         <div class="floating-bar">
@@ -37,7 +37,10 @@
             ></i>
             <p>{{ likecount }}</p>
           </div>
-          <i class="fas fa-share-alt"></i>
+          <div class="download" @click="markdownfile">
+            <i class="fas fa-download"></i>
+            <p>저장</p>
+          </div>
         </div>
       </div>
     </aside>
@@ -73,7 +76,6 @@
         data-target="#update"
       >수정</button>
       <button class="update-button" v-if="checkAuthorLogin" @click="confirmDelete">삭제</button>
-      <button class="update-button" @click="markdownfile">md파일로 다운로드</button>
       <userPostUpdate />
     </div>
 
