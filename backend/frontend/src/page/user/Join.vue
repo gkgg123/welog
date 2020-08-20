@@ -194,8 +194,9 @@ export default {
       }
     },
     resetNickname() {
+      console.log("들어왔음");
       this.setnickname = "";
-      this.ninkcameoverlapcheck = false;
+      this.nicknameoverlapcheck = false;
       const inputNickname = document.querySelector("#nickname");
       inputNickname.removeAttribute("disabled");
       inputNickname.setAttribute("style", "background-color:white");
@@ -232,10 +233,13 @@ export default {
               signupData.email !== "" &&
               this.reg.test(signupData.useremail)
             ) {
-              if (signupData.username.length >= 3) {
+              if (
+                signupData.username.length >= 3 &&
+                signupData.username.length <= 15
+              ) {
                 return true;
               } else {
-                alert("닉네임을 3글자 이상 입력해주세요");
+                alert("닉네임을 3글자 이상 15글자 이하로 입력해주세요");
               }
             } else {
               alert("이메일 형식이 아닙니다.");
