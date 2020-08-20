@@ -19,7 +19,7 @@
         type="text"
       />
       <v-md-editor
-        style="margin:5vh 0px; box-sizing: border-box;"
+        style="margin:5vh 0px 2vh 0px; box-sizing: border-box;"
         id="create"
         placeholder="새 글을 작성해 보세요"
         v-model="text"
@@ -28,6 +28,11 @@
         @upload-image="handleUploadImage"
         @copy-code-success="handleCopyCodeSuccess"
       />
+    </div>
+    <div class="buttons">
+      <button class="exit" @click="checkCreate">
+        <i class="fas fa-sign-out-alt"></i>나가기
+      </button>
       <button class="submit" @click="checkCreate">제출</button>
     </div>
   </div>
@@ -177,7 +182,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
   max-width: 90%;
   margin-bottom: 50px;
@@ -211,12 +216,27 @@ export default {
   color: #0ca678;
 }
 
-.submit {
-  font-size: 20px;
-  margin: 5px 15px;
-  padding: 8px 13px;
-  background-color: #48a999;
-  color: white;
-  border-radius: 8px;
+.buttons {
+  float: right;
+  .submit {
+    font-size: 20px;
+    margin: 5px 0px;
+    padding: 8px 13px;
+    background-color: #48a999;
+    color: white;
+    border-radius: 8px;
+  }
+
+  .exit {
+    font-size: 20px;
+    margin: 5px 15px;
+    padding: 8px 13px;
+    background-color: #e91e63;
+    color: white;
+    border-radius: 8px;
+    i {
+      margin-right: 5px;
+    }
+  }
 }
 </style>
