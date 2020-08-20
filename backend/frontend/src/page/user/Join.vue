@@ -6,15 +6,15 @@
         <div class="form-wrap">
           <div class="input-id">
             <input v-model="nickName" id="nickname" placeholder="닉네임을 입력해주세요" type="text" />
-            <button class="check-nickname" @click="checkNickname" v-if="!ninknameoverlapcheck">중복확인</button>
+            <button class="check-nickname" @click="checkNickname" v-if="!nicknameoverlapcheck">중복확인</button>
             <button class="reset-nickname" @click="resetNickname" v-else>닉네임 변경</button>
             <p>* 닉네임 설정 후 변경불가</p>
           </div>
 
           <div class="input-wrap">
             <input v-model="email" id="email" placeholder="이메일을 입력해주세요" type="text" />
-            <button class="check-email" @click="checkNickname" v-if="!ninknameoverlapcheck">중복확인</button>
-            <button class="reset-email" @click="resetNickname" v-else>이메일 변경</button>
+            <button class="check-email" @click="checkEmail" v-if="!emailoverlapcheck">중복확인</button>
+            <button class="reset-email" @click="resetEmail" v-else>이메일 변경</button>
           </div>
 
           <div class="input-wrap password-wrap">
@@ -111,15 +111,19 @@ export default {
         password: this.password,
       };
       if (this.checkSingupData(signupData)) {
-        if (this.ninknameoverlapcheck) {
-          axios
-            .post(constants.baseUrl + "user/signup", signupData)
-            .then(() => {
-              this.alertAfterpush();
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+        if (this.nicknameoverlapcheck) {
+          if (this.emailoverlapcheck) {
+            axios
+              .post(constants.baseUrl + "user/signup", signupData)
+              .then(() => {
+                this.alertAfterpush();
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          } else {
+            alert("이메일 중복체크를 해주세요");
+          }
         } else {
           alert("닉네임 중복체크를 해주세요");
         }
@@ -131,6 +135,40 @@ export default {
       );
       this.$router.push({ name: constants.URL_TYPE.USER.LOGIN });
       window.close();
+    },
+    checkEmail(event) {
+      if (this.reg.test(this.email)) {
+        if (!this.email.trim().length) {
+          alert("공백을 입력하시면 안됩니다.");
+        } else {
+          axios
+            .get(constants.baseUrl + "user/check/email", {
+              params: {
+                email: this.email,
+              },
+            })
+            .then((res) => {
+              if (res.data === false) {
+                alert("이메일이 중복됩니다.");
+              } else {
+                this.seteamil = this.email;
+                this.emailoverlapcheck = true;
+                const inputEmail = document.querySelector("#email");
+                inputEmail.setAttribute("disabled", true);
+                alert("사용할 수 있는 이메일입니다.");
+              }
+            });
+        }
+      } else {
+        alert("이메일 형식이 아닙니다.");
+      }
+    },
+    resetEmail(event) {
+      this.seteamil = "";
+      this.emailoverlapcheck = false;
+      const inputEmail = document.querySelector("#email");
+      inputEmail.removeAttribute("disabled");
+      inputEmail.setAttribute("style", "background-color:white");
     },
     checkNickname(event) {
       if (!this.nickName.trim().length) {
@@ -147,7 +185,7 @@ export default {
               alert("닉네임이 중복됩니다.");
             } else {
               this.setnickname = this.nickName;
-              this.ninknameoverlapcheck = true;
+              this.nicknameoverlapcheck = true;
               const inputNickname = document.querySelector("#nickname");
               inputNickname.setAttribute("disabled", true);
               alert("사용할수 있는 닉네임입니다.");
@@ -157,7 +195,7 @@ export default {
     },
     resetNickname() {
       this.setnickname = "";
-      this.ninknameoverlapcheck = false;
+      this.ninkcameoverlapcheck = false;
       const inputNickname = document.querySelector("#nickname");
       inputNickname.removeAttribute("disabled");
       inputNickname.setAttribute("style", "background-color:white");
@@ -220,7 +258,9 @@ export default {
       email: "",
       nickName: "",
       setnickname: "",
-      ninknameoverlapcheck: false,
+      seteamil: "",
+      nicknameoverlapcheck: false,
+      emailoverlapcheck: false,
       password: "",
       passwordConfirm: "",
       isTerm: false,
