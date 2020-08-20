@@ -49,6 +49,7 @@
           </span>
         </div>
       </div>
+      <div id="bottomSensor" style="height:10px;"></div>
     </div>
     <div v-else class="search-item">
       <h1>
@@ -58,6 +59,7 @@
       <li>철자가 정확한지 확인하세요.</li>
       <li>좀 더 간단하게 입력하여 검색해 보세요.</li>
     </div>
+    <div id="bottomSensor" style="height:10px;"></div>
   </div>
 </template>
 

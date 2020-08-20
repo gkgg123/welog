@@ -30,10 +30,10 @@
       />
     </div>
     <div class="buttons">
-      <button class="exit" @click="checkCreate">
+      <button class="submit" @click="checkCreate">제출</button>
+      <button class="exit" @click="outCreate">
         <i class="fas fa-sign-out-alt"></i>나가기
       </button>
-      <button class="submit" @click="checkCreate">제출</button>
     </div>
   </div>
 </template>
@@ -82,7 +82,15 @@ export default {
         this.inputTag = null;
       }
     },
-
+    outCreate() {
+      if (this.text.trim().length > 0) {
+        if (confirm("작성중인 글이 있습니다. 정말 나가시겠습니까?")) {
+          this.$router.back();
+        }
+      } else {
+        this.$router.back();
+      }
+    },
     /// Tag 지우는 로직
     deleteTag() {
       if (
