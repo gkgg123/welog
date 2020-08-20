@@ -6,8 +6,8 @@
         <div class="form-wrap">
           <div class="input-id">
             <input v-model="nickName" id="nickname" placeholder="닉네임을 입력해주세요" type="text" />
-            <button @click="checkNickname" v-if="!ninknameoverlapcheck">중복확인</button>
-            <button @click="resetNickname" v-else>닉네임 변경</button>
+            <button class="check-nickname" @click="checkNickname" v-if="!ninknameoverlapcheck">중복확인</button>
+            <button class="reset-nickname" @click="resetNickname" v-else>닉네임 변경</button>
             <p>* 닉네임 설정 후 변경불가</p>
           </div>
 
@@ -148,7 +148,7 @@ export default {
               this.ninknameoverlapcheck = true;
               const inputNickname = document.querySelector("#nickname");
               inputNickname.setAttribute("disabled", true);
-              inputNickname.setAttribute("style", "background-color:#69f0ae");
+              inputNickname.setAttribute("style", "background-color:#80deea");
               alert("사용할수 있는 닉네임입니다.");
             }
           });
