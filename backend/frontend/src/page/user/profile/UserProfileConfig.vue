@@ -176,7 +176,7 @@ export default {
           })
           .then((res) => {
             alert("Password가 정상적으로 변경되었습니다.");
-            $("staticBackdrop").modal("hide");
+            $("#staticBackdrop").modal("hide");
             console.log(res);
           })
           .catch((err) => {

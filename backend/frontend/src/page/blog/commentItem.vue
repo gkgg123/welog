@@ -12,7 +12,9 @@
             style="margin:0px 5px; background:#69f0ae; padding:2.5px; border-radius:30%"
           >작성자</span>
 
-          <p class="written-day">작성 날짜</p>
+          <p
+            class="written-day"
+          >작성 날짜{{ comment.createDate.slice(2, 4) }}/{{ comment.createDate.slice(5, 7) }}/{{ comment.createDate.slice(8, 10) }}/{{comment.createDate.slice(11)}}</p>
         </div>
         <div class="comment-button" v-if="checkAuthorLogin">
           <p @click="deleteComment">삭제</p>
@@ -107,7 +109,7 @@ export default {
         if (this.username === this.comment.name) {
           return true;
         }
-        if (this.uesername === this.articleDetail.author) {
+        if (this.username === this.articleDetail.author) {
           return true;
         }
         return false;
