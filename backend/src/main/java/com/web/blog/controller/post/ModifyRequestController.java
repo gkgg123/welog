@@ -63,7 +63,6 @@ public class ModifyRequestController {
 
     JSONParser jsonParser = new JSONParser();
     JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
-    System.out.println(object.toJSONString());
     String jwt = (String) object.get(JwtProperties.HEADER_STRING);
     String strcomment = (String) object.get("comment");
     String rString = (String) object.get("requiredString");

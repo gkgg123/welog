@@ -161,7 +161,6 @@ public class PostController {
             JSONObject imageObject = (JSONObject) object;
             String str = (String) imageObject.get("image");
             Image image = imageRepository.findByIid(str);
-            System.out.println(str);
             image.setPid(post.getPid());
             imageRepository.save(image);
         }

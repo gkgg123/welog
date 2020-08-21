@@ -33,12 +33,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     UserDetails userDetails = accountService.loadUserByUsername(userEmail); //
 
     if(!passwordEncoder.matches(userPw, userDetails.getPassword())){
-      System.err.println("Invalid password");
       throw new BadCredentialsException(userDetails.getUsername() + "Invaild password");
-    } else{
-      System.out.println("Valided");
     }
-
     return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
   }
   @Override

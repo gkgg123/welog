@@ -81,7 +81,6 @@ public class CommentController {
         comment.setSecret(secret);
         comment.setName(name);
 
-        System.out.println(comment.toString());
         commentRepository.save(comment);
         result.status = true;
         result.data = "SUCCESS";
