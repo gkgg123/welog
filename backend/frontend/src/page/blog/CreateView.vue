@@ -23,7 +23,7 @@
         id="create"
         placeholder="새 글을 작성해 보세요"
         v-model="text"
-        left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code"
+        left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image emoji code "
         :disabled-menus="[]"
         @upload-image="handleUploadImage"
         @copy-code-success="handleCopyCodeSuccess"

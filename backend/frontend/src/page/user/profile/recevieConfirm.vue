@@ -38,11 +38,17 @@
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog" role="document">
+          <div class="modal-dialog" role="document" @keydown.esc="returnData(recevieConfirm)">
             <div class="modal-content">
               <div class="modal-header">
                 <p class="modal-title" id="exampleModalLabel">글 제목 : {{ recevieConfirm.posttitle }}</p>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  @click="returnData(recevieConfirm)"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>

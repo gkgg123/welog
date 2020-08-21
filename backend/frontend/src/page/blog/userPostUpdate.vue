@@ -38,7 +38,7 @@
             class="w-100"
             v-model="updateArticle.content"
             style="text-align:initial"
-            left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code"
+            left-toolbar="undo redo | clear h hr italic bold ol ul quote table strikethrough image code emoji"
             :disabled-menus="[]"
             @upload-image="handleUploadImage"
           />
