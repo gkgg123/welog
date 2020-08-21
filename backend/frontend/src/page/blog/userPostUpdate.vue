@@ -24,7 +24,10 @@
         </div>
         <div class="modal-tags">
           <div id="tag" class="flex-column">
-            <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{tag}}</button>
+            <button class="tagBtn" v-for="(tag,index) in this.tagList" :key="tag">
+              {{ tag }}
+              <i class="fas fa-times" @click="deleteindexTag(index)"></i>
+            </button>
           </div>
           <input
             v-model="inputTag"
@@ -109,7 +112,11 @@ export default {
         }
       }
     },
-
+    deleteindexTag(index) {
+      if (confirm(this.tagList[index] + " Tag를 정말삭제하시겠습니까?")) {
+        this.tagList.splice(index, 1);
+      }
+    },
     returnData() {
       this.$store.commit("SET_ARTICLEDETAIL", this.articleDetail);
     },
@@ -187,9 +194,14 @@ export default {
   background-color: #e8eaf6;
   border: none;
   cursor: auto;
+  font-weight: 600;
   border-radius: 16px;
   padding: 7px;
-  margin: 0px 3px;
+  margin: 7px 3px;
   color: #0ca678;
+}
+
+.tagBtn > i {
+  margin-left: 3px;
 }
 </style>
