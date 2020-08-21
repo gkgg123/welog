@@ -194,7 +194,6 @@ export default {
       }
     },
     resetNickname() {
-      console.log("들어왔음");
       this.setnickname = "";
       this.nicknameoverlapcheck = false;
       const inputNickname = document.querySelector("#nickname");

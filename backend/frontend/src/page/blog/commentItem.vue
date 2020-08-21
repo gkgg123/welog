@@ -212,7 +212,7 @@ export default {
             this.$router.go();
           })
           .catch((err) => {
-            console.log("댓글 수정실패");
+            alert("댓글 수정에 실패했습니다.");
           });
       }
     },
@@ -232,6 +232,7 @@ export default {
             this.$router.go();
           })
           .catch((err) => {
+            alert("삭제에 실패하셨습니다.");
             console.log(err.response);
           });
       }

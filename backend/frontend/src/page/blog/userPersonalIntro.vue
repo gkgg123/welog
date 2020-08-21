@@ -64,12 +64,11 @@ export default {
         intro: [intro],
         token: this.authToken,
       };
-      console.log("안녕하세요");
+
       axios
         .post(constants.baseUrl + `post/${author}/intro/`, totalData)
         .then((res) => {
           alert("수정되었습니다.");
-          console.log(res.data, "-------");
           this.intro = res.data.content;
           var introConfirm = document.querySelector("#introConfirm");
           introConfirm.setAttribute("style", "display:none");
