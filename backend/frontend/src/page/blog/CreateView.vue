@@ -8,7 +8,10 @@
       <input placeholder="제목을 입력하세요" class="titleInput" v-model="title" type="text" />
 
       <div id="tag" class="flex-column">
-        <button class="tagBtn" v-for="tag in this.tagList" :key="tag">{{ tag }}</button>
+        <button class="tagBtn" v-for="(tag,index) in this.tagList" :key="tag">
+          {{ tag }}
+          <i class="fas fa-times" @click="deleteindexTag(index)"></i>
+        </button>
       </div>
       <input
         placeholder="Tag를 입력하고 Enter를 누르세요"
@@ -106,6 +109,11 @@ export default {
         ) {
           this.tagList.pop();
         }
+      }
+    },
+    deleteindexTag(index) {
+      if (confirm(this.tagList[index] + " Tag를 정말삭제하시겠습니까?")) {
+        this.tagList.splice(index, 1);
       }
     },
 
@@ -220,10 +228,15 @@ export default {
   background-color: #e8eaf6;
   border: none;
   cursor: auto;
+  font-weight: 600;
   border-radius: 16px;
   padding: 7px;
   margin: 7px 3px;
   color: #0ca678;
+}
+
+.tagBtn > i {
+  margin-left: 3px;
 }
 
 .buttons {

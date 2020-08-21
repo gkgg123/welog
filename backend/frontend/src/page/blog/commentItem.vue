@@ -233,7 +233,6 @@ export default {
           })
           .catch((err) => {
             alert("삭제에 실패하셨습니다.");
-            console.log(err.response);
           });
       }
     },
