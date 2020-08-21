@@ -159,7 +159,9 @@ export default {
             });
           })
           .catch((err) => {
-            console.log(err.response);
+            alert(
+              "새글 작성에 실패했습니다. 글자수가 8000자를 초과했을수도 있습니다."
+            );
           });
       }
     },
@@ -180,7 +182,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("이미지 업로드에 실패했습니다.");
         });
     },
   },

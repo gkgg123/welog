@@ -119,7 +119,7 @@ export default {
                 this.alertAfterpush();
               })
               .catch((err) => {
-                console.log(err);
+                alert("회원가입에 실패했습니다.");
               });
           } else {
             alert("이메일 중복체크를 해주세요");

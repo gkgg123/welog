@@ -299,7 +299,7 @@ export default {
               this.commentContents = "";
             })
             .catch((err) => {
-              console.log(err.response);
+              alert("댓글작성에 실패했습니다.");
             });
         }
       }
@@ -326,7 +326,7 @@ export default {
             $("#example").modal("hide");
           })
           .catch((err) => {
-            console.log(err.response);
+            alert("수정요청에 실패했습니다.");
           });
       }
     },
@@ -405,28 +405,29 @@ export default {
       };
       if (!this.isLogined) {
         this.$router.push({ name: constants.URL_TYPE.USER.LOGIN });
-      }
-      if (this.username === this.articleDetail.author) {
-        alert("자기글에 추천을 누를수없습니다.");
       } else {
-        axios
-          .post(
-            constants.baseUrl +
-              `post/${this.articleDetail.author}/${this.articleDetail.pid}/likeit/`,
-            userData
-          )
-          .then((res) => {
-            if (res.data.object.likeit) {
-              this.isLikeuser = true;
-              this.likecount += 1;
-            } else {
-              this.isLikeuser = false;
-              this.likecount -= 1;
-            }
-          })
-          .catch((err) => {
-            console.log(err.response);
-          });
+        if (this.username === this.articleDetail.author) {
+          alert("자기글에 추천을 누를수없습니다.");
+        } else {
+          axios
+            .post(
+              constants.baseUrl +
+                `post/${this.articleDetail.author}/${this.articleDetail.pid}/likeit/`,
+              userData
+            )
+            .then((res) => {
+              if (res.data.object.likeit) {
+                this.isLikeuser = true;
+                this.likecount += 1;
+              } else {
+                this.isLikeuser = false;
+                this.likecount -= 1;
+              }
+            })
+            .catch((err) => {
+              alert("좋아요에 실피했습니다.");
+            });
+        }
       }
     },
     isLike() {

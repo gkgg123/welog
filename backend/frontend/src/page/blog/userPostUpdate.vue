@@ -153,7 +153,7 @@ export default {
             this.$router.go(0);
           })
           .catch((err) => {
-            console.log("에러 : ", err);
+            alert("글 수정에 실패했습니다.");
           });
       }
     },
@@ -175,7 +175,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("이미지업로드에 실패했습니다.");
         });
     },
   },

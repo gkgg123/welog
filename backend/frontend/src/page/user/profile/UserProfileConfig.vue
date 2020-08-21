@@ -177,7 +177,6 @@ export default {
           .then((res) => {
             alert("Password가 정상적으로 변경되었습니다.");
             $("#staticBackdrop").modal("hide");
-            console.log(res);
           })
           .catch((err) => {
             alert("현재비밀번호가 다릅니다.");
@@ -200,7 +199,7 @@ export default {
           this.SET_USERPROFILE(receiveimg);
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("프로필 수정에 실패했습니다.");
         });
     },
     checkdeleteprofile() {
@@ -215,7 +214,7 @@ export default {
           this.SET_USERPROFILE(this.defalutprofileimg);
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("프로필삭제에 실패했습니다.");
         });
     },
     updateDescription() {
@@ -232,7 +231,7 @@ export default {
           this.SET_USERDESCRIPTION(res.data.object.userDescription);
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("한줄소개 수정에 실패했습니다.");
         });
     },
     getAchivement() {

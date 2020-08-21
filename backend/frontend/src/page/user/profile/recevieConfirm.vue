@@ -201,7 +201,7 @@ export default {
           $(`#receiveconfirm${recevieConfirm.cid}`).modal("hide");
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("수정에 실패했습니다.");
         });
     },
 
@@ -239,7 +239,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("목록을 불러오는데 실패했습니다.");
         });
     },
   },

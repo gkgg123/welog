@@ -183,7 +183,7 @@ export default {
           });
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("목록을 불러오는데 실패했습니다.");
         });
     },
   },

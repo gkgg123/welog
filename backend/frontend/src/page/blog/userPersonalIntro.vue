@@ -74,7 +74,7 @@ export default {
           introConfirm.setAttribute("style", "display:none");
         })
         .catch((err) => {
-          console.log(err.response);
+          alert("소개글 수정에 실패했습니다.");
         });
       var confirmUpdateButton = document.querySelector(".updateBtn");
       confirmUpdateButton.setAttribute("style", "display:block;");
