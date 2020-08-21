@@ -1,0 +1,80 @@
+<template>
+  <div class="post">
+    <div class>
+      <div class="main-post-bar">
+        <router-link class="post-bar-item" :to="{ name : constants.URL_TYPE.MAIN.LIST}">
+          <i class="fas fa-border-all"></i>
+          <h2>전체 글</h2>
+        </router-link>
+        <router-link class="post-bar-item" :to="{ name : constants.URL_TYPE.MAIN.RECOMMAND}">
+          <i class="fas fa-chart-line"></i>
+          <h2>인기 글</h2>
+        </router-link>
+      </div>
+      <div>
+        <router-view />
+        <div class="tag-list-wrap">
+          <h4>공지사항</h4>
+          <ul class="tag-list mb-5">
+            <li class="notice">
+              <p></p>
+            </li>
+            <div class="text-secondary mb-3">2020년 8월 20일</div>
+            <li class="notice">
+              <p>Welog 정식 서비스 시작</p>
+            </li>
+            <div class="text-secondary mb-3">2020년 8월 4일</div>
+            <li class="notice">
+              <p>Welog 베타서비스 시작</p>
+            </li>
+            <div class="text-secondary mb-3">2020년 7월 13일</div>
+            <li class="notice">
+              <p>Welog 개발 시작</p>
+            </li>
+            <p class="text-secondary">
+              <u>더보기</u>
+            </p>
+          </ul>
+          <h4>인기태그</h4>
+          <ul class="tag-list">
+            <li>Java (8)</li>
+            <li>Python (5)</li>
+            <li>김영환 (2)</li>
+            <p class="text-secondary">
+              <u>더보기</u>
+            </p>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<script>
+import "@/assets/css/post.scss";
+import constants from "@/lib/constants";
+
+export default {
+  name: "Main",
+  components: {},
+  watch: {},
+  data() {
+    return {
+      constants,
+    };
+  },
+  methods: {
+    headerInit() {
+      this.$store.commit("SET_header", "welog"),
+        this.$store.commit("SET_headerPath", {
+          PathName: constants.URL_TYPE.MAIN.MAIN,
+          PathParams: null,
+        });
+    },
+  },
+  created() {
+    this.headerInit();
+  },
+};
+</script>

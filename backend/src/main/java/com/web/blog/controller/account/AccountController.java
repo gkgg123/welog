@@ -1,73 +1,156 @@
 package com.web.blog.controller.account;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
-import com.web.blog.dao.user.UserDao;
+import com.web.blog.utils.S3Service;
+import com.web.blog.enums.AccountGrade;
+import com.web.blog.enums.ErrorCode;
+import com.web.blog.exception.account.PasswordNotMatchedException;
 import com.web.blog.model.BasicResponse;
-import com.web.blog.model.user.SignupRequest;
-import com.web.blog.model.user.User;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.web.blog.model.account.Account;
+import com.web.blog.model.account.repository.AccountRepository;
+import com.web.blog.model.file.Image;
+import com.web.blog.model.file.repository.ImageRepository;
+import com.web.blog.service.account.AccountService;
+import io.swagger.annotations.ApiOperation;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.web.blog.property.JwtProperties;
+import com.web.blog.utils.TokenUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
-@ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
+import java.io.IOException;
+import java.util.List;
+
+@ApiResponses(value = {@ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
         @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
         @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
-        @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
+        @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class)})
 
-@CrossOrigin(origins = { "http://localhost:3000" })
+@RequestMapping("/user")
 @RestController
 public class AccountController {
+    @Autowired
+    AccountService accountService;
+    @Autowired
+    AccountRepository accountRepository;
+    @Autowired
+    ImageRepository imageRepository;
 
     @Autowired
-    UserDao userDao;
+    TokenUtils tokenUtils;
 
-    @GetMapping("/account/login")
-    @ApiOperation(value = "로그인")
-    public Object login(@RequestParam(required = true) final String email,
-            @RequestParam(required = true) final String password) {
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    @ApiOperation(value = "회원 가입")
+    public String signup(@RequestBody Account account) {
+        account.setGrade(AccountGrade.USER);
+        account.setProfileUrl("no_img");
+        accountService.createNew(account);
 
-        Optional<User> userOpt = userDao.findUserByEmailAndPassword(email, password);
-
-        ResponseEntity response = null;
-
-        if (userOpt.isPresent()) {
-            final BasicResponse result = new BasicResponse();
-            result.status = true;
-            result.data = "success";
-            response = new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-
-        return response;
+        return "signup success";
     }
 
-    @PostMapping("/account/signup")
-    @ApiOperation(value = "가입하기")
+    @GetMapping(value = "/{author}")
+    public Account getAccount(@PathVariable String author) {
+        return accountRepository.findByUsername(author);
+    }
+    @GetMapping(value = "/check/email")
+    public boolean checkEmail(@RequestParam String email){
+        return accountRepository.findByUseremail(email) == null;
+    }
+    @GetMapping(value = "/check/nickname")
+    public boolean checkNickname(@RequestParam String nickname){
+        return accountRepository.findByUsername(nickname) == null;
+    }
+    @PostMapping(value = "/{author}/profile")
+    public Object inputProfile(@PathVariable String author, @RequestPart List<MultipartFile> files) throws IOException, ParseException {
+        S3Service s3 = new S3Service();
 
-    public Object signup(@Valid @RequestBody SignupRequest request) {
-        // 이메일, 닉네임 중복처리 필수
-        // 회원가입단을 생성해 보세요.
+        BasicResponse result = new BasicResponse();
+        Account account = accountRepository.findByUsername(author);
+        for (MultipartFile file : files) {
+            String fileName = file.getOriginalFilename();
+            String iid = author + "_" + fileName;
+            Image image = imageRepository.findByIid(iid);
+            if (image == null)
+                image = new Image();
+            String path = s3.upload(file, iid);
+            account.setProfileUrl(path);
 
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
+            image.setIid(iid);
+            image.setIname(fileName);
+            image.setPath(path);
+            image.setPid(-1);
+            imageRepository.save(image);
+
+            result.data = "success";
+            result.status = true;
+            result.object = image;
+
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{author}/profile")
+    public Object deleteProfile(@PathVariable String author) {
+        BasicResponse result = new BasicResponse();
+        Account account = accountRepository.findByUsername(author);
+        Image image = imageRepository.findByPath(account.getProfileUrl());
+        if (image != null)
+            imageRepository.delete(image);
+        account.setProfileUrl("no_img");
+
+        accountRepository.save(account);
         result.data = "success";
+        result.status = true;
+        result.object = null;
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PostMapping(value = "/{author}/description")
+    public Object inputDescription(@PathVariable String author, @RequestBody String jsonObj) throws ParseException{
+        BasicResponse result = new BasicResponse();
+        JSONParser jsonParse = new JSONParser();
+        JSONObject obj = (JSONObject) jsonParse.parse(jsonObj);
+        String description = (String) obj.get("description");
+        Account account = accountRepository.findByUsername(author);
+        account.setUserDescription(description);
+        accountRepository.save(account);
+
+        result.data = "success";
+        result.status = true;
+        result.object = account;
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
+    }
+
+    @PutMapping("/pwchange")
+    @ApiOperation(value = "패스워드 변경입니다. 헤더에 jwt토큰도 보내주세용")
+    public ResponseEntity<BasicResponse> changePassword(
+            @RequestBody(required = true) String jsonObj,
+            @RequestHeader(value = JwtProperties.HEADER_STRING, required = true) String jwt) throws ParseException {
+        BasicResponse response = new BasicResponse();
+
+        JSONParser jsonParser = new JSONParser();
+        JSONObject object = (JSONObject) jsonParser.parse(jsonObj);
+        String originPw = (String) object.get("originalPassword");
+        String chgPw = (String) object.get("changePassword");
+
+        if (!accountService.checkPassword(originPw, chgPw, tokenUtils.getUserNameFromToken(jwt))) {
+            throw new PasswordNotMatchedException(ErrorCode.PASSWORD_NOT_MATCHED);
+        }
+        response.status = true;
+        response.data = "Password changed Successfully";
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

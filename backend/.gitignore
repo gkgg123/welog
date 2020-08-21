@@ -5,6 +5,8 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+.idea
+
 ### STS ###
 .apt_generated
 .classpath
@@ -30,3 +32,4 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/main/java/com/web/blog/utils/KEY.java

@@ -1,0 +1,252 @@
+<template>
+  <div class="update-request">
+    <h1>받은 수정요청</h1>
+    <div class="select-bar">
+      <select v-model="category" name id>
+        <option value="all">전체</option>
+        <option value="read">읽음</option>
+        <option value="unread">읽지않음</option>
+        <option value="middlestate">대기 중</option>
+      </select>
+    </div>
+    <div class="table">
+      <tr>
+        <th class="num">No.</th>
+        <th class="title">수정 요청 글</th>
+        <th class="send-user">보낸 사람</th>
+        <th class="read">읽음 상태</th>
+        <th class="state">처리 상태</th>
+        <th class="result">처리 결과</th>
+      </tr>
+      <tr v-for="(recevieConfirm, index) in recevieConfirmBystatus" :key="recevieConfirm.cid">
+        <td class="num">{{ index + 1 }}</td>
+        <td
+          class="post-title title"
+          @click="getConfirmDetail(recevieConfirm)"
+          data-toggle="modal"
+          :data-target="'#receiveconfirm' + recevieConfirm.cid"
+        >{{ recevieConfirm.posttitle }}</td>
+        <td class="send-user">{{ recevieConfirm.cwriter }}</td>
+        <td class="read">{{ recevieConfirm.read }}</td>
+        <td class="state">{{ recevieConfirm.state }}</td>
+        <td class="result">{{ recevieConfirm.nextState }}</td>
+        <div
+          class="modal fade"
+          :id="'receiveconfirm' + recevieConfirm.cid"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog" role="document" @keydown.esc="returnData(recevieConfirm)">
+            <div class="modal-content">
+              <div class="modal-header">
+                <p class="modal-title" id="exampleModalLabel">글 제목 : {{ recevieConfirm.posttitle }}</p>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  @click="returnData(recevieConfirm)"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="before-update">
+                  <div>수정 요청 부분</div>
+                  <p>- {{ recevieConfirm.rstring }}</p>
+                </div>
+
+                <div class="after-update">
+                  <div>수정 요청 내역</div>
+                  <p>- {{ recevieConfirm.rcomment }}</p>
+                </div>
+                <div class="request-radio">
+                  <label class="box-radio-input">
+                    <input
+                      type="radio"
+                      name="cp_item"
+                      v-model="recevieConfirm.willmodify"
+                      value="1"
+                      checked="checked"
+                    />
+                    <span>승인</span>
+                  </label>
+                  <label class="box-radio-input">
+                    <input
+                      type="radio"
+                      name="cp_item"
+                      v-model="recevieConfirm.willmodify"
+                      value="-1"
+                    />
+                    <span>거절</span>
+                  </label>
+                </div>
+                <div class="result-state" v-if="recevieConfirm.willmodify == 1">
+                  <div>처리 상태 :</div>
+                  <div>
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="cp_item"
+                        v-model="recevieConfirm.ismodified"
+                        checked="checked"
+                      />
+                      <span>수정완료</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" @click="putReceiveMrcomment(recevieConfirm)">완료</button>
+                <button type="button" data-dismiss="modal" @click="returnData(recevieConfirm)">취소</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </tr>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+import constants from "@/lib/constants.js";
+import { mapState, mapMutations } from "vuex";
+export default {
+  name: "recevieConfirm",
+  computed: {
+    ...mapState(["authToken", "modifyState"]),
+    recevieConfirmBystatus() {
+      this.recevieConfirmlist = this.recevieConfirmlist.map((item) => {
+        if (item.ischecked === false) {
+          item.read = "읽지 않음";
+        } else {
+          item.read = "읽음";
+        }
+        if (item.willmodify == -1) {
+          item.state = "수정 거절";
+        } else if (item.willmodify == 0) {
+          item.state = "대기 中";
+        } else {
+          item.state = "수정 승인";
+        }
+        if (item.ismodified === false) {
+          item.nextState = "수정 中";
+        } else {
+          item.nextState = "수정완료";
+        }
+        return item;
+      });
+
+      if (this.category === "read") {
+        return this.recevieConfirmlist.filter((item) => {
+          return item.ischecked;
+        });
+      } else if (this.category === "unread") {
+        return this.recevieConfirmlist.filter((item) => {
+          return !item.ischecked;
+        });
+      } else if (this.category === "middlestate") {
+        return this.recevieConfirmlist.filter((item) => {
+          return item.willmodify == 0;
+        });
+      } else {
+        return this.recevieConfirmlist;
+      }
+    },
+  },
+  data() {
+    return {
+      constants,
+      category: "all",
+      recevieConfirmlist: [],
+      defalutWillmodify: "",
+      defalutisModifyed: "",
+    };
+  },
+  methods: {
+    ...mapMutations(["SET_MODIFYSTATE"]),
+    getConfirmDetail(recevieConfirm) {
+      this.defalutWillmodify = recevieConfirm.willmodify;
+      this.defalutisModifyed = recevieConfirm.ismodified;
+      if (recevieConfirm.ischecked === false) {
+        axios
+          .get(constants.baseUrl + `modfrequest/comment/${recevieConfirm.cid}`)
+          .then((res) => {
+            recevieConfirm.ischecked = true;
+            recevieConfirm.read = "읽음";
+            if (this.modifyState > 0) {
+              this.SET_MODIFYSTATE(this.modifyState - 1);
+            }
+          });
+      }
+    },
+    returnData(recevieConfirm) {
+      recevieConfirm.willmodify = this.defalutWillmodify;
+      recevieConfirm.ismodified = this.defalutisModifyed;
+    },
+    putReceiveMrcomment(recevieConfirm) {
+      recevieConfirm.willmodify = Number(recevieConfirm.willmodify);
+
+      axios
+        .put(constants.baseUrl + "modfrequest/option/", recevieConfirm, {
+          headers: {
+            Authorization: this.authToken,
+          },
+        })
+        .then((res) => {
+          alert("수정되었습니다.");
+          $(`#receiveconfirm${recevieConfirm.cid}`).modal("hide");
+        })
+        .catch((err) => {
+          alert("수정에 실패했습니다.");
+        });
+    },
+
+    getReceiveMrcomment() {
+      const totalData = {
+        Authorization: this.authToken,
+      };
+      axios
+        .get(constants.baseUrl + "modfrequest/author", {
+          headers: {
+            Authorization: this.authToken,
+          },
+        })
+        .then((res) => {
+          this.recevieConfirmlist = res.data;
+          this.recevieConfirmlist = this.recevieConfirmlist.map((item) => {
+            if (item.ischecked === false) {
+              item.read = "읽지 않음";
+            } else {
+              item.read = "읽음";
+            }
+            if (item.willmodify == -1) {
+              item.state = "수정 거절";
+            } else if (item.willmodify == 0) {
+              item.state = "대기 中";
+            } else {
+              item.state = "수정 승인";
+            }
+            if (item.ismodified === false) {
+              item.nextState = "수정 中";
+            } else {
+              item.nextState = "수정완료";
+            }
+            return item;
+          });
+        })
+        .catch((err) => {
+          alert("목록을 불러오는데 실패했습니다.");
+        });
+    },
+  },
+  created() {
+    this.getReceiveMrcomment();
+  },
+};
+</script>
+
+<style></style>
